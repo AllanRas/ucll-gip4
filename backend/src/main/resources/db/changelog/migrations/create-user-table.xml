@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+        <changeSet id="2" author="Allan Rasson">
+            <createTable tableName="user" schemaName="esportmanagerdb">
+                <column name="id" type="SERIAL" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="voornaam" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="achternaam" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="username" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="password" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="role" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="email" type="varchar(40)">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+        </changeSet>
+
+        <changeSet id="3" author="">
+            <insert tableName="user" schemaName="esportmanagerdb">
+                <column name="voornaam" value="testvn"/>
+                <column name="achternaam" value="testan"/>
+                <column name="username" value="testun"/>
+                <column name="password" value="testpw"/>
+                <column name="role" value="User"/>
+                <column name="email" value="testemail"/>
+            </insert>
+        </changeSet>
+</databaseChangeLog>
