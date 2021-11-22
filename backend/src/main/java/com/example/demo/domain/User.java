@@ -33,7 +33,13 @@ public class User {
     }
 
     public User(Builder builder){
-
+        setId(builder.id);
+        setVoornaam(builder.voornaam);
+        setAchternaam(builder.achternaam);
+        setUsername(builder.username);
+        setPassword(builder.password);
+        setEmail(builder.email);
+        setRole(builder.role);
     }
 
     public long getId() {

@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import liquibase.pro.packaged.B;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,11 +13,11 @@ public class Speler {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ADRES_ID")
     private Adres adres;
 
@@ -106,18 +108,18 @@ public class Speler {
             this.geboortedatum = copy.getGeboortedatum();
         }
 
-        public Builder id(Long val){
-            id = val;
-            return this;
-        }
-
-        public Builder password(User val){
+        public Builder user(User val){
             user = val;
             return this;
         }
 
         public Builder adres(Adres val){
             adres = val;
+            return this;
+        }
+
+        public Builder id(Long val){
+            id = val;
             return this;
         }
 
