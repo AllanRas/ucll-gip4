@@ -69,8 +69,13 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
         Speler gemaakteSpeler = fromJson(json, Speler.class);
 
         // Then
+        // check user equals
         assertEquals(gemaakteSpeler.getUser().getVoornaam(), josPatat.getUser().getVoornaam());
         assertEquals(gemaakteSpeler.getUser().getAchternaam(), josPatat.getUser().getAchternaam());
-    }
 
+        // check adres equals
+        assertEquals(gemaakteSpeler.getAdres().getGemeente(), josPatat.getAdres().getGemeente());
+        assertEquals(gemaakteSpeler.getAdres().getHuisnummer(), josPatat.getAdres().getHuisnummer());
+        assertEquals(gemaakteSpeler.getAdres().getStraat(), josPatat.getAdres().getStraat());
+    }
 }
