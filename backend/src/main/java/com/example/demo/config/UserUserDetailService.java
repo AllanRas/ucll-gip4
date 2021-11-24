@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
