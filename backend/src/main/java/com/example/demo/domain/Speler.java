@@ -4,6 +4,8 @@ import liquibase.pro.packaged.B;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="Speler", schema="esportmanagerdb")
@@ -30,6 +32,12 @@ public class Speler {
     @Column(name = "GEBOORTEDATUM")
     private Date geboortedatum;
 
+    @OneToMany
+    private Set<SpelerTeam> teams = new HashSet<>();
+
+    @OneToMany
+    private Set<SpelerMatch> matches = new HashSet<>();
+
     public Speler(){}
 
     private Speler(Builder builder){
@@ -39,6 +47,8 @@ public class Speler {
         setActief(builder.actief);
         setReserve(builder.reserve);
         setGeboortedatum(builder.geboortedatum);
+        setSpelerTeams(builder.teams);
+        setSpelerMatches(builder.match);
     }
 
     public long getId() {
@@ -89,6 +99,22 @@ public class Speler {
         this.geboortedatum = geboortedatum;
     }
 
+    public Set<SpelerTeam> getSpelerTeams() {
+        return teams;
+    }
+
+    public void setSpelerTeams(Set<SpelerTeam> team) {
+        this.teams = teams;
+    }
+
+    public Set<SpelerMatch> getSpelerMatches() {
+        return matches;
+    }
+
+    public void setSpelerMatches(Set<SpelerMatch> matches) {
+        this.matches = matches;
+    }
+
     public static final class Builder {
         private long id;
         private User user;
@@ -96,6 +122,8 @@ public class Speler {
         private boolean actief;
         private boolean reserve;
         private Date geboortedatum;
+        private Set<SpelerTeam> teams = new HashSet<>();
+        private Set<SpelerMatch> match = new HashSet<>();
 
         public Builder(){}
 
@@ -106,6 +134,8 @@ public class Speler {
             this.actief = copy.isActief();
             this.reserve = copy.isReserve();
             this.geboortedatum = copy.getGeboortedatum();
+            this.teams = copy.getSpelerTeams();
+            this.match = copy.getSpelerMatches();
         }
 
         public Builder user(User val){
@@ -135,6 +165,16 @@ public class Speler {
 
         public Builder geboortedatum(Date val){
             geboortedatum = val;
+            return this;
+        }
+
+        public Builder teams(Set<SpelerTeam> val){
+            teams = val;
+            return this;
+        }
+
+        public Builder matches(Set<SpelerMatch> val){
+            match = val;
             return this;
         }
 

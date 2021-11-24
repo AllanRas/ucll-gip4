@@ -31,14 +31,4 @@
             </createTable>
         </changeSet>
 
-        <changeSet id="3" author="">
-            <insert tableName="user" schemaName="esportmanagerdb">
-                <column name="voornaam" value="testvn"/>
-                <column name="achternaam" value="testan"/>
-                <column name="username" value="testun"/>
-                <column name="password" value="testpw"/>
-                <column name="role" value="User"/>
-                <column name="email" value="testemail"/>
-            </insert>
-        </changeSet>
 </databaseChangeLog>

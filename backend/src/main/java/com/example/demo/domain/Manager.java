@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Manager", schema = "esportmanagerdb")
@@ -14,4 +16,6 @@ public class Manager {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    @OneToMany
+    private Set<Team> teams = new HashSet<>();
 }
