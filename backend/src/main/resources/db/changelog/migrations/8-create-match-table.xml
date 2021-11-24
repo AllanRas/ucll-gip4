@@ -21,6 +21,9 @@
             <column name="team_red_score" type="int">
                 <constraints nullable="true"/>
             </column>
+            <column name="datumtijd" type="date">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_teamblue_team"

@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class Match {
 
     @Column(name = "TEAM_RED_SCORE")
     private int scoreRedTeam;
+
+    @Column(name = "DATUMTIJD")
+    private Date datumtijd;
 
     @OneToMany
     private Set<SpelerMatch> spelers = new HashSet<>();
