@@ -2,6 +2,7 @@ package com.example.demo.web;
 
 
 import com.example.demo.dao.SpelerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import com.example.demo.domain.Speler;
@@ -25,6 +26,4 @@ public class SpelerResource {
     public Speler createSpeler(@RequestBody Speler speler) {
         return spelerRepository.save(speler);
     }
-
-
 }

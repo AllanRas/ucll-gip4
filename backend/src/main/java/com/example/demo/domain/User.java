@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,21 +13,27 @@ public class User {
     private long id;
 
     @Column(name = "VOORNAAM")
+    @ApiModelProperty(example = "Joske")
     private String voornaam;
 
     @Column(name="ACHTERNAAM")
+    @ApiModelProperty(example = "Vanvoor")
     private String achternaam;
 
     @Column(name="USERNAME")
+    @ApiModelProperty(example = "Joske7")
     private String username;
 
     @Column(name="PASSWORD")
+    @ApiModelProperty(example = "JoskeZijnPW")
     private String password;
 
     @Column(name="ROLE")
+    @ApiModelProperty(example = "SPELER")
     private String role;
 
     @Column(name="EMAIL")
+    @ApiModelProperty(example = "Joske@ZijnEmail.com")
     private String email;
 
     public User(){
