@@ -4,43 +4,40 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
-
-    <changeSet id="5" author="Allan Rasson">
-        <createTable tableName="speler" schemaName="esportmanagerdb">
+    <changeSet id="8" author="Allan Rasson">
+        <createTable tableName="match" schemaName="esportmanagerdb">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_id" type="BIGINT">
-            </column>
-            <column name="adres_id" type="bigint">
-            </column>
-            <column name="actief" type="bool">
+            <column name="team_blue_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="reserve" type="bool">
+            <column name="team_red_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="geboortedatum" type="date">
-                <constraints nullable="false"/>
+            <column name="team_blue_score" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="team_red_score" type="int">
+                <constraints nullable="true"/>
             </column>
         </createTable>
 
-
-        <addForeignKeyConstraint constraintName="fk_user_speler"
-                                 baseTableName="speler"
+        <addForeignKeyConstraint constraintName="fk_teamblue_team"
+                                 baseTableName="match"
                                  baseTableSchemaName="esportmanagerdb"
-                                 baseColumnNames="user_id"
+                                 baseColumnNames="team_blue_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user"
+                                 referencedTableName="team"
                                  referencedTableSchemaName="esportmanagerdb"
         />
 
-        <addForeignKeyConstraint constraintName="fk_adres_speler"
-                                 baseTableName="speler"
+        <addForeignKeyConstraint constraintName="fk_teamred_team"
+                                 baseTableName="match"
                                  baseTableSchemaName="esportmanagerdb"
-                                 baseColumnNames="adres_id"
+                                 baseColumnNames="team_red_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="adres"
+                                 referencedTableName="team"
                                  referencedTableSchemaName="esportmanagerdb"
         />
 
