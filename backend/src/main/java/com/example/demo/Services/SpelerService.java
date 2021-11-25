@@ -6,6 +6,9 @@ import com.example.demo.domain.Speler;
 import com.example.demo.dto.SpelerDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SpelerService {
 
@@ -29,4 +32,28 @@ public class SpelerService {
         return spelerConverter.spelerToDTO(speler);
     }
 
+    public List<Speler> getAllSpelers(){
+        return spelerRepository.findAll();
+    }
+
+    /*public Optional<Speler> getById(long id){
+        return spelerRepository.findById(id);
+    }*/
+
+    public SpelerDTO inActiveSpeler(long id){
+        Optional<Speler> speler = spelerRepository.findById(id);
+        // speler is niet meer actief dus = verwijderd
+        speler.orElseThrow().setActief(false);
+
+        spelerRepository.save(speler.get());
+        return spelerConverter.spelerToDTO(speler.get());
+    }
+
+    public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
+        Optional<Speler> speler = Optional.ofNullable(spelerConverter.dtoToSpeler(spelerDTO));
+        speler = spelerRepository.findById(id);
+
+        spelerRepository.save(speler.orElseThrow());
+        return spelerConverter.spelerToDTO(speler.orElseThrow());
+    }
 }
