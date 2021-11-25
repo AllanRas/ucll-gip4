@@ -40,7 +40,7 @@ public class User {
 
     }
 
-    public User(Builder builder){
+    private User(Builder builder){
         setId(builder.id);
         setVoornaam(builder.voornaam);
         setAchternaam(builder.achternaam);

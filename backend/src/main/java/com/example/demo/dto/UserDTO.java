@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import com.example.demo.domain.User;
+
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,6 +15,20 @@ public class UserDTO implements Serializable {
     private String password;
     private String role;
     private String email;
+
+    public UserDTO(){
+
+    }
+
+    public UserDTO(Builder builder){
+        setId(builder.id);
+        setVoornaam(builder.voornaam);
+        setAchternaam(builder.achternaam);
+        setUsername(builder.username);
+        setPassword(builder.password);
+        setEmail(builder.email);
+        setRole(builder.role);
+    }
 
     public long getId() {
         return id;
@@ -70,4 +86,65 @@ public class UserDTO implements Serializable {
         this.email = email;
     }
 
+    public static final class Builder{
+
+        private long id;
+        private String voornaam;
+        private String achternaam;
+        private String username;
+        private String password;
+        private String role;
+        private String email;
+
+        public Builder(){
+
+        }
+
+        public Builder(UserDTO copy){
+            this.id = copy.getId();
+            this.voornaam = copy.getVoornaam();
+            this.achternaam = copy.getAchternaam();
+            this.username = copy.getUsername();
+            this.password = copy.getPassword();
+            this.role = copy.getRole();
+            this.email = copy.getEmail();
+        }
+
+        public Builder id(Long val){
+            id = val;
+            return this;
+        }
+
+        public Builder voornaam(String val){
+            voornaam = val;
+            return this;
+        }
+
+        public Builder achternaam(String val){
+            achternaam = val;
+            return this;
+        }
+
+        public Builder username(String val){
+            username = val;
+            return this;
+        }
+
+        public Builder password(String val){
+            password = val;
+            return this;
+        }
+
+        public Builder role(String val){
+            role = val;
+            return this;
+        }
+
+        public Builder email(String val){
+            email = val;
+            return this;
+        }
+
+        public UserDTO build(){return new UserDTO(this);}
+    }
 }

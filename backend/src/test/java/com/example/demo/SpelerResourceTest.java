@@ -6,9 +6,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
-import com.example.demo.domain.Adres;
 import com.example.demo.domain.Speler;
-import com.example.demo.domain.User;
+import com.example.demo.dto.AdresDTO;
+import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,17 +54,17 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
     @Test
     void maaktNieuweSpeler() throws Exception {
         // Given
-        Speler josPatat = new Speler.Builder()
+        SpelerDTO josPatat = new SpelerDTO.Builder()
                 .actief(true)
                 .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
-                .user(new User.Builder()
+                .user(new UserDTO.Builder()
                         .voornaam("Jos")
                         .achternaam("Patat")
                         .username("JPatat")
                         .password("password")
                         .role("SPELER")
                         .email("Jpatat@gmail.com").build())
-                .adres(new Adres.Builder()
+                .adres(new AdresDTO.Builder()
                         .gemeente("Leuven")
                         .straat("straat in leuven")
                         .huisnummer("42")
@@ -82,16 +83,16 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
         MvcResult result = resultActions.andReturn();
         MockHttpServletResponse response = result.getResponse();
         String json = response.getContentAsString();
-        Speler gemaakteSpeler = fromJson(json, Speler.class);
+        SpelerDTO gemaakteSpeler = fromJson(json, SpelerDTO.class);
 
         // Then
         // check user equals
-        assertEquals(gemaakteSpeler.getUser().getVoornaam(), josPatat.getUser().getVoornaam());
-        assertEquals(gemaakteSpeler.getUser().getAchternaam(), josPatat.getUser().getAchternaam());
+        assertEquals(gemaakteSpeler.getUserDTO().getVoornaam(), josPatat.getUserDTO().getVoornaam());
+        assertEquals(gemaakteSpeler.getUserDTO().getAchternaam(), josPatat.getUserDTO().getAchternaam());
 
         // check adres equals
-        assertEquals(gemaakteSpeler.getAdres().getGemeente(), josPatat.getAdres().getGemeente());
-        assertEquals(gemaakteSpeler.getAdres().getHuisnummer(), josPatat.getAdres().getHuisnummer());
-        assertEquals(gemaakteSpeler.getAdres().getStraat(), josPatat.getAdres().getStraat());
+        assertEquals(gemaakteSpeler.getAdresDTO().getGemeente(), josPatat.getAdresDTO().getGemeente());
+        assertEquals(gemaakteSpeler.getAdresDTO().getHuisnummer(), josPatat.getAdresDTO().getHuisnummer());
+        assertEquals(gemaakteSpeler.getAdresDTO().getStraat(), josPatat.getAdresDTO().getStraat());
     }
 }
