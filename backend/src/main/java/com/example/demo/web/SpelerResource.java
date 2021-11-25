@@ -2,6 +2,7 @@ package com.example.demo.web;
     
 import com.example.demo.Services.SpelerService;
 import com.example.demo.domain.Speler;
+import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +25,8 @@ public class SpelerResource {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public SpelerDTO createSpeler(@RequestBody SpelerDTO spelerDTO) {
-        return spelerService.createSpeler(spelerDTO);
+    public SpelerDTO createSpeler(@RequestBody CreateSpelerDTO createSpelerDTO) {
+        return spelerService.createSpeler(createSpelerDTO);
     }
 
     @PreAuthorize("hasRole('MANAGER')")

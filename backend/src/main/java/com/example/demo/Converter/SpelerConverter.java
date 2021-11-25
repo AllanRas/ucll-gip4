@@ -2,6 +2,7 @@ package com.example.demo.Converter;
 
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.User;
+import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.UserDTO;
 import org.springframework.stereotype.Component;
@@ -41,4 +42,17 @@ public class SpelerConverter {
         speler.setGeboortedatum(spelerDTO.getGeboortedatum());
         return speler;
     }
+
+    // createSpelerDTO to speler
+    public Speler createSpelerDTOToSpeler(CreateSpelerDTO createSpelerDTO){
+        Speler speler = new Speler();
+        speler.setId(createSpelerDTO.getId());
+        speler.setUser(userConverter.userDTOtoUser(createSpelerDTO.getUserDTO()));
+        speler.setAdres(adresConverter.adresDTOtoadres(createSpelerDTO.getAdresDTO()));
+        speler.getUser().setPassword(createSpelerDTO.getPassword());
+        speler.setActief(createSpelerDTO.isActief());
+        speler.setGeboortedatum(createSpelerDTO.getGeboortedatum());
+        return speler;
+    }
+
 }

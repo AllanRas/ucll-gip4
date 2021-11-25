@@ -3,6 +3,7 @@ package com.example.demo.Services;
 import com.example.demo.Converter.SpelerConverter;
 import com.example.demo.dao.SpelerRepository;
 import com.example.demo.domain.Speler;
+import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,9 +27,8 @@ public class SpelerService {
         this.spelerConverter = spelerConverter;
     }
 
-    public SpelerDTO createSpeler(SpelerDTO spelerDTO){
-        Speler speler = spelerConverter.dtoToSpeler(spelerDTO);
-
+    public SpelerDTO createSpeler(CreateSpelerDTO createSpelerDTO){
+        Speler speler = spelerConverter.createSpelerDTOToSpeler(createSpelerDTO);
         //  actief op true en geef de role SPELER
         speler.setActief(true);
         speler.getUser().setRole("SPELER");

@@ -8,6 +8,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.AdresDTO;
+import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,7 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
     @Autowired
     private WebApplicationContext wac;
 
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     private MockMvc mockMvc;
@@ -53,14 +55,14 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
     @Test
     void maaktNieuweSpeler() throws Exception {
         // Given
-        SpelerDTO josPatat = new SpelerDTO.Builder()
+        CreateSpelerDTO josPatat = new CreateSpelerDTO.Builder()
                 .actief(true)
                 .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
+                .password(passwordEncoder.encode("password"))
                 .user(new UserDTO.Builder()
                         .voornaam("Jos")
                         .achternaam("Patat")
                         .username("JPatat")
-                        .password("password")
                         .role("SPELER")
                         .email("Jpatat@gmail.com").build())
                 .adres(new AdresDTO.Builder()

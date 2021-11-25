@@ -12,7 +12,6 @@ public class UserDTO implements Serializable {
     private String voornaam;
     private String achternaam;
     private String username;
-    private String password;
     private String role;
     private String email;
 
@@ -25,7 +24,6 @@ public class UserDTO implements Serializable {
         setVoornaam(builder.voornaam);
         setAchternaam(builder.achternaam);
         setUsername(builder.username);
-        setPassword(builder.password);
         setEmail(builder.email);
         setRole(builder.role);
     }
@@ -62,14 +60,6 @@ public class UserDTO implements Serializable {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role;
     }
@@ -92,7 +82,6 @@ public class UserDTO implements Serializable {
         private String voornaam;
         private String achternaam;
         private String username;
-        private String password;
         private String role;
         private String email;
 
@@ -105,7 +94,6 @@ public class UserDTO implements Serializable {
             this.voornaam = copy.getVoornaam();
             this.achternaam = copy.getAchternaam();
             this.username = copy.getUsername();
-            this.password = copy.getPassword();
             this.role = copy.getRole();
             this.email = copy.getEmail();
         }
@@ -127,11 +115,6 @@ public class UserDTO implements Serializable {
 
         public Builder username(String val){
             username = val;
-            return this;
-        }
-
-        public Builder password(String val){
-            password = val;
             return this;
         }
 
