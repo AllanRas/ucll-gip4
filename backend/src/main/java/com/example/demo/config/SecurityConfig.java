@@ -26,14 +26,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("speler").password(passwordEncoder().encode("speler")).roles("SPELER")
+                .withUser("speler").password(BCryptPasswordEncoder().encode("speler")).roles("SPELER")
                 .and()
-                .withUser("manager").password(passwordEncoder().encode("manager")).roles("MANAGER")
+                .withUser("manager").password(BCryptPasswordEncoder().encode("manager")).roles("MANAGER")
                 .and()
-                .withUser("admin").password(passwordEncoder().encode("admin")).roles("SPELER","MANAGER","ADMIN");
+                .withUser("admin").password(BCryptPasswordEncoder().encode("admin")).roles("SPELER","MANAGER","ADMIN");
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){ return new BCryptPasswordEncoder(); }
+    public BCryptPasswordEncoder BCryptPasswordEncoder(){ return new BCryptPasswordEncoder(); }
 
 }

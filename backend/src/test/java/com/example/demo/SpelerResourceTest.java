@@ -38,7 +38,6 @@ public class SpelerResourceTest extends AbstractIntegrationTest{
 
     private BCryptPasswordEncoder passwordEncoder;
 
-
     private MockMvc mockMvc;
 
     @BeforeEach
