@@ -19,7 +19,7 @@
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_reservespelerteam_speler"
-                                 baseTableName="speler_team"
+                                 baseTableName="reserve_speler_team"
                                  baseTableSchemaName="esportmanagerdb"
                                  baseColumnNames="speler_id"
                                  referencedColumnNames="id"
@@ -28,7 +28,7 @@
         />
 
         <addForeignKeyConstraint constraintName="fk_reservespelerteam_team"
-                                 baseTableName="speler_team"
+                                 baseTableName="reserve_speler_team"
                                  baseTableSchemaName="esportmanagerdb"
                                  baseColumnNames="team_id"
                                  referencedColumnNames="id"

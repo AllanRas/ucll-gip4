@@ -19,7 +19,13 @@ public class SpelerService {
     }
 
     public SpelerDTO createSpeler(SpelerDTO spelerDTO){
-        Speler speler = spelerRepository.save(spelerConverter.dtoToSpeler(spelerDTO));
+        Speler speler = spelerConverter.dtoToSpeler(spelerDTO);
+
+        //  actief op true en geef de role SPELER
+        speler.setActief(true);
+        speler.getUser().setRole("SPELER");
+
+        spelerRepository.save(speler);
         return spelerConverter.spelerToDTO(speler);
     }
 
