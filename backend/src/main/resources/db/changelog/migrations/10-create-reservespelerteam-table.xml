@@ -5,40 +5,34 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
-    <changeSet id="4" author="Allan Rasson">
-        <createTable tableName="speler" schemaName="esportmanagerdb">
+    <changeSet id="10" author="Allan Rasson">
+        <createTable tableName="reserve_speler_team" schemaName="esportmanagerdb">
             <column name="id" type="SERIAL" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="speler_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="adres_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="actief" type="bool">
-                <constraints nullable="false"/>
-            </column>
-            <column name="geboortedatum" type="date">
+            <column name="team_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="fk_user_speler"
-                                 baseTableName="speler"
+        <addForeignKeyConstraint constraintName="fk_reservespelerteam_speler"
+                                 baseTableName="speler_team"
                                  baseTableSchemaName="esportmanagerdb"
-                                 baseColumnNames="user_id"
+                                 baseColumnNames="speler_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user"
+                                 referencedTableName="speler"
                                  referencedTableSchemaName="esportmanagerdb"
         />
 
-        <addForeignKeyConstraint constraintName="fk_adres_speler"
-                                 baseTableName="speler"
+        <addForeignKeyConstraint constraintName="fk_reservespelerteam_team"
+                                 baseTableName="speler_team"
                                  baseTableSchemaName="esportmanagerdb"
-                                 baseColumnNames="adres_id"
+                                 baseColumnNames="team_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="adres"
+                                 referencedTableName="team"
                                  referencedTableSchemaName="esportmanagerdb"
         />
     </changeSet>

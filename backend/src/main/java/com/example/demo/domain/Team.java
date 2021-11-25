@@ -1,7 +1,5 @@
 package com.example.demo.domain;
 
-import liquibase.pro.packaged.C;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +17,9 @@ public class Team {
 
     @OneToMany
     private Set<SpelerTeam> spelers = new HashSet<>();
+
+    @OneToMany
+    private Set<ReserveSpelerTeam> reservespelers = new HashSet<>();
 
     @OneToMany
     private Set<Match> matches = new HashSet<>();

@@ -26,14 +26,14 @@ public class Speler {
     @Column(name = "ACTIEF")
     private boolean actief;
 
-    @Column(name = "RESERVE")
-    private boolean reserve;
-
     @Column(name = "GEBOORTEDATUM")
     private Date geboortedatum;
 
     @OneToMany
     private Set<SpelerTeam> teams = new HashSet<>();
+
+    @OneToMany
+    private Set<ReserveSpelerTeam> reservespelerteams = new HashSet<>();
 
     @OneToMany
     private Set<SpelerMatch> matches = new HashSet<>();
@@ -45,10 +45,10 @@ public class Speler {
         setUser(builder.user);
         setAdres(builder.adres);
         setActief(builder.actief);
-        setReserve(builder.reserve);
         setGeboortedatum(builder.geboortedatum);
-        setSpelerTeams(builder.teams);
-        setSpelerMatches(builder.match);
+        setTeams(builder.teams);
+        setMatches(builder.match);
+        setReservespelerteams(builder.reservespelerteams);
     }
 
     public long getId() {
@@ -83,14 +83,6 @@ public class Speler {
         this.actief = actief;
     }
 
-    public boolean isReserve() {
-        return reserve;
-    }
-
-    public void setReserve(boolean reserve) {
-        this.reserve = reserve;
-    }
-
     public Date getGeboortedatum() {
         return geboortedatum;
     }
@@ -99,19 +91,27 @@ public class Speler {
         this.geboortedatum = geboortedatum;
     }
 
-    public Set<SpelerTeam> getSpelerTeams() {
+    public Set<SpelerTeam> getTeams() {
         return teams;
     }
 
-    public void setSpelerTeams(Set<SpelerTeam> team) {
+    public void setTeams(Set<SpelerTeam> teams) {
         this.teams = teams;
     }
 
-    public Set<SpelerMatch> getSpelerMatches() {
+    public Set<ReserveSpelerTeam> getReservespelerteams() {
+        return reservespelerteams;
+    }
+
+    public void setReservespelerteams(Set<ReserveSpelerTeam> reservespelerteams) {
+        this.reservespelerteams = reservespelerteams;
+    }
+
+    public Set<SpelerMatch> getMatches() {
         return matches;
     }
 
-    public void setSpelerMatches(Set<SpelerMatch> matches) {
+    public void setMatches(Set<SpelerMatch> matches) {
         this.matches = matches;
     }
 
@@ -120,10 +120,10 @@ public class Speler {
         private User user;
         private Adres adres;
         private boolean actief;
-        private boolean reserve;
         private Date geboortedatum;
         private Set<SpelerTeam> teams = new HashSet<>();
         private Set<SpelerMatch> match = new HashSet<>();
+        private Set <ReserveSpelerTeam> reservespelerteams;
 
         public Builder(){}
 
@@ -132,10 +132,10 @@ public class Speler {
             this.user = copy.getUser();
             this.adres = copy.getAdres();
             this.actief = copy.isActief();
-            this.reserve = copy.isReserve();
             this.geboortedatum = copy.getGeboortedatum();
-            this.teams = copy.getSpelerTeams();
-            this.match = copy.getSpelerMatches();
+            this.teams = copy.getTeams();
+            this.match = copy.getMatches();
+            this.reservespelerteams = copy.getReservespelerteams();
         }
 
         public Builder user(User val){
@@ -158,11 +158,6 @@ public class Speler {
             return this;
         }
 
-        public Builder reserve(boolean val){
-            reserve = val;
-            return this;
-        }
-
         public Builder geboortedatum(Date val){
             geboortedatum = val;
             return this;
@@ -175,6 +170,11 @@ public class Speler {
 
         public Builder matches(Set<SpelerMatch> val){
             match = val;
+            return this;
+        }
+
+        public Builder reservespelerteams(Set<ReserveSpelerTeam> val){
+            reservespelerteams = val;
             return this;
         }
 
