@@ -38,11 +38,7 @@ public class SpelerService {
 
     public SpelerDTO getById(long id){
         Optional<Speler> speler = spelerRepository.findById(id);
-        if(speler.isPresent()){
-            return spelerConverter.spelerToDTO(speler.get());
-        }else{
-            throw new NullPointerException();
-        }
+        return spelerConverter.spelerToDTO(speler.orElseThrow());
     }
 
     public SpelerDTO inActiveSpeler(long id){
@@ -55,10 +51,29 @@ public class SpelerService {
     }
 
     public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
-        Optional<Speler> speler = Optional.ofNullable(spelerConverter.dtoToSpeler(spelerDTO));
-        speler = spelerRepository.findById(id);
+        Optional<Speler> speler = spelerRepository.findById(id);
 
-        spelerRepository.save(speler.orElseThrow());
+        if(speler.isPresent()){
+            Speler spelerUpdate = spelerConverter.dtoToSpeler(spelerDTO);
+            Speler newSpeler = speler.get();
+
+            // Speler.user update
+            newSpeler.getUser().setUsername(spelerUpdate.getUser().getUsername());
+            newSpeler.getUser().setPassword(spelerUpdate.getUser().getPassword());
+            newSpeler.getUser().setVoornaam(spelerUpdate.getUser().getVoornaam());
+            newSpeler.getUser().setAchternaam(spelerUpdate.getUser().getAchternaam());
+            newSpeler.getUser().setEmail(spelerUpdate.getUser().getEmail());
+
+            // speler.adres update
+            newSpeler.getAdres().setGemeente(spelerUpdate.getAdres().getGemeente());
+            newSpeler.getAdres().setPostcode(spelerUpdate.getAdres().getPostcode());
+            newSpeler.getAdres().setStraat(spelerUpdate.getAdres().getStraat());
+            newSpeler.getAdres().setHuisnummer(spelerUpdate.getAdres().getHuisnummer());
+
+            //speler update
+            newSpeler.setGeboortedatum(spelerUpdate.getGeboortedatum());
+            spelerRepository.save(newSpeler);
+        }
         return spelerConverter.spelerToDTO(speler.orElseThrow());
     }
 }
