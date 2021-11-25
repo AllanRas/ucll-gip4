@@ -1,6 +1,7 @@
 package com.example.demo.web;
 
 
+import com.example.demo.Services.SpelerService;
 import com.example.demo.dao.SpelerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/spelers")
 public class SpelerResource {
 
-    private final SpelerRepository spelerRepository;
+    private final SpelerService spelerService;
 
-    public SpelerResource(SpelerRepository spelerRepository){
-        this.spelerRepository = spelerRepository;
+    public SpelerResource(SpelerService spelerService){
+        this.spelerService = spelerService;
     }
 
-    // Speler aanmaken
+    // Moet nog verander naar DTO
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public Speler createSpeler(@RequestBody Speler speler) {
-        return spelerRepository.save(speler);
+        return spelerService.createSpeler(speler);
     }
 }
