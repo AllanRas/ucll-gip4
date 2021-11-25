@@ -1,8 +1,14 @@
 package com.example.demo.Converter;
 
 import com.example.demo.domain.Speler;
+import com.example.demo.domain.User;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.UserDTO;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class SpelerConverter {
@@ -19,6 +25,10 @@ public class SpelerConverter {
         spelerDTO.setGeboortedatum(speler.getGeboortedatum());
         spelerDTO.setActief(speler.isActief());
         return  spelerDTO;
+    }
+
+    public List<SpelerDTO> SpelerListToDTO(List<Speler> spelers){
+        return spelers.stream().map(this::spelerToDTO).collect(Collectors.toList());
     }
 
     // spelerDTO to speler

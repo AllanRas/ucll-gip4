@@ -32,13 +32,18 @@ public class SpelerService {
         return spelerConverter.spelerToDTO(speler);
     }
 
-    public List<Speler> getAllSpelers(){
-        return spelerRepository.findAll();
+    public List<SpelerDTO> getAllSpelers(){
+        return spelerConverter.SpelerListToDTO(spelerRepository.findAll());
     }
 
-    /*public Optional<Speler> getById(long id){
-        return spelerRepository.findById(id);
-    }*/
+    public SpelerDTO getById(long id){
+        Optional<Speler> speler = spelerRepository.findById(id);
+        if(speler.isPresent()){
+            return spelerConverter.spelerToDTO(speler.get());
+        }else{
+            throw new NullPointerException();
+        }
+    }
 
     public SpelerDTO inActiveSpeler(long id){
         Optional<Speler> speler = spelerRepository.findById(id);

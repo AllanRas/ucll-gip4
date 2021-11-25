@@ -31,14 +31,14 @@ public class SpelerResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping
-    public List<Speler> getAllSpelers(){
+    public List<SpelerDTO> getAllSpelers(){
         return spelerService.getAllSpelers();
     }
 
-    /*@GetMapping("/{id}/getOne")
-    public Optional<Speler> getById(@PathVariable("id") long id){
+    @GetMapping("/{id}/getOne")
+    public SpelerDTO getById(@PathVariable("id") long id){
         return spelerService.getById(id);
-    }*/
+    }
 
     //Verwijderen
     @PreAuthorize("hasRole('MANAGER')")
