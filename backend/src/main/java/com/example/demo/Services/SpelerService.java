@@ -58,11 +58,11 @@ public class SpelerService {
         return spelerConverter.spelerToDTO(speler.get());
     }
 
-    public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
+    public CreateSpelerDTO updateSpeler(long id, CreateSpelerDTO createSpelerDTO){
         Optional<Speler> speler = spelerRepository.findById(id);
 
         if(speler.isPresent()){
-            Speler spelerUpdate = spelerConverter.dtoToSpeler(spelerDTO);
+            Speler spelerUpdate = spelerConverter.createSpelerDTOToSpeler(createSpelerDTO);
             Speler newSpeler = speler.get();
 
             // Speler.user update
@@ -82,6 +82,6 @@ public class SpelerService {
             newSpeler.setGeboortedatum(spelerUpdate.getGeboortedatum());
             spelerRepository.save(newSpeler);
         }
-        return spelerConverter.spelerToDTO(speler.orElseThrow());
+        return spelerConverter.SpelerToCreateSpelerDTO(speler.orElseThrow());
     }
 }

@@ -55,4 +55,16 @@ public class SpelerConverter {
         return speler;
     }
 
+    //speler to DTO speler
+    public CreateSpelerDTO SpelerToCreateSpelerDTO(Speler speler){
+        CreateSpelerDTO createSpelerDTO = new CreateSpelerDTO();
+        createSpelerDTO.setId(speler.getId());
+        createSpelerDTO.setPassword(speler.getUser().getPassword());
+        createSpelerDTO.setUserDTO(userConverter.userToDTO(speler.getUser()));
+        createSpelerDTO.setAdresDTO(adresConverter.adresToDTO(speler.getAdres()));
+        createSpelerDTO.setGeboortedatum(speler.getGeboortedatum());
+        createSpelerDTO.setActief(speler.isActief());
+        return  createSpelerDTO;
+    }
+
 }

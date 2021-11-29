@@ -50,7 +50,7 @@ public class SpelerResource {
     //Gegevens wijzigen van een speler
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/{id}/update")
-    public SpelerDTO updateSpeler(@PathVariable("id") long id, @RequestBody SpelerDTO spelerDTO){
-        return spelerService.updateSpeler(id,spelerDTO);
+    public CreateSpelerDTO updateSpeler(@PathVariable("id") long id, @RequestBody CreateSpelerDTO createSpelerDTO){
+        return spelerService.updateSpeler(id, createSpelerDTO);
     }
 }
