@@ -67,7 +67,7 @@ public class SpelerService {
 
             // Speler.user update
             newSpeler.getUser().setUsername(spelerUpdate.getUser().getUsername());
-            newSpeler.getUser().setPassword(spelerUpdate.getUser().getPassword());
+            newSpeler.getUser().setPassword(passwordEncoder.encode(spelerUpdate.getUser().getPassword()));
             newSpeler.getUser().setVoornaam(spelerUpdate.getUser().getVoornaam());
             newSpeler.getUser().setAchternaam(spelerUpdate.getUser().getAchternaam());
             newSpeler.getUser().setEmail(spelerUpdate.getUser().getEmail());

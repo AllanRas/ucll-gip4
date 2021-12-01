@@ -35,6 +35,7 @@ public class SpelerResource {
         return spelerService.getAllSpelers();
     }
 
+    @PreAuthorize("hasRole('MANAGER') or hasRole('SPELER')")
     @GetMapping("/{id}/getOne")
     public SpelerDTO getById(@PathVariable("id") long id){
         return spelerService.getById(id);
