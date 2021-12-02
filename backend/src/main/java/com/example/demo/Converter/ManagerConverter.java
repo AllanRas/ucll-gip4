@@ -24,7 +24,7 @@ public class ManagerConverter {
         Manager manager = new Manager();
         manager.setId(managerDTO.getId());
         manager.setUser(userConverter.userDTOtoUser(managerDTO.getUserDTO()));
-        System.out.println(manager.toString());
+        manager.getUser().setPassword(managerDTO.getPasswoord());
         return manager;
     }
 }
