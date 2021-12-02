@@ -6,6 +6,7 @@ import java.util.Objects;
 public class ManagerDTO implements Serializable {
     private long id;
     private UserDTO userDTO;
+    private String passwoord;
 
     public long getId() {
         return id;
@@ -23,4 +24,11 @@ public class ManagerDTO implements Serializable {
         this.userDTO = userDTO;
     }
 
+    public String getPasswoord() {
+        return passwoord;
+    }
+
+    public void setPasswoord(String passwoord) {
+        this.passwoord = passwoord;
+    }
 }
