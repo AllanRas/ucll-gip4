@@ -4,11 +4,10 @@ package com.example.demo.web;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.dto.ManagerDTO;
 import com.example.demo.dto.SpelerDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manager")
@@ -20,8 +19,9 @@ public class ManagerResource {
         this.managerService = managerService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ManagerDTO createManager(@RequestBody ManagerDTO managerDTO){
         return managerService.createManager(managerDTO);
     }

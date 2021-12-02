@@ -18,8 +18,12 @@ public class ManagerService {
     }
 
     public ManagerDTO createManager(ManagerDTO managerDTO){
+        System.out.println(managerDTO.toString());
+        System.out.println(managerDTO.getUserDTO().toString());
         Manager manager = managerConverter.dtoToManager(managerDTO);
 
+        manager.getUser().setRole("MANAGER");
+        System.out.println(manager.getUser().toString());
         managerRepository.save(manager);
         return managerConverter.managerDTO(manager);
     }
