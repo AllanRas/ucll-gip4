@@ -1,28 +1,56 @@
 import {Table} from "react-bootstrap";
 import axios from 'axios';
 import React from "react";
+import {Link} from "react-router-dom";
 
-const getSpelersURL = "http://localhost:8080/spelers";
+
+const getSpelersURL = "http://localhost:8080/api/spelers";
+
+interface Speler {
+    id: number;
+    actief: boolean;
+    adresDTO: {
+        id: number;
+        gemeente: string;
+        straat: string;
+        huisnummer: string;
+        postcode:string;
+    }
+    geboortedatum: string;
+    userDTO: {
+        id: number;
+        achternaam: string;
+        email: string;
+        role: string;
+        username: string;
+        voornaam: string;
+    }
+}
 
 const Spelers = () => {
-    const [spelers, setSpelers] = React.useState(null);
+    const [spelers, setSpelers] = React.useState<Speler[]>([]);
 
     React.useEffect(() => {
-        axios.get(getSpelersURL, {
-            headers: {
-
+        axios.get<Speler[]>(getSpelersURL, {
+            auth: {
+                username: 'manager',
+                password: 'manager'
             }
         }).then((response) =>{
-           setSpelers(response.data);
+            console.log(response.data);
+            setSpelers(response.data);
         });
     }, []);
 
-    if (!spelers) return null;
+    if(!spelers) return null;
 
     return(
         <>
             <h1>Spelers</h1>
-
+            <br/>
+            <Link to={"/AddSpeler"}>Speler toevoegen</Link>
+            <br/>
+            <br/>
             <Table striped bordered hover variant={'dark'}>
                 <thead>
                     <tr>
@@ -32,13 +60,18 @@ const Spelers = () => {
                         <th>achternaam</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    <tr>
-                        <td>speler.id</td>
-                        <td>speler.username</td>
-                        <td>speler.voornaam</td>
-                        <td>speler.achternaam</td>
-                    </tr>
+                    {
+                        spelers.map(speler => (
+                            <tr>
+                                <td>{speler.id}</td>
+                                <td>{speler.userDTO.username}</td>
+                                <td>{speler.userDTO.voornaam}</td>
+                                <td>{speler.userDTO.achternaam}</td>
+                            </tr>
+                        ))
+                    }
                 </tbody>
             </Table>
         </>

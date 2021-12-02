@@ -17,10 +17,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //basic http security & alleen authenticated requests worden authorized, moet nog aangepast worden.
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/spelers").hasRole("MANAGER")
-                .and().csrf()
-                .disable();
+        http.httpBasic()
+                    .and()
+            .authorizeRequests()
+                    .antMatchers(HttpMethod.POST,"/spelers").hasRole("MANAGER")
+                    .and()
+            .formLogin()
+                    .defaultSuccessUrl("/", true)
+                    .permitAll()
+                    .and()
+            .csrf().disable()
+            .logout()
+                    .logoutSuccessUrl("/");
     }
 
     @Override
