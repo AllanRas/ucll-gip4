@@ -31,12 +31,14 @@ public class SpelerResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping
+    @CrossOrigin("http://localhost:3000/")
     public List<SpelerDTO> getAllSpelers(){
         return spelerService.getAllSpelers();
     }
 
     @PreAuthorize("hasRole('MANAGER') or hasRole('SPELER')")
     @GetMapping("/{id}/getOne")
+
     public SpelerDTO getById(@PathVariable("id") long id){
         return spelerService.getById(id);
     }

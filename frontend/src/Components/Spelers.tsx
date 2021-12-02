@@ -1,6 +1,8 @@
 import {Table} from "react-bootstrap";
 import axios from 'axios';
 import React from "react";
+import {Link} from "react-router-dom";
+
 
 const getSpelersURL = "http://localhost:8080/api/spelers";
 
@@ -45,7 +47,10 @@ const Spelers = () => {
     return(
         <>
             <h1>Spelers</h1>
-
+            <br/>
+            <Link to={"/AddSpeler"}>Speler toevoegen</Link>
+            <br/>
+            <br/>
             <Table striped bordered hover variant={'dark'}>
                 <thead>
                     <tr>
