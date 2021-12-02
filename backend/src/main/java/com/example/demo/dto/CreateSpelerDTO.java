@@ -70,6 +70,18 @@ public class CreateSpelerDTO {
         this.geboortedatum = geboortedatum;
     }
 
+    @Override
+    public String toString() {
+        return "CreateSpelerDTO{" +
+                "id=" + id +
+                ", userDTO=" + userDTO +
+                ", adresDTO=" + adresDTO +
+                ", password='" + password + '\'' +
+                ", actief=" + actief +
+                ", geboortedatum=" + geboortedatum +
+                '}';
+    }
+
     public static final class Builder {
         private long id;
         private UserDTO userDTO;
