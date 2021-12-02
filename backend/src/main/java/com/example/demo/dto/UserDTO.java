@@ -76,6 +76,18 @@ public class UserDTO implements Serializable {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", voornaam='" + voornaam + '\'' +
+                ", achternaam='" + achternaam + '\'' +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
     public static final class Builder{
 
         private long id;
