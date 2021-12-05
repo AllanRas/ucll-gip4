@@ -52,7 +52,12 @@ public class SpelerService {
     public SpelerDTO inActiveSpeler(long id){
         Optional<Speler> speler = spelerRepository.findById(id);
         // speler is niet meer actief dus = verwijderd
-        speler.orElseThrow().setActief(false);
+
+        if(speler.orElseThrow().isActief()){
+            speler.orElseThrow().setActief(false);
+        }else{
+            speler.orElseThrow().setActief(true);
+        }
 
         spelerRepository.save(speler.get());
         return spelerConverter.spelerToDTO(speler.get());

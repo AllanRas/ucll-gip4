@@ -5,6 +5,9 @@ import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import { Container } from 'react-bootstrap'
 import Spelers from "./Components/Spelers";
 import AddSpeler from "./Components/AddSpeler";
+import Speler from "./Components/Speler";
+import DelSpeler from "./Components/DelSpeler";
+
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
                       <>
                           <Route path="/Spelers" element={<Spelers/>}/>
                           <Route path="/AddSpeler" element={<AddSpeler/>}/>
+                          <Route path="/Spelers/:id" element={<Speler/>}/>
+                          <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
                       </>
 
                   </Routes>
