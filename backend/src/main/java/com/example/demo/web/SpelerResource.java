@@ -43,7 +43,7 @@ public class SpelerResource {
 
     //Verwijderen
     @PreAuthorize("hasRole('MANAGER')")
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/delete")
     public SpelerDTO inActiveSpeler(@PathVariable("id") long id){
         return spelerService.inActiveSpeler(id);
     }
