@@ -200,7 +200,7 @@ const AddSpeler = () => {
                         <Form.Group className={"mb-3"}>
                             <Form.Label>Geboortedatum</Form.Label>
                             <Form.Control name="geboortedatum"
-                                          type={"text"}
+                                          type={"date"}
                                           placeholder="geboortedatum"
                                           value={speler?.geboortedatum}
                                           onChange={ChangeHandlerSpeler}
