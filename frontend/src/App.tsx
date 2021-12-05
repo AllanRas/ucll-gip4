@@ -7,27 +7,29 @@ import Spelers from "./Components/Spelers";
 import AddSpeler from "./Components/AddSpeler";
 import Speler from "./Components/Speler";
 import DelSpeler from "./Components/DelSpeler";
+import EditSpeler from "./Components/EditSpeler";
 
 
 function App() {
-  return (
-      <Router>
-          <div className="App">
-              <Header />
-              <Container>
-                  <Routes>
-                      <>
-                          <Route path="/Spelers" element={<Spelers/>}/>
-                          <Route path="/AddSpeler" element={<AddSpeler/>}/>
-                          <Route path="/Spelers/:id" element={<Speler/>}/>
-                          <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
-                      </>
 
-                  </Routes>
-              </Container>
-          </div>
-      </Router>
-        );
-    }
+    return (
+        <Router>
+            <div className="App">
+                <Header />
+                <Container className="main">
+                    <Routes>
+                        <>
+                            <Route path="/Spelers" element={<Spelers/>}/>
+                            <Route path="/AddSpeler" element={<AddSpeler/>}/>
+                            <Route path="/Spelers/:id" element={<Speler/>}/>
+                            <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
+                            <Route path="/EditSpeler/:id" element={<EditSpeler/>}/>
+                        </>
+                    </Routes>
+                </Container>
+            </div>
+        </Router>
+    );
+}
 
 export default App;

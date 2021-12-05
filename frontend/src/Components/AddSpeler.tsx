@@ -1,6 +1,7 @@
 import {Button, Container, Form, Col, Row} from "react-bootstrap";
 import React, {ChangeEvent, useState} from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 interface CreateSpeler {
     adresDTO: {
@@ -90,7 +91,11 @@ const AddSpeler = () => {
 
         return (
             <>
-                <Container className="col-md-5">
+                <Container className="col-md-5 bg-dark text-white-50">
+                    <h1>Speler Toevoegen</h1>
+
+                    <br/>
+
                     <Form>
                         <Form.Group className={"mb-3"}>
                             <Form.Label>Username</Form.Label>
@@ -212,6 +217,13 @@ const AddSpeler = () => {
                                 <Button variant={"primary"}  onClick={() => PostSpeler()}>
                                     Submit
                                 </Button>
+                            </Col>
+                            <Col>
+                                <Link to={"/Spelers"}>
+                                    <Button>
+                                        Cancel
+                                    </Button>
+                                </Link>
                             </Col>
                         </Row>
                     </Form>

@@ -66,7 +66,7 @@ const Spelers = () => {
                 <tbody>
                     {
                         spelers.map(speler => (
-                            <tr>
+                            <tr key={speler.id}>
                                         <td>{speler.id}</td>
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>

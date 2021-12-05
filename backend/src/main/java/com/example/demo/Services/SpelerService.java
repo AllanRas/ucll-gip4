@@ -63,16 +63,17 @@ public class SpelerService {
         return spelerConverter.spelerToDTO(speler.get());
     }
 
-    public CreateSpelerDTO updateSpeler(long id, CreateSpelerDTO createSpelerDTO){
+    public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
+        System.out.println(spelerDTO.toString());
+
         Optional<Speler> speler = spelerRepository.findById(id);
 
         if(speler.isPresent()){
-            Speler spelerUpdate = spelerConverter.createSpelerDTOToSpeler(createSpelerDTO);
+            Speler spelerUpdate = spelerConverter.dtoToSpeler(spelerDTO);
             Speler newSpeler = speler.get();
 
             // Speler.user update
             newSpeler.getUser().setUsername(spelerUpdate.getUser().getUsername());
-            newSpeler.getUser().setPassword(passwordEncoder.encode(spelerUpdate.getUser().getPassword()));
             newSpeler.getUser().setVoornaam(spelerUpdate.getUser().getVoornaam());
             newSpeler.getUser().setAchternaam(spelerUpdate.getUser().getAchternaam());
             newSpeler.getUser().setEmail(spelerUpdate.getUser().getEmail());
@@ -87,6 +88,6 @@ public class SpelerService {
             newSpeler.setGeboortedatum(spelerUpdate.getGeboortedatum());
             spelerRepository.save(newSpeler);
         }
-        return spelerConverter.SpelerToCreateSpelerDTO(speler.orElseThrow());
+        return spelerConverter.spelerToDTO(speler.orElseThrow());
     }
 }

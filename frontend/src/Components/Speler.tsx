@@ -1,7 +1,8 @@
 import {Link, useParams} from "react-router-dom";
-import React from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
 import moment from 'moment';
+import {Button, Container} from "react-bootstrap";
 
 interface Speler {
     id: number;
@@ -66,33 +67,43 @@ const Speler = () => {
 
     return (
             <>
-                <div>
-                    <br/>
-                    <h1>Speler: {speler.userDTO.username} </h1>
-                    <br/>
-                    <h3>Voornaam: {speler.userDTO.voornaam} </h3>
-                    <h3>Achternaam: {speler.userDTO.achternaam}</h3>
-                    <h3>Email: {speler.userDTO.email}</h3>
-                    <h3>Geboortedatum: {moment(speler.geboortedatum).format('DD/MM/YYYY')}</h3>
-                    <h3>Actief: {speler.actief ? "true": "false"} </h3>
-                    <br/>
+                <Container className="col-8 bg-dark text-white-50" >
+                    <div>
+                        <br/>
+                        <h1>Speler: {speler.userDTO.username} </h1>
+                        <br/>
+                        <h3>Voornaam: {speler.userDTO.voornaam} </h3>
+                        <h3>Achternaam: {speler.userDTO.achternaam}</h3>
+                        <h3>Email: {speler.userDTO.email}</h3>
+                        <h3>Geboortedatum: {moment(speler.geboortedatum).format('DD/MM/YYYY')}</h3>
+                        <h3>Actief: {speler.actief ? "true": "false"} </h3>
+                        <br/>
 
-                    <h3>Adres </h3>
-                    <h4>Gemeente: {speler.adresDTO.gemeente}</h4>
-                    <h4>Postcode: {speler.adresDTO.postcode}</h4>
-                    <h4>Straat: {speler.adresDTO.straat}</h4>
-                    <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
+                        <h3>Adres </h3>
+                        <h4>Gemeente: {speler.adresDTO.gemeente}</h4>
+                        <h4>Postcode: {speler.adresDTO.postcode}</h4>
+                        <h4>Straat: {speler.adresDTO.straat}</h4>
+                        <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
 
-                    <br/>
+                        <br/>
 
-                    <Link to={"/DelSpeler/" + speler.id}>
-                        {speler.actief?
-                            "Speler deactiveren"
-                            :
-                            "Speler activeren"
-                        }
-                    </Link>
-                </div>
+                        <Link to={"/EditSpeler/" + speler.id} >
+                            <Button>
+                                Speler aanpassen
+                            </Button>
+                        </Link>
+
+                        <Link to={"/DelSpeler/" + speler.id}>
+                            <Button>
+                                {speler.actief?
+                                    "Speler deactiveren"
+                                    :
+                                    "Speler activeren"
+                                }
+                            </Button>
+                        </Link>
+                    </div>
+                </Container>
             </>
         )
 }
