@@ -30,6 +30,7 @@ interface Speler {
 const Spelers = () => {
     const [spelers, setSpelers] = React.useState<Speler[]>([]);
 
+    // get spelers from api
     React.useEffect(() => {
         axios.get<Speler[]>(getSpelersURL, {
             auth: {
@@ -58,6 +59,7 @@ const Spelers = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
+                        <th> </th>
                     </tr>
                 </thead>
 
@@ -65,10 +67,11 @@ const Spelers = () => {
                     {
                         spelers.map(speler => (
                             <tr>
-                                <td>{speler.id}</td>
-                                <td>{speler.userDTO.username}</td>
-                                <td>{speler.userDTO.voornaam}</td>
-                                <td>{speler.userDTO.achternaam}</td>
+                                        <td>{speler.id}</td>
+                                        <td>{speler.userDTO.username}</td>
+                                        <td>{speler.userDTO.voornaam}</td>
+                                        <td>{speler.userDTO.achternaam}</td>
+                                        <td><Link to={"/Spelers/" + speler.id}>Details</Link></td>
                             </tr>
                         ))
                     }
