@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.Services;
 import org.springframework.stereotype.Service;
 
 @Service
