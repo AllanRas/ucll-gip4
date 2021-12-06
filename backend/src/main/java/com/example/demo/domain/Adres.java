@@ -1,5 +1,8 @@
 package com.example.demo.domain;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,15 +14,19 @@ public class Adres {
     private long id;
 
     @Column(name = "GEMEENTE")
+    @ApiModelProperty(example = "Leuven")
     private String gemeente;
 
     @Column(name="STRAAT")
+    @ApiModelProperty(example = "Leuvensebaan")
     private String straat;
 
     @Column(name = "HUISNuMMER")
+    @ApiModelProperty(example = "43")
     private String huisnummer;
 
     @Column(name = "POSTCODE")
+    @ApiModelProperty(example = "3000")
     private String postcode;
 
     public Adres(){}

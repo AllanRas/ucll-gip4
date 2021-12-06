@@ -7,6 +7,14 @@
 
 
     <!-- migrations hier includen -->
-    <include file="db/changelog/migrations/create-schema.xml"/>
-    <include file="db/changelog/migrations/create-user-table.xml"/>
+    <include file="db/changelog/migrations/1-create-schema.xml"/>
+    <include file="db/changelog/migrations/2-create-user-table.xml"/>
+    <include file="db/changelog/migrations/3-create-adres-table.xml"/>
+    <include file="db/changelog/migrations/4-create-speler-table.xml"/>
+    <include file="db/changelog/migrations/5-create-manager-table.xml"/>
+    <include file="db/changelog/migrations/6-create-team-table.xml"/>
+    <include file="db/changelog/migrations/7-create-spelerteam-table.xml"/>
+    <include file="db/changelog/migrations/8-create-match-table.xml"/>
+    <include file="db/changelog/migrations/9-create-spelermatch-table.xml"/>
+    <include file="db/changelog/migrations/10-create-reservespelerteam-table.xml"/>
 </databaseChangeLog>

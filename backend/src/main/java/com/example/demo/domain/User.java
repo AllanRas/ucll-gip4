@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,29 +13,41 @@ public class User {
     private long id;
 
     @Column(name = "VOORNAAM")
+    @ApiModelProperty(example = "Joske")
     private String voornaam;
 
     @Column(name="ACHTERNAAM")
+    @ApiModelProperty(example = "Vanvoor")
     private String achternaam;
 
     @Column(name="USERNAME")
+    @ApiModelProperty(example = "Joske7")
     private String username;
 
     @Column(name="PASSWORD")
+    @ApiModelProperty(example = "JoskeZijnPW")
     private String password;
 
     @Column(name="ROLE")
+    @ApiModelProperty(example = "SPELER")
     private String role;
 
     @Column(name="EMAIL")
+    @ApiModelProperty(example = "Joske@ZijnEmail.com")
     private String email;
 
     public User(){
 
     }
 
-    public User(Builder builder){
-
+    private User(Builder builder){
+        setId(builder.id);
+        setVoornaam(builder.voornaam);
+        setAchternaam(builder.achternaam);
+        setUsername(builder.username);
+        setPassword(builder.password);
+        setEmail(builder.email);
+        setRole(builder.role);
     }
 
     public long getId() {
@@ -90,6 +104,19 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", voornaam='" + voornaam + '\'' +
+                ", achternaam='" + achternaam + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
     public static final class Builder{

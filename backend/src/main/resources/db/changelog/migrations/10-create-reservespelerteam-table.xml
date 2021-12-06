@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="10" author="Allan Rasson">
+        <createTable tableName="reserve_speler_team" schemaName="esportmanagerdb">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="speler_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_reservespelerteam_speler"
+                                 baseTableName="reserve_speler_team"
+                                 baseTableSchemaName="esportmanagerdb"
+                                 baseColumnNames="speler_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="speler"
+                                 referencedTableSchemaName="esportmanagerdb"
+        />
+
+        <addForeignKeyConstraint constraintName="fk_reservespelerteam_team"
+                                 baseTableName="reserve_speler_team"
+                                 baseTableSchemaName="esportmanagerdb"
+                                 baseColumnNames="team_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team"
+                                 referencedTableSchemaName="esportmanagerdb"
+        />
+    </changeSet>
+</databaseChangeLog>

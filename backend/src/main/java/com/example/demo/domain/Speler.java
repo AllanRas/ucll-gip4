@@ -1,7 +1,11 @@
 package com.example.demo.domain;
 
+import liquibase.pro.packaged.B;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="Speler", schema="esportmanagerdb")
@@ -11,22 +15,28 @@ public class Speler {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ADRES_ID")
     private Adres adres;
 
     @Column(name = "ACTIEF")
     private boolean actief;
 
-    @Column(name = "RESERVE")
-    private boolean reserve;
-
     @Column(name = "GEBOORTEDATUM")
     private Date geboortedatum;
+
+    @OneToMany
+    private Set<SpelerTeam> teams = new HashSet<>();
+
+    @OneToMany
+    private Set<ReserveSpelerTeam> reservespelerteams = new HashSet<>();
+
+    @OneToMany
+    private Set<SpelerMatch> matches = new HashSet<>();
 
     public Speler(){}
 
@@ -35,8 +45,10 @@ public class Speler {
         setUser(builder.user);
         setAdres(builder.adres);
         setActief(builder.actief);
-        setReserve(builder.reserve);
         setGeboortedatum(builder.geboortedatum);
+        setTeams(builder.teams);
+        setMatches(builder.match);
+        setReservespelerteams(builder.reservespelerteams);
     }
 
     public long getId() {
@@ -71,14 +83,6 @@ public class Speler {
         this.actief = actief;
     }
 
-    public boolean isReserve() {
-        return reserve;
-    }
-
-    public void setReserve(boolean reserve) {
-        this.reserve = reserve;
-    }
-
     public Date getGeboortedatum() {
         return geboortedatum;
     }
@@ -87,13 +91,39 @@ public class Speler {
         this.geboortedatum = geboortedatum;
     }
 
+    public Set<SpelerTeam> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<SpelerTeam> teams) {
+        this.teams = teams;
+    }
+
+    public Set<ReserveSpelerTeam> getReservespelerteams() {
+        return reservespelerteams;
+    }
+
+    public void setReservespelerteams(Set<ReserveSpelerTeam> reservespelerteams) {
+        this.reservespelerteams = reservespelerteams;
+    }
+
+    public Set<SpelerMatch> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(Set<SpelerMatch> matches) {
+        this.matches = matches;
+    }
+
     public static final class Builder {
         private long id;
         private User user;
         private Adres adres;
         private boolean actief;
-        private boolean reserve;
         private Date geboortedatum;
+        private Set<SpelerTeam> teams = new HashSet<>();
+        private Set<SpelerMatch> match = new HashSet<>();
+        private Set <ReserveSpelerTeam> reservespelerteams;
 
         public Builder(){}
 
@@ -102,16 +132,13 @@ public class Speler {
             this.user = copy.getUser();
             this.adres = copy.getAdres();
             this.actief = copy.isActief();
-            this.reserve = copy.isReserve();
             this.geboortedatum = copy.getGeboortedatum();
+            this.teams = copy.getTeams();
+            this.match = copy.getMatches();
+            this.reservespelerteams = copy.getReservespelerteams();
         }
 
-        public Builder id(Long val){
-            id = val;
-            return this;
-        }
-
-        public Builder password(User val){
+        public Builder user(User val){
             user = val;
             return this;
         }
@@ -121,18 +148,33 @@ public class Speler {
             return this;
         }
 
+        public Builder id(Long val){
+            id = val;
+            return this;
+        }
+
         public Builder actief(boolean val){
             actief = val;
             return this;
         }
 
-        public Builder reserve(boolean val){
-            reserve = val;
+        public Builder geboortedatum(Date val){
+            geboortedatum = val;
             return this;
         }
 
-        public Builder geboortedatum(Date val){
-            geboortedatum = val;
+        public Builder teams(Set<SpelerTeam> val){
+            teams = val;
+            return this;
+        }
+
+        public Builder matches(Set<SpelerMatch> val){
+            match = val;
+            return this;
+        }
+
+        public Builder reservespelerteams(Set<ReserveSpelerTeam> val){
+            reservespelerteams = val;
             return this;
         }
 
