@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect} from "react";
 import axios from "axios";
 import moment from 'moment';
@@ -28,6 +28,7 @@ interface Speler {
 
 const Speler = () => {
     let params = useParams();
+    let navigate = useNavigate();
 
     const getSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/getOne";
 
@@ -53,17 +54,14 @@ const Speler = () => {
     });
 
     // get spelers from api
-    React.useEffect(() => {
+    useEffect(() => {
         axios.get<Speler[]>(getSpelerURL, {
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials : true
         }).then((response) =>{
             console.log(response.data);
             setSpeler(response.data);
         });
-    }, []);
+    }, [getSpelerURL]);
 
     return (
             <>
@@ -86,22 +84,19 @@ const Speler = () => {
                         <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
 
                         <br/>
-
-                        <Link to={"/EditSpeler/" + speler.id} >
-                            <Button>
-                                Speler aanpassen
-                            </Button>
-                        </Link>
-
-                        <Link to={"/DelSpeler/" + speler.id}>
-                            <Button>
-                                {speler.actief?
-                                    "Speler deactiveren"
-                                    :
-                                    "Speler activeren"
-                                }
-                            </Button>
-                        </Link>
+                        <Button onClick={() => navigate("/Spelers")}>
+                            Terug
+                        </Button>
+                        <Button onClick={() => navigate("/EditSpeler/" + speler.id)}>
+                            Speler aanpassen
+                        </Button>
+                        <Button onClick={() => navigate("/DelSpeler/" + speler.id)}>
+                            {speler.actief?
+                                "Speler deactiveren"
+                                :
+                                "Speler activeren"
+                            }
+                        </Button>
                     </div>
                 </Container>
             </>
