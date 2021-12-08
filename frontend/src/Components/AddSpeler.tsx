@@ -1,7 +1,7 @@
 import {Button, Container, Form, Col, Row} from "react-bootstrap";
 import React, {ChangeEvent, useState} from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 interface CreateSpeler {
     adresDTO: {
@@ -23,6 +23,8 @@ interface CreateSpeler {
 const postSpelerURL = "http://localhost:8080/api/spelers";
 
 const AddSpeler = () => {
+
+        let navigate = useNavigate();
 
         //
         const [speler, setSpeler] = useState<CreateSpeler>({
@@ -48,13 +50,10 @@ const AddSpeler = () => {
             await axios.post<CreateSpeler>(postSpelerURL, speler, {
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                auth: {
-                    username: 'manager',
-                    password: 'manager'
-                }
+                },withCredentials : true
             }).then((response) => {
                 console.log(response.data);
+                navigate("/Spelers");
             }).catch(err => {
                 console.log(err);
             });
@@ -219,11 +218,9 @@ const AddSpeler = () => {
                                 </Button>
                             </Col>
                             <Col>
-                                <Link to={"/Spelers"}>
-                                    <Button>
-                                        Cancel
-                                    </Button>
-                                </Link>
+                                <Button onClick={() => navigate("/Spelers")}>
+                                    Cancel
+                                </Button>
                             </Col>
                         </Row>
                     </Form>

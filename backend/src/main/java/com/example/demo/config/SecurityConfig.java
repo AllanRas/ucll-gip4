@@ -1,47 +1,63 @@
 package com.example.demo.config;
 
+import liquibase.pro.packaged.A;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    private UserDetailsService userDetailsService;
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Qualifier("UserUserDetailService")
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.passwordEncoder = bCryptPasswordEncoder;
+    }
+
     //basic http security & alleen authenticated requests worden authorized, moet nog aangepast worden.
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                    .and()
-            .authorizeRequests()
-                    .antMatchers(HttpMethod.POST,"/spelers").hasRole("MANAGER")
-                    .and()
-            .formLogin()
-                    .defaultSuccessUrl("/", true)
-                    .permitAll()
-                    .and()
-            .csrf().disable()
-            .logout()
-                    .logoutSuccessUrl("/");
+        http.httpBasic().and().cors()
+                .and()
+                .authorizeRequests()
+                .antMatchers("http://localhost:3000/Login").permitAll()
+                .and()
+                .formLogin().and()
+                .logout().logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .and()
+                .csrf().disable();
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("speler").password(BCryptPasswordEncoder().encode("speler")).roles("SPELER")
-                .and()
-                .withUser("manager").password(BCryptPasswordEncoder().encode("manager")).roles("MANAGER")
-                .and()
-                .withUser("admin").password(BCryptPasswordEncoder().encode("admin")).roles("SPELER","MANAGER","ADMIN");
-    }
+        auth.userDetailsService(userDetailsService);
 
-    @Bean
-    public BCryptPasswordEncoder BCryptPasswordEncoder(){ return new BCryptPasswordEncoder(); }
+        auth.inMemoryAuthentication()
+                .withUser("speler").password(passwordEncoder.encode("speler")).roles("SPELER")
+                .and()
+                .withUser("manager").password(passwordEncoder.encode("manager")).roles("MANAGER")
+                .and()
+                .withUser("admin").password(passwordEncoder.encode("admin")).roles("SPELER","MANAGER","ADMIN");
+    }
 
 }

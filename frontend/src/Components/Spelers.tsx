@@ -2,6 +2,7 @@ import {Table} from "react-bootstrap";
 import axios from 'axios';
 import React from "react";
 import {Link} from "react-router-dom";
+import user from "./Login";
 
 
 const getSpelersURL = "http://localhost:8080/api/spelers";
@@ -28,18 +29,19 @@ interface Speler {
 }
 
 const Spelers = () => {
+    Object.freeze(user);
+
     const [spelers, setSpelers] = React.useState<Speler[]>([]);
 
     // get spelers from api
     React.useEffect(() => {
         axios.get<Speler[]>(getSpelersURL, {
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials: true
         }).then((response) =>{
             console.log(response.data);
             setSpelers(response.data);
+        }).catch((e) => {
+            console.log(e);
         });
     }, []);
 

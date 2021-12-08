@@ -20,7 +20,7 @@ public class User {
     @ApiModelProperty(example = "Vanvoor")
     private String achternaam;
 
-    @Column(name="USERNAME")
+    @Column(name="USERNAME", unique = true)
     @ApiModelProperty(example = "Joske7")
     private String username;
 
@@ -32,7 +32,7 @@ public class User {
     @ApiModelProperty(example = "SPELER")
     private String role;
 
-    @Column(name="EMAIL")
+    @Column(name="EMAIL", unique = true)
     @ApiModelProperty(example = "Joske@ZijnEmail.com")
     private String email;
 

@@ -8,6 +8,7 @@ import AddSpeler from "./Components/AddSpeler";
 import Speler from "./Components/Speler";
 import DelSpeler from "./Components/DelSpeler";
 import EditSpeler from "./Components/EditSpeler";
+import Login from "./Components/Login";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                             <Route path="/Spelers/:id" element={<Speler/>}/>
                             <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
                             <Route path="/EditSpeler/:id" element={<EditSpeler/>}/>
+                            <Route path="/Login" element={<Login/>}/>
                         </>
                     </Routes>
                 </Container>

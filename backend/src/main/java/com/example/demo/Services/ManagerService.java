@@ -14,8 +14,12 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final ManagerConverter managerConverter;
 
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public ManagerService(ManagerRepository managerRepository, ManagerConverter managerConverter) {
         this.managerRepository = managerRepository;

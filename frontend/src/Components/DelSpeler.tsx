@@ -1,5 +1,5 @@
-import {Link, useParams} from "react-router-dom";
-import React from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import React, {useEffect} from "react";
 import axios from "axios";
 import moment from 'moment';
 import {Button, Container} from "react-bootstrap";
@@ -28,6 +28,7 @@ interface Speler {
 
 const DelSpeler = () => {
     let params = useParams();
+    let navigate = useNavigate();
 
     const getSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/getOne";
 
@@ -55,16 +56,13 @@ const DelSpeler = () => {
     });
 
     // get spelers from api
-    React.useEffect(() => {
+    useEffect(() => {
         getSpelers();
     }, []);
 
     const getSpelers = async () => {
         await axios.get<Speler>(getSpelerURL, {
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials: true
         }).then((response) =>{
             console.log(response.data);
             setSpeler(response.data);
@@ -73,10 +71,7 @@ const DelSpeler = () => {
 
     const Delete = async () => {
         await axios.put<Speler>(delSpelerURL, {},{
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials: true
         }).then((response) => {
             getSpelers();
             console.log(response.data)
@@ -116,15 +111,12 @@ const DelSpeler = () => {
                     }
 
                     <div>
-                        <Link to={"/Spelers/" + speler.id}>
-                            <Button>
-                                Cancel
-                            </Button>
-                        </Link>
+                        <Button onClick={() => navigate("/Spelers/" + speler.id)}>
+                            Cancel
+                        </Button>
                     </div>
                 </div>
             </Container>
-
         </>
     )
 }
