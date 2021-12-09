@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -50,8 +51,10 @@ public class SpelerResource {
         SpelerDTO spelerDTO = spelerService.getById(id);
 
         // Get the logged in user
-        UserPrincipal userPrincipal = (UserPrincipal) userUserDetailService.loadUserByUsername(spelerDTO.getUserDTO().getUsername());
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+
+        System.out.println(isSpelerRole);
 
         // check if user is in SPELER role
         if(isSpelerRole){
@@ -81,7 +84,7 @@ public class SpelerResource {
         System.out.println("Start update proces speler");
 
         // Get the logged in user
-        UserPrincipal userPrincipal = (UserPrincipal) userUserDetailService.loadUserByUsername(spelerDTO.getUserDTO().getUsername());
+        UserPrincipal userPrincipal = (UserPrincipal)  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
 
         SpelerDTO getSpeler = spelerService.getById(id);

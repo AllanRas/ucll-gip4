@@ -8,11 +8,10 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 
 
 import com.example.demo.AbstractIntegrationTest;
+import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.SpelerService;
-import com.example.demo.dto.AdresDTO;
-import com.example.demo.dto.CreateSpelerDTO;
-import com.example.demo.dto.SpelerDTO;
-import com.example.demo.dto.UserDTO;
+import com.example.demo.domain.Team;
+import com.example.demo.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +41,14 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
     @Autowired
     private SpelerService spelerService;
 
+    @Autowired
+    private ManagerService managerService;
+
     private MockMvc mockMvc;
 
     private CreateSpelerDTO josPatat;
+
+    private ManagerDTO jefManager;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -70,6 +74,16 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
                         .postcode("3000")
                         .build())
                 .build();
+
+        jefManager = new ManagerDTO.Builder()
+                .passwoord("password")
+                .userDTO(new UserDTO.Builder()
+                        .voornaam("Jef")
+                        .achternaam("De Manager")
+                        .username("JefkeM")
+                        .email("JefkeM@gmail.com").build())
+                .build();
+
     }
 
     @Test
@@ -138,7 +152,7 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
 
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/spelers/{id}/update", josPatatDTO.getId())
-                .with(httpBasic("manager","manager"))
+                .with(httpBasic(josPatat.getUserDTO().getUsername(),josPatat.getPassword()))
                 .contentType(toJson(josUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
         );
@@ -158,12 +172,11 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
     void getOneSpelerAsManager() throws Exception{
         // Given
         SpelerDTO josPatatDTO = spelerService.createSpeler(josPatat);
-
-        System.out.println(josPatatDTO.getId());
+        ManagerDTO jefManagerDTO = managerService.createManager(jefManager);
 
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.get("/spelers/{id}/getOne",josPatatDTO.getId())
-                .with(httpBasic("manager","manager")));
+                .with(httpBasic(jefManager.getUserDTO().getUsername(), jefManager.getPasswoord())));
 
         MvcResult result = perform
                 .andExpect(status().isAccepted())
@@ -180,8 +193,6 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
     void getOneSpelerAsSpeler() throws Exception{
         // Given
         SpelerDTO josPatatDTO = spelerService.createSpeler(josPatat);
-
-        System.out.println(josPatatDTO.getId());
 
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.get("/spelers/{id}/getOne",josPatatDTO.getId())

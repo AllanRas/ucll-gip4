@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,7 +29,7 @@ public class SpelerConverter {
         return  spelerDTO;
     }
 
-    public List<SpelerDTO> SpelerListToDTO(List<Speler> spelers){
+    public List<SpelerDTO> spelerListToDTO(List<Speler> spelers){
         return spelers.stream().map(this::spelerToDTO).collect(Collectors.toList());
     }
 
@@ -65,6 +66,10 @@ public class SpelerConverter {
         createSpelerDTO.setGeboortedatum(speler.getGeboortedatum());
         createSpelerDTO.setActief(speler.isActief());
         return  createSpelerDTO;
+    }
+
+    public Set<SpelerDTO> spelerSetToDTO(Set<Speler> spelers){
+        return spelers.stream().map(this::spelerToDTO).collect(Collectors.toSet());
     }
 
 }

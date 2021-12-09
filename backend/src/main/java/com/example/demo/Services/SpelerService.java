@@ -41,7 +41,7 @@ public class SpelerService {
     }
 
     public List<SpelerDTO> getAllSpelers(){
-        return spelerConverter.SpelerListToDTO(spelerRepository.findAll());
+        return spelerConverter.spelerListToDTO(spelerRepository.findAll());
     }
 
     public SpelerDTO getById(long id){
