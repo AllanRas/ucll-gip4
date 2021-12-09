@@ -3,6 +3,7 @@ package com.example.demo.Services;
 import com.example.demo.Converter.ManagerConverter;
 import com.example.demo.dao.ManagerRepository;
 import com.example.demo.domain.Manager;
+import com.example.demo.domain.User;
 import com.example.demo.dto.ManagerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,6 +38,11 @@ public class ManagerService {
 
         System.out.println(manager.getUser().toString());
         managerRepository.save(manager);
+        return managerConverter.managerDTO(manager);
+    }
+
+    public ManagerDTO getManagerByUserId(User user){
+        Manager manager = managerRepository.findByUser(user).orElseThrow();
         return managerConverter.managerDTO(manager);
     }
 }

@@ -2,97 +2,161 @@ package com.example.demo.dto;
 
 import com.example.demo.domain.Match;
 import com.example.demo.domain.ReserveSpelerTeam;
+import com.example.demo.domain.SpelerTeam;
 
 import java.io.Serializable;
+import java.util.Set;
 
 public class TeamDTO implements Serializable {
     private long id;
+    private String naam;
     private ManagerDTO managerDTO;
-    private SpelerDTO spelerDTO;
-    private Match match;
-    private ReserveSpelerTeam reserveSpelerTeam;
+    private Set<SpelerTeam> spelers;
+    private Set<Match> match;
+    private Set<ReserveSpelerTeam> reserveSpelerTeam;
     private boolean actief;
 
     public TeamDTO(){}
 
     private TeamDTO(TeamDTO.Builder builder){
         setId(builder.id);
+        setNaam(builder.naam);
         setManagerDTO(builder.managerDTO);
         setActief(builder.actief);
         setMatch(builder.match);
-        setSpelerDTO(builder.spelerDTO);
+        setSpelerDTO(builder.spelers);
         setReserveSpelerTeam(builder.reserveSpelerTeam);
     }
 
-    public long getId() {return id;}
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) {this.id = id;}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public boolean isActief() {return actief;}
+    public String getNaam() {
+        return naam;
+    }
 
-    public void setActief(boolean actief) {this.actief = actief;}
+    public void setNaam(String naam) {
+        this.naam = naam;
+    }
 
-    public Match getMatch() {return match;}
+    public Set<SpelerTeam> getSpelers() {
+        return spelers;
+    }
 
-    public void setMatch(Match match) {this.match = match;}
+    public void setSpelers(Set<SpelerTeam> spelers) {
+        this.spelers = spelers;
+    }
 
-    public SpelerDTO getSpelerDTO() {return spelerDTO;}
+    public ManagerDTO getManagerDTO() {
+        return managerDTO;
+    }
 
-    public void setSpelerDTO(SpelerDTO spelerDTO) {this.spelerDTO = spelerDTO;}
+    public void setManagerDTO(ManagerDTO managerDTO) {
+        this.managerDTO = managerDTO;
+    }
 
-    public ManagerDTO getManagerDTO() {return managerDTO;}
+    public Set<SpelerTeam> getSpelerDTO() {
+        return spelers;
+    }
 
-    public void setManagerDTO(ManagerDTO managerDTO) {this.managerDTO = managerDTO;}
+    public void setSpelerDTO(Set<SpelerTeam> spelerDTO) {
+        this.spelers = spelerDTO;
+    }
 
-    public void setReserveSpelerTeam(ReserveSpelerTeam reserveSpelerTeam) {this.reserveSpelerTeam = reserveSpelerTeam;}
+    public Set<Match> getMatch() {
+        return match;
+    }
 
-    public ReserveSpelerTeam getReserveSpelerTeam() {return reserveSpelerTeam;}
+    public void setMatch(Set<Match> match) {
+        this.match = match;
+    }
+
+    public Set<ReserveSpelerTeam> getReserveSpelerTeam() {
+        return reserveSpelerTeam;
+    }
+
+    public void setReserveSpelerTeam(Set<ReserveSpelerTeam> reserveSpelerTeam) {
+        this.reserveSpelerTeam = reserveSpelerTeam;
+    }
+
+    public boolean isActief() {
+        return actief;
+    }
+
+    public void setActief(boolean actief) {
+        this.actief = actief;
+    }
+
+    @Override
+    public String toString() {
+        return "TeamDTO{" +
+                "id=" + id +
+                ", naam='" + naam + '\'' +
+                ", managerDTO=" + managerDTO +
+                ", spelers=" + spelers +
+                ", match=" + match +
+                ", reserveSpelerTeam=" + reserveSpelerTeam +
+                ", actief=" + actief +
+                '}';
+    }
 
     public static final class Builder {
         private long id;
+        private String naam;
         private ManagerDTO managerDTO;
-        private SpelerDTO spelerDTO;
-        private Match match;
-        private ReserveSpelerTeam reserveSpelerTeam;
+        private Set<SpelerTeam> spelers;
+        private Set<Match> match;
+        private Set<ReserveSpelerTeam> reserveSpelerTeam;
         private boolean actief;
 
         public Builder(){}
 
         public Builder(TeamDTO copy){
             this.id = copy.getId();
+            this.naam = copy.getNaam();
             this.managerDTO = copy.getManagerDTO();
-            this.spelerDTO = copy.getSpelerDTO();
+            this.spelers = copy.getSpelerDTO();
             this.actief = copy.isActief();
             this.match = copy.getMatch();
             this.reserveSpelerTeam = copy.getReserveSpelerTeam();
         }
 
-        public TeamDTO.Builder manager(ManagerDTO val){
-            managerDTO = val;
-            return this;
-        }
-
-        public TeamDTO.Builder speler(SpelerDTO val){
-            spelerDTO = val;
-            return this;
-        }
-
-        public TeamDTO.Builder id(Long val){
+        public Builder id(Long val){
             id = val;
             return this;
         }
 
-        public TeamDTO.Builder actief(boolean val){
+        public Builder naam(String val){
+            naam = val;
+            return this;
+        }
+
+        public Builder manager(ManagerDTO val){
+            managerDTO = val;
+            return this;
+        }
+
+        public Builder speler(Set<SpelerTeam> val){
+            spelers = val;
+            return this;
+        }
+
+        public Builder actief(boolean val){
             actief = val;
             return this;
         }
 
-        public TeamDTO.Builder match(Match val){
+        public Builder match(Set<Match> val){
             match = val;
             return this;
         }
 
-        public TeamDTO.Builder reserveSpelerTeam(ReserveSpelerTeam val){
+        public Builder reserveSpelerTeam(Set<ReserveSpelerTeam> val){
             reserveSpelerTeam = val;
             return this;
         }
