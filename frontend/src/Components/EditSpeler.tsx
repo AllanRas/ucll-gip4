@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import React, {ChangeEvent, useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import moment from "moment";
@@ -27,13 +27,14 @@ interface Speler {
 
 const EditSpeler = () => {
     let params = useParams();
+    let navigate = useNavigate();
 
     const getSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/getOne";
 
     const postSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/update";
 
 
-    const [speler, setSpeler] = React.useState<Speler>(    {
+    const [speler, setSpeler] = useState<Speler>(    {
         id: 0,
         actief: false,
         adresDTO: {
@@ -55,16 +56,13 @@ const EditSpeler = () => {
     });
 
     // get spelers from api
-    React.useEffect(() => {
+    useEffect(() => {
         getSpelers();
     }, []);
 
     const getSpelers = async () => {
         await axios.get<Speler>(getSpelerURL, {
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials: true
         }).then((response) =>{
             console.log(response.data);
             setSpeler(response.data);
@@ -78,11 +76,9 @@ const EditSpeler = () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            auth: {
-                username: 'manager',
-                password: 'manager'
-            }
+            withCredentials: true
         }).then((response) => {
+            navigate("/Spelers/" + speler.id);
             console.log(response.data);
         }).catch(err => {
             console.log(err);
@@ -230,18 +226,14 @@ const EditSpeler = () => {
 
                     <Row className="justify-content-center">
                         <Col lg="3">
-                            <Link to={"/Spelers/" + speler.id}>
-                                <Button variant={"primary"}  onClick={() => PutSpeler()}>
-                                    Submit
-                                </Button>
-                            </Link>
+                            <Button variant={"primary"}  onClick={() => PutSpeler()}>
+                                Submit
+                            </Button>
                         </Col>
                         <Col>
-                            <Link to={"/Spelers/" + speler.id}>
-                                <Button>
-                                    Cancel
-                                </Button>
-                            </Link>
+                            <Button onClick={() => navigate("/Spelers/" + speler.id)}>
+                                Cancel
+                            </Button>
                         </Col>
                     </Row>
                 </Form>

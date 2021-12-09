@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import liquibase.pro.packaged.B;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Speler {
     @Column(name = "ACTIEF")
     private boolean actief;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     @Column(name = "GEBOORTEDATUM")
     private Date geboortedatum;
 
