@@ -1,12 +1,7 @@
 package com.example.demo.dto;
 
-import com.example.demo.domain.*;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 public class SpelerDTO implements Serializable {
     private long id;
@@ -63,6 +58,17 @@ public class SpelerDTO implements Serializable {
 
     public void setGeboortedatum(Date geboortedatum) {
         this.geboortedatum = geboortedatum;
+    }
+
+    @Override
+    public String toString() {
+        return "SpelerDTO{" +
+                "id=" + id +
+                ", userDTO=" + userDTO +
+                ", adresDTO=" + adresDTO +
+                ", actief=" + actief +
+                ", geboortedatum=" + geboortedatum +
+                '}';
     }
 
     public static final class Builder {

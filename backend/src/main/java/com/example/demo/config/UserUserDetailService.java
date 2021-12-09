@@ -49,9 +49,4 @@ public class UserUserDetailService implements UserDetailsService {
         System.out.println(user.toString());
         return user;
     }
-
-
-    public void Logout() {
-        
-    }
 }

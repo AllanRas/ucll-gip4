@@ -1,13 +1,19 @@
 package com.example.demo.web;
     
 import com.example.demo.Services.SpelerService;
+import com.example.demo.config.UserPrincipal;
+import com.example.demo.config.UserUserDetailService;
+import com.example.demo.domain.User;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -16,16 +22,17 @@ import java.util.List;
 public class SpelerResource {
 
     private final SpelerService spelerService;
+    private final UserUserDetailService userUserDetailService;
 
-    public SpelerResource(SpelerService spelerService){
+    public SpelerResource(SpelerService spelerService, UserUserDetailService userUserDetailService){
         this.spelerService = spelerService;
+        this.userUserDetailService = userUserDetailService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public SpelerDTO createSpeler(@RequestBody CreateSpelerDTO createSpelerDTO) {
-        System.out.println(createSpelerDTO.toString());
         return spelerService.createSpeler(createSpelerDTO);
     }
 
@@ -35,10 +42,27 @@ public class SpelerResource {
         return spelerService.getAllSpelers();
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/{id}/getOne")
-    public SpelerDTO getById(@PathVariable("id") long id){
-        return spelerService.getById(id);
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @GetMapping(value = "/{id}/getOne")
+    public ResponseEntity<SpelerDTO> getById(@PathVariable("id") long id){
+
+        SpelerDTO spelerDTO = spelerService.getById(id);
+
+        // Get the logged in user
+        UserPrincipal userPrincipal = (UserPrincipal) userUserDetailService.loadUserByUsername(spelerDTO.getUserDTO().getUsername());
+        boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+
+        // check if user is in SPELER role
+        if(isSpelerRole){
+            User ingelogdeUser = userPrincipal.getUser();
+
+            // check if logged in user id equals to get speler user id if not return forbidden
+            if(!(ingelogdeUser.getId() == spelerDTO.getUserDTO().getId())){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+        return new ResponseEntity<SpelerDTO>(spelerDTO, HttpStatus.ACCEPTED);
     }
 
     //Verwijderen
@@ -49,9 +73,29 @@ public class SpelerResource {
     }
 
     //Gegevens wijzigen van een speler
-    @PreAuthorize("hasRole('MANAGER')")
-    @PutMapping("/{id}/update")
-    public SpelerDTO updateSpeler(@PathVariable("id") long id, @RequestBody SpelerDTO spelerDTO){
-        return spelerService.updateSpeler(id, spelerDTO);
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @PutMapping(value = "/{id}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SpelerDTO> updateSpeler(@PathVariable("id") long id, @RequestBody SpelerDTO spelerDTO){
+
+        System.out.println("Start update proces speler");
+
+        // Get the logged in user
+        UserPrincipal userPrincipal = (UserPrincipal) userUserDetailService.loadUserByUsername(spelerDTO.getUserDTO().getUsername());
+        boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+
+        SpelerDTO getSpeler = spelerService.getById(id);
+
+        // check if user is in SPELER role
+        if(isSpelerRole){
+            User ingelogdeUser = userPrincipal.getUser();
+            // check if logged in user id equals to get speler user id if not return forbidden
+            if(!(ingelogdeUser.getId() == getSpeler.getUserDTO().getId())){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+        SpelerDTO updateSpeler = spelerService.updateSpeler(id, spelerDTO);
+
+        return new ResponseEntity<SpelerDTO>(updateSpeler, HttpStatus.OK);
     }
 }

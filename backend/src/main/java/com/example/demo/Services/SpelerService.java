@@ -64,7 +64,6 @@ public class SpelerService {
     }
 
     public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
-        System.out.println(spelerDTO.toString());
 
         Optional<Speler> speler = spelerRepository.findById(id);
 
