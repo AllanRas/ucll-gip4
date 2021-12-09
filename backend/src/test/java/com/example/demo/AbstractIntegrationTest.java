@@ -11,6 +11,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.transaction.Transactional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 @SpringBootTest
 @Transactional
@@ -43,7 +45,9 @@ public class AbstractIntegrationTest {
     // Object to Json
     public static String toJson(final Object obj){
         try {
-            return new ObjectMapper().writeValueAsString(obj);
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            ObjectMapper mapper = new ObjectMapper().setDateFormat(df);
+            return mapper.writeValueAsString(obj);
         }catch (Exception e){
             throw new RuntimeException(e);
         }

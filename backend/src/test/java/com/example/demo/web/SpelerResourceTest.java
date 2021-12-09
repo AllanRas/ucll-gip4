@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import javax.transaction.Transactional;
@@ -97,7 +98,7 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
         assertEquals(gemaakteSpeler.getAdresDTO().getStraat(), josPatat.getAdresDTO().getStraat());
     }
 
-    // Werkt nog niet
+    // Werkt nog niet, weet niet waarom
     @Test
     void updateSpeler() throws Exception {
         // Given
@@ -130,11 +131,16 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
         System.out.println(josUpdated);
         System.out.println(josPatatDTO.getId());
 
+        String mapper = toJson(josUpdated);
+
+        System.out.println(mapper);
+
+
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/spelers/{id}/update", josPatatDTO.getId())
                 .with(httpBasic("manager","manager"))
                 .contentType(toJson(josUpdated))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON)
         );
 
         MvcResult result =  perform
