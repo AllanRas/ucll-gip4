@@ -2,7 +2,6 @@ package com.example.demo.web;
     
 import com.example.demo.Services.SpelerService;
 import com.example.demo.config.UserPrincipal;
-import com.example.demo.config.UserUserDetailService;
 import com.example.demo.domain.User;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
@@ -23,11 +22,9 @@ import java.util.List;
 public class SpelerResource {
 
     private final SpelerService spelerService;
-    private final UserUserDetailService userUserDetailService;
 
-    public SpelerResource(SpelerService spelerService, UserUserDetailService userUserDetailService){
+    public SpelerResource(SpelerService spelerService){
         this.spelerService = spelerService;
-        this.userUserDetailService = userUserDetailService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)

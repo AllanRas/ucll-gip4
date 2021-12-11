@@ -4,7 +4,6 @@ package com.example.demo.web;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
-import com.example.demo.config.UserUserDetailService;
 import com.example.demo.dto.ManagerDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class TeamResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public TeamDTO createTeam(@RequestBody TeamDTO teamDTO){
 
-        System.out.println(teamDTO.toString());
+        // Get manager from authentication
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
 
