@@ -1,37 +1,23 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
-import javax.persistence.*;
+import com.example.demo.domain.SpelerMatch;
+import com.example.demo.domain.Team;
+
+import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name="Match", schema = "esportmanagerdb")
-public class Match {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MatchDTO implements Serializable {
     private long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="TEAM_BLUE_ID")
-    private Team teamBlue;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="TEAM_RED_ID")
-    private Team teamRed;
-
-    @Column(name = "TEAM_BLUE_SCORE")
+    private TeamDTO teamBlue;
+    private TeamDTO teamRed;
     private int scoreBlueTeam;
-
-    @Column(name = "TEAM_RED_SCORE")
     private int scoreRedTeam;
-
-    @Column(name = "DATUMTIJD")
     private Date datumtijd;
+    private Set<SpelerMatch> speler;
 
-    @OneToMany
-    private Set<SpelerMatch> spelers = new HashSet<>();
+    public MatchDTO() {
+    }
 
     public long getId() {
         return id;
@@ -41,19 +27,19 @@ public class Match {
         this.id = id;
     }
 
-    public Team getTeamBlue() {
+    public TeamDTO getTeamBlue() {
         return teamBlue;
     }
 
-    public void setTeamBlue(Team teamBlue) {
+    public void setTeamBlue(TeamDTO teamBlue) {
         this.teamBlue = teamBlue;
     }
 
-    public Team getTeamRed() {
+    public TeamDTO getTeamRed() {
         return teamRed;
     }
 
-    public void setTeamRed(Team teamRed) {
+    public void setTeamRed(TeamDTO teamRed) {
         this.teamRed = teamRed;
     }
 
@@ -81,11 +67,11 @@ public class Match {
         this.datumtijd = datumtijd;
     }
 
-    public Set<SpelerMatch> getSpelers() {
-        return spelers;
+    public Set<SpelerMatch> getSpeler() {
+        return speler;
     }
 
-    public void setSpelers(Set<SpelerMatch> spelers) {
-        this.spelers = spelers;
+    public void setSpeler(Set<SpelerMatch> speler) {
+        this.speler = speler;
     }
 }
