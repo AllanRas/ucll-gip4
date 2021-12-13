@@ -5,6 +5,7 @@ import com.example.demo.Converter.TeamConverter;
 import com.example.demo.dao.MatchRepository;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
+import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class MatchService {
     }
 
     //Create Match
-    public MatchDTO addMatch(MatchDTO matchDTO){
+    public MatchDTO addMatch(CreateMatchDTO matchDTO){
         Speler speler = new Speler();
         Match match = new Match();
 

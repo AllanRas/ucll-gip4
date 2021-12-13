@@ -2,7 +2,9 @@ package com.example.demo.web;
 
 import com.example.demo.Services.MatchService;
 import com.example.demo.domain.Match;
+import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
+import org.hibernate.transform.CacheableResultTransformer;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,7 @@ public class MatchResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping
-    public MatchDTO addMatch(@RequestBody MatchDTO matchDTO) {
+    public MatchDTO addMatch(@RequestBody CreateMatchDTO matchDTO) {
         return matchService.addMatch(matchDTO);
     }
 
