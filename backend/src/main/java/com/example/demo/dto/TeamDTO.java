@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 import com.example.demo.domain.Match;
 import com.example.demo.domain.ReserveSpelerTeam;
+import com.example.demo.domain.SpelerMatch;
 import com.example.demo.domain.SpelerTeam;
 
 import java.io.Serializable;
@@ -12,8 +13,7 @@ public class TeamDTO implements Serializable {
     private String naam;
     private ManagerDTO managerDTO;
     private Set<SpelerTeam> spelers;
-    private Set<Match> match;
-    private Set<ReserveSpelerTeam> reserveSpelerTeam;
+    private Set<SpelerMatch> match;
     private boolean actief;
 
     public TeamDTO(){}
@@ -25,7 +25,6 @@ public class TeamDTO implements Serializable {
         setActief(builder.actief);
         setMatch(builder.match);
         setSpelerDTO(builder.spelers);
-        setReserveSpelerTeam(builder.reserveSpelerTeam);
     }
 
     public long getId() {
@@ -68,20 +67,12 @@ public class TeamDTO implements Serializable {
         this.spelers = spelerDTO;
     }
 
-    public Set<Match> getMatch() {
+    public Set<SpelerMatch> getMatch() {
         return match;
     }
 
-    public void setMatch(Set<Match> match) {
+    public void setMatch(Set<SpelerMatch> match) {
         this.match = match;
-    }
-
-    public Set<ReserveSpelerTeam> getReserveSpelerTeam() {
-        return reserveSpelerTeam;
-    }
-
-    public void setReserveSpelerTeam(Set<ReserveSpelerTeam> reserveSpelerTeam) {
-        this.reserveSpelerTeam = reserveSpelerTeam;
     }
 
     public boolean isActief() {
@@ -100,7 +91,7 @@ public class TeamDTO implements Serializable {
                 ", managerDTO=" + managerDTO +
                 ", spelers=" + spelers +
                 ", match=" + match +
-                ", reserveSpelerTeam=" + reserveSpelerTeam +
+                ", reserveSpelerTeam=" +
                 ", actief=" + actief +
                 '}';
     }
@@ -110,8 +101,7 @@ public class TeamDTO implements Serializable {
         private String naam;
         private ManagerDTO managerDTO;
         private Set<SpelerTeam> spelers;
-        private Set<Match> match;
-        private Set<ReserveSpelerTeam> reserveSpelerTeam;
+        private Set<SpelerMatch> match;
         private boolean actief;
 
         public Builder(){}
@@ -123,7 +113,6 @@ public class TeamDTO implements Serializable {
             this.spelers = copy.getSpelerDTO();
             this.actief = copy.isActief();
             this.match = copy.getMatch();
-            this.reserveSpelerTeam = copy.getReserveSpelerTeam();
         }
 
         public Builder id(Long val){
@@ -151,13 +140,8 @@ public class TeamDTO implements Serializable {
             return this;
         }
 
-        public Builder match(Set<Match> val){
+        public Builder match(Set<SpelerMatch> val){
             match = val;
-            return this;
-        }
-
-        public Builder reserveSpelerTeam(Set<ReserveSpelerTeam> val){
-            reserveSpelerTeam = val;
             return this;
         }
 

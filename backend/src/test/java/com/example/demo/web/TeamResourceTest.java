@@ -124,12 +124,12 @@ public class TeamResourceTest extends AbstractIntegrationTest {
         SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);
         ManagerDTO managerDTO = managerService.createManager(jefManager);
 
-        TeamDTO team = new TeamDTO.Builder()
-                .naam("testnaam")
-                .manager(jefManager)
+        CreateTeamDTO team = new CreateTeamDTO.Builder()
+                .naam("testnaam2")
+                .managerDTO(jefManager)
                 .build();
 
-        TeamDTO createdTeam = teamService.createTeam(team,managerDTO.getId());
+        CreateTeamDTO createdTeam = teamService.createTeam(team,managerDTO.getId());
 
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/teams/{teamId}/AddSpeler/{spelerId}/{reserve}",createdTeam.getId(), josPatatCreated.getId(), false)

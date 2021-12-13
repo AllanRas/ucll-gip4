@@ -15,14 +15,11 @@ public class Team {
     @Column(name = "NAAM")
     private String naam;
 
-    @OneToMany
+    @OneToMany(mappedBy = "speler")
     private Set<SpelerTeam> spelers = new HashSet<>();
 
-    @OneToMany
-    private Set<ReserveSpelerTeam> reservespelers = new HashSet<>();
-
-    @OneToMany
-    private Set<Match> matches = new HashSet<>();
+    @OneToMany(mappedBy = "speler")
+    private Set<SpelerMatch> matches = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "MANAGER_ID")
@@ -39,7 +36,6 @@ public class Team {
         setId(builder.id);
         setNaam(builder.naam);
         setSpelers(builder.spelers);
-        setReservespelers(builder.reservespelers);
         setMatches(builder.matches);
         setManager(builder.manager);
         setActief(builder.actief);
@@ -69,19 +65,11 @@ public class Team {
         this.spelers = spelers;
     }
 
-    public Set<ReserveSpelerTeam> getReservespelers() {
-        return reservespelers;
-    }
-
-    public void setReservespelers(Set<ReserveSpelerTeam> reservespelers) {
-        this.reservespelers = reservespelers;
-    }
-
-    public Set<Match> getMatches() {
+    public Set<SpelerMatch> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<Match> matches) {
+    public void setMatches(Set<SpelerMatch> matches) {
         this.matches = matches;
     }
 
@@ -107,7 +95,6 @@ public class Team {
                 "id=" + id +
                 ", naam='" + naam + '\'' +
                 ", spelers=" + spelers +
-                ", reservespelers=" + reservespelers +
                 ", matches=" + matches +
                 ", manager=" + manager +
                 ", actief=" + actief +
@@ -118,8 +105,7 @@ public class Team {
         private long id;
         private String naam;
         private Set<SpelerTeam> spelers = new HashSet<>();
-        private Set<ReserveSpelerTeam> reservespelers = new HashSet<>();
-        private Set<Match> matches = new HashSet<>();
+        private Set<SpelerMatch> matches = new HashSet<>();
         private Manager manager;
         private boolean actief;
 
@@ -131,7 +117,6 @@ public class Team {
             this.id = copy.getId();
             this.naam = copy.getNaam();
             this.spelers = copy.getSpelers();
-            this.reservespelers = copy.getReservespelers();
             this.matches = copy.getMatches();
             this.manager = copy.getManager();
             this.actief = copy.isActief();
@@ -152,12 +137,7 @@ public class Team {
             return this;
         }
 
-        public Builder reservespelers(Set<ReserveSpelerTeam> val){
-            reservespelers = val;
-            return this;
-        }
-
-        public Builder matches(Set<Match> val){
+        public Builder matches(Set<SpelerMatch> val){
             matches = val;
             return this;
         }

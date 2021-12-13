@@ -5,9 +5,8 @@ import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
 import com.example.demo.domain.SpelerTeam;
-import com.example.demo.domain.Team;
+import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.ManagerDTO;
-import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -34,13 +34,13 @@ public class TeamResource {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TeamDTO createTeam(@RequestBody TeamDTO teamDTO){
+    public CreateTeamDTO createTeam(@RequestBody CreateTeamDTO createteamDTO){
 
         // Get manager from authentication
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
 
-        return teamService.createTeam(teamDTO, managerDTO.getId());
+        return teamService.createTeam(createteamDTO, managerDTO.getId());
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -62,7 +62,14 @@ public class TeamResource {
 
     @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
     @GetMapping
-    public List<Team> getAllTeams(){
+    public List<TeamDTO> getAllTeams(){
         return teamService.getAllTeams();
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @GetMapping(value = "/{id}/getOne")
+    public ResponseEntity<TeamDTO> getById(@PathVariable("id") long id){
+        return new ResponseEntity<TeamDTO>(teamService.getTeamById(id), HttpStatus.ACCEPTED);
     }
 }

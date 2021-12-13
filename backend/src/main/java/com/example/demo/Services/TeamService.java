@@ -6,6 +6,7 @@ import com.example.demo.dao.SpelerRepository;
 import com.example.demo.dao.SpelerTeamRepository;
 import com.example.demo.dao.TeamRepository;
 import com.example.demo.domain.*;
+import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.stereotype.Service;
 
@@ -31,20 +32,20 @@ public class TeamService {
         this.managerConverter = managerConverter;
     }
 
-    public TeamDTO createTeam(TeamDTO teamDTO, long managerId){
+    public CreateTeamDTO createTeam(CreateTeamDTO createTeamDTO, long managerId){
 
         Manager manager = managerRepository.findById(managerId).orElseThrow();
 
         System.out.println(manager.getUser().getVoornaam() + " " + manager.getUser().getAchternaam());
 
-        teamDTO.setManagerDTO(managerConverter.managerDTO(manager));
-        teamDTO.setActief(true);
+        createTeamDTO.setManagerDTO(managerConverter.managerDTO(manager));
+        createTeamDTO.setActief(true);
 
-        Team team = teamConverter.DTOtoTeam(teamDTO);
+        Team team = teamConverter.createDTOtoTeam(createTeamDTO);
 
         System.out.println(team.toString());
         teamRepository.save(team);
-        return teamConverter.teamToDTO(team);
+        return teamConverter.createTeamToDTO(team);
     }
 
     public SpelerTeam addSpelerToTeam(long spelerId, long teamId, boolean reserve, long managerId){
@@ -64,7 +65,11 @@ public class TeamService {
         return spelerTeamRepository.save(spelerTeam);
     }
 
-    public List<Team> getAllTeams(){
-        return teamRepository.findAll();
+    public List<TeamDTO> getAllTeams(){
+        return teamConverter.teamListToDTO(teamRepository.findAll());
+    }
+
+    public TeamDTO getTeamById(long id){
+        return teamConverter.teamToDTO(teamRepository.getById(id));
     }
 }
