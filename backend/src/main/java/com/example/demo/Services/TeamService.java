@@ -1,4 +1,5 @@
 package com.example.demo.Services;
+
 import com.example.demo.Converter.ManagerConverter;
 import com.example.demo.Converter.TeamConverter;
 import com.example.demo.dao.ManagerRepository;
@@ -7,6 +8,8 @@ import com.example.demo.domain.Manager;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class TeamService {
@@ -40,6 +43,20 @@ public class TeamService {
         return teamConverter.teamToDTO(team);
     }
 
+    public TeamDTO updateTeamNaam(long id, TeamDTO teamDTO){
 
+        Optional<Team> team = teamRepository.findById(id);
 
+        if(team.isPresent()){
+            Team updateTeamNaam = teamConverter.DTOtoTeam(teamDTO);
+            Team newTeam = team.get();
+
+            // Team.Naam update
+            newTeam.setNaam(updateTeamNaam.getNaam());
+
+            //Team update
+            teamRepository.save(newTeam);
+        }
+        return teamConverter.teamToDTO(team.orElseThrow());
+    }
 }
