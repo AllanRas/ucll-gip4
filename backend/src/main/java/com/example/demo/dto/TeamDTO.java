@@ -18,7 +18,7 @@ public class TeamDTO implements Serializable {
 
     public TeamDTO(){}
 
-    private TeamDTO(TeamDTO.Builder builder){
+    private TeamDTO(Builder builder){
         setId(builder.id);
         setNaam(builder.naam);
         setManagerDTO(builder.managerDTO);

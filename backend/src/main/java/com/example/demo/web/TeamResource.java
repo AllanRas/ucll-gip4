@@ -4,13 +4,19 @@ package com.example.demo.web;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
+import com.example.demo.domain.SpelerTeam;
+import com.example.demo.domain.Team;
 import com.example.demo.dto.ManagerDTO;
+import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
@@ -35,5 +41,28 @@ public class TeamResource {
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
 
         return teamService.createTeam(teamDTO, managerDTO.getId());
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @PostMapping("/{teamId}/AddSpeler/{spelerId}/{reserve}")
+    public ResponseEntity<SpelerTeam> addSpelerToTeam(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId, @PathVariable("reserve") boolean reserve ){
+
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
+
+        SpelerTeam spelerTeam = teamService.addSpelerToTeam(spelerId,teamId,reserve,managerDTO.getId());
+
+        if(spelerTeam == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        System.out.println(spelerTeam.toString());
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(spelerTeam);
+    }
+
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @GetMapping
+    public List<Team> getAllTeams(){
+        return teamService.getAllTeams();
     }
 }
