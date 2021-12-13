@@ -1,7 +1,6 @@
 package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import liquibase.pro.packaged.B;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -38,7 +37,7 @@ public class Speler {
     private Set<ReserveSpelerTeam> reservespelerteams = new HashSet<>();
 
     @OneToMany
-    private Set<SpelerMatch> matches = new HashSet<>();
+    private Set<Speler> matches = new HashSet<>();
 
     public Speler(){}
 
@@ -109,11 +108,11 @@ public class Speler {
         this.reservespelerteams = reservespelerteams;
     }
 
-    public Set<SpelerMatch> getMatches() {
+    public Set<Speler> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<SpelerMatch> matches) {
+    public void setMatches(Set<Speler> matches) {
         this.matches = matches;
     }
 
@@ -124,7 +123,7 @@ public class Speler {
         private boolean actief;
         private Date geboortedatum;
         private Set<SpelerTeam> teams = new HashSet<>();
-        private Set<SpelerMatch> match = new HashSet<>();
+        private Set<Speler> match = new HashSet<>();
         private Set <ReserveSpelerTeam> reservespelerteams;
 
         public Builder(){}
@@ -170,7 +169,7 @@ public class Speler {
             return this;
         }
 
-        public Builder matches(Set<SpelerMatch> val){
+        public Builder matches(Set<Speler> val){
             match = val;
             return this;
         }

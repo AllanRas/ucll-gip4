@@ -1,7 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.domain.SpelerMatch;
-import com.example.demo.domain.Team;
+import com.example.demo.domain.Speler;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +13,7 @@ public class MatchDTO implements Serializable {
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
-    private Set<SpelerMatch> speler;
+    private Set<Speler> speler;
 
     public MatchDTO() {
     }
@@ -67,11 +66,11 @@ public class MatchDTO implements Serializable {
         this.datumtijd = datumtijd;
     }
 
-    public Set<SpelerMatch> getSpeler() {
+    public Set<Speler> getSpeler() {
         return speler;
     }
 
-    public void setSpeler(Set<SpelerMatch> speler) {
+    public void setSpeler(Set<Speler> speler) {
         this.speler = speler;
     }
 }

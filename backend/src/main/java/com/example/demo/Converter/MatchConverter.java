@@ -2,8 +2,8 @@ package com.example.demo.Converter;
 
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
+import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
-import com.example.demo.dto.SpelerDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,7 +42,18 @@ public class MatchConverter {
         return match;
     }
 
-    public List<MatchDTO> matchListToDTO(List<Match> matches){
-        return matches.stream().map(this::matchToMatchDTO).collect(Collectors.toList());
+    // match to matchDTO
+    public CreateMatchDTO matchToCreateMatchDTO(Match match){
+
+        CreateMatchDTO matchDTO = new CreateMatchDTO();
+        matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
+        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));
+        matchDTO.setDatumtijd(match.getDatumtijd());
+        matchDTO.setSpelers(match.getSpelers());
+        return matchDTO;
+    }
+
+    public List<CreateMatchDTO> matchListToDTO(List<Match> matches){
+        return matches.stream().map(this::matchToCreateMatchDTO).collect(Collectors.toList());
     }
 }

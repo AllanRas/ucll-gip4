@@ -3,7 +3,6 @@ package com.example.demo.Converter;
 import com.example.demo.domain.Manager;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.ManagerDTO;
-import com.example.demo.dto.SpelerDTO;
 import org.springframework.stereotype.Component;
 
 @Component

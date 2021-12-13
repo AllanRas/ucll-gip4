@@ -26,19 +26,21 @@ public class MatchService {
     }
 
     //Create Match
-    public MatchDTO addMatch(CreateMatchDTO matchDTO){
+    public CreateMatchDTO addMatch(CreateMatchDTO matchDTO){
         Speler speler = new Speler();
         Match match = new Match();
 
         match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
         match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
+        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
+        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         match.setSpelers(speler.getMatches());
         matchRepository.save(match);
-        return matchConverter.matchToMatchDTO(match);
+        return matchConverter.matchToCreateMatchDTO(match);
     }
 
     //get all matches
-    public List<MatchDTO> getAllMatches(){
+    public List<CreateMatchDTO> getAllMatches(){
         return matchConverter.matchListToDTO(matchRepository.findAll());
     }
 }

@@ -31,7 +31,7 @@ public class Match {
     private Date datumtijd;
 
     @OneToMany
-    private Set<SpelerMatch> spelers = new HashSet<>();
+    private Set<Speler> spelers = new HashSet<>();
 
     public long getId() {
         return id;
@@ -81,11 +81,11 @@ public class Match {
         this.datumtijd = datumtijd;
     }
 
-    public Set<SpelerMatch> getSpelers() {
+    public Set<Speler> getSpelers() {
         return spelers;
     }
 
-    public void setSpelers(Set<SpelerMatch> spelers) {
+    public void setSpelers(Set<Speler> spelers) {
         this.spelers = spelers;
     }
 }

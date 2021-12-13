@@ -8,10 +8,28 @@ import java.util.Set;
 public class CreateMatchDTO {
     private TeamDTO teamBlue;
     private TeamDTO teamRed;
+    private int scoreBlueTeam;
+    private int scoreRedTeam;
     private Date datumtijd;
     private Set<Speler> spelers;
 
     public CreateMatchDTO() {
+    }
+
+    public int getScoreBlueTeam() {
+        return scoreBlueTeam;
+    }
+
+    public void setScoreBlueTeam(int scoreBlueTeam) {
+        this.scoreBlueTeam = scoreBlueTeam;
+    }
+
+    public int getScoreRedTeam() {
+        return scoreRedTeam;
+    }
+
+    public void setScoreRedTeam(int scoreRedTeam) {
+        this.scoreRedTeam = scoreRedTeam;
     }
 
     public TeamDTO getTeamBlue() {
