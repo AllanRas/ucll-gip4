@@ -95,6 +95,10 @@ const AddSpelerToTeam = () => {
         });
     };
 
+    const DeleteSpeler = (spelerid : number, teamid : number) => {
+
+    }
+
 
     return (
         <>
@@ -111,18 +115,20 @@ const AddSpelerToTeam = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
+                        <th></th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {
                         spelers.map(speler => (
-                                team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) ?
+                                team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && !spelerDTO.reserve) ?
                                     <tr key={speler.id}>
                                         <td>{speler.id}</td>
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>
                                         <td>{speler.userDTO.achternaam}</td>
+                                        <td><Button > Verwijderen </Button></td>
                                     </tr>
                             : ""
                             )
@@ -131,6 +137,41 @@ const AddSpelerToTeam = () => {
 
                     </tbody>
                 </Table>
+
+                <h2>Reserve spelers:</h2>
+
+                <Table striped bordered hover variant={'dark'}>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>username</th>
+                        <th>voornaam</th>
+                        <th>achternaam</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {
+                        spelers.map(speler => (
+                                team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && spelerDTO.reserve) ?
+                                    <tr key={speler.id}>
+                                        <td>{speler.id}</td>
+                                        <td>{speler.userDTO.username}</td>
+                                        <td>{speler.userDTO.voornaam}</td>
+                                        <td>{speler.userDTO.achternaam}</td>
+                                        <td><Button onClick={() => PostAddSpeler(speler.id, false)}> Speler Promoveren </Button></td>
+                                        <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
+                                    </tr>
+                                    : ""
+                            )
+                        )
+                    }
+
+                    </tbody>
+                </Table>
+
 
                 <h2>Spelers Toevoegen</h2>
 
@@ -141,6 +182,7 @@ const AddSpelerToTeam = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
+                        <th> </th>
                         <th> </th>
                     </tr>
                     </thead>
@@ -155,6 +197,7 @@ const AddSpelerToTeam = () => {
                                     <td>{speler.userDTO.voornaam}</td>
                                     <td>{speler.userDTO.achternaam}</td>
                                     <td><Button onClick={() => PostAddSpeler(speler.id, false)}> Speler toevoegen </Button></td>
+                                    <td><Button onClick={() => PostAddSpeler(speler.id, true)}> Reserve Speler Toevoegen</Button></td>
                                 </tr>
                             )
                         )
