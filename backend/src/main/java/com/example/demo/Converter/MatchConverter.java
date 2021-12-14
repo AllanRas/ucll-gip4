@@ -4,6 +4,7 @@ import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
+import com.example.demo.dto.match.MatchStatsDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,14 +47,31 @@ public class MatchConverter {
     public CreateMatchDTO matchToCreateMatchDTO(Match match){
 
         CreateMatchDTO matchDTO = new CreateMatchDTO();
-        matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
-        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));
+   /*     matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
+        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));*/
         matchDTO.setDatumtijd(match.getDatumtijd());
-        matchDTO.setSpelers(match.getSpelers());
+        //matchDTO.setSpelers(match.getSpelers());
         return matchDTO;
     }
 
     public List<CreateMatchDTO> matchListToDTO(List<Match> matches){
         return matches.stream().map(this::matchToCreateMatchDTO).collect(Collectors.toList());
+    }
+
+    // match to matchstatsDTO
+    public MatchStatsDTO matchToMatchStatsDTO(Match match){
+        MatchStatsDTO matchStatsDTO = new MatchStatsDTO();
+
+        matchStatsDTO.setScoreBlueTeam(match.getScoreBlueTeam());
+        matchStatsDTO.setScoreRedTeam(match.getScoreRedTeam());
+        return matchStatsDTO;
+    }
+
+    public List<MatchStatsDTO> matchStatsDTOList(List<Match> matches){
+        return matches.stream().map(this::matchToMatchStatsDTO).collect(Collectors.toList());
+    }
+
+    public List<MatchDTO> matchToMatchDTOList(List<Match> matches){
+        return matches.stream().map(this::matchToMatchDTO).collect(Collectors.toList());
     }
 }
