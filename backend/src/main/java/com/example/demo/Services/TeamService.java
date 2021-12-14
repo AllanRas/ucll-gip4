@@ -43,26 +43,33 @@ public class TeamService {
 
         Team team = teamConverter.createDTOtoTeam(createTeamDTO);
 
-        System.out.println(team.toString());
         teamRepository.save(team);
         return teamConverter.createTeamToDTO(team);
     }
 
-    public SpelerTeam addSpelerToTeam(long spelerId, long teamId, boolean reserve, long managerId){
+    public Team addSpelerToTeam(long spelerId, long teamId, boolean reserve, long managerId){
         Team team = teamRepository.findById(teamId).orElseThrow();
         Speler speler = spelerRepository.findById(spelerId).orElseThrow();
 
 
         boolean exists =  spelerTeamRepository.findBySpelerAndTeam(speler,team).isPresent();
+
         if(team.getManager().getId() != managerId || exists){
             return null;
         }
+
         SpelerTeam spelerTeam = new SpelerTeam();
         spelerTeam.setTeam(team);
         spelerTeam.setSpeler(speler);
         spelerTeam.setReserve(reserve);
 
-        return spelerTeamRepository.save(spelerTeam);
+        speler.getTeams().add(spelerTeam);
+        team.getSpelers().add(spelerTeam);
+
+        spelerTeamRepository.save(spelerTeam);
+
+        Team team1 = teamRepository.getById(teamId);
+        return team1;
     }
 
     public List<TeamDTO> getAllTeams(){

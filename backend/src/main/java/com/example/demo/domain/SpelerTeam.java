@@ -1,5 +1,8 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,10 +15,12 @@ public class SpelerTeam {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SPELER_ID")
+    @JsonBackReference(value = "SpelerTeam")
     private Speler speler;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
+    @JsonBackReference(value = "TeamSpeler")
     private Team team;
 
     @Column(name = "Reserve")

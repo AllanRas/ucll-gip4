@@ -32,8 +32,10 @@ function App() {
 
                             <Route path="/Teams" element={<Teams/>}/>
                             <Route path="/AddTeam" element={<AddTeam/>}/>
+
                             <Route path="/Teams/:id" element={<Team/>}/>
                             <Route path="/Teams/:id/AddSpeler" element={<AddSpelerToTeam/>}/>
+
                             <Route path="/Login" element={<Login/>}/>
                         </>
                     </Routes>

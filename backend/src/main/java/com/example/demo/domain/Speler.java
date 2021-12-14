@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import liquibase.pro.packaged.B;
 
 import javax.persistence.*;
@@ -31,13 +33,12 @@ public class Speler {
     @Column(name = "GEBOORTEDATUM")
     private Date geboortedatum;
 
-    @OneToMany
+    @OneToMany(mappedBy = "speler")
+    @JsonManagedReference(value = "SpelerTeam")
     private Set<SpelerTeam> teams = new HashSet<>();
 
-    @OneToMany
-    private Set<ReserveSpelerTeam> reservespelerteams = new HashSet<>();
-
-    @OneToMany
+    @OneToMany(mappedBy = "speler")
+    @JsonManagedReference(value = "SpelerMatches")
     private Set<SpelerMatch> matches = new HashSet<>();
 
     public Speler(){}
@@ -50,7 +51,6 @@ public class Speler {
         setGeboortedatum(builder.geboortedatum);
         setTeams(builder.teams);
         setMatches(builder.match);
-        setReservespelerteams(builder.reservespelerteams);
     }
 
     public long getId() {
@@ -101,14 +101,6 @@ public class Speler {
         this.teams = teams;
     }
 
-    public Set<ReserveSpelerTeam> getReservespelerteams() {
-        return reservespelerteams;
-    }
-
-    public void setReservespelerteams(Set<ReserveSpelerTeam> reservespelerteams) {
-        this.reservespelerteams = reservespelerteams;
-    }
-
     public Set<SpelerMatch> getMatches() {
         return matches;
     }
@@ -116,6 +108,7 @@ public class Speler {
     public void setMatches(Set<SpelerMatch> matches) {
         this.matches = matches;
     }
+
 
     public static final class Builder {
         private long id;
@@ -125,7 +118,6 @@ public class Speler {
         private Date geboortedatum;
         private Set<SpelerTeam> teams = new HashSet<>();
         private Set<SpelerMatch> match = new HashSet<>();
-        private Set <ReserveSpelerTeam> reservespelerteams;
 
         public Builder(){}
 
@@ -137,7 +129,6 @@ public class Speler {
             this.geboortedatum = copy.getGeboortedatum();
             this.teams = copy.getTeams();
             this.match = copy.getMatches();
-            this.reservespelerteams = copy.getReservespelerteams();
         }
 
         public Builder user(User val){
@@ -172,11 +163,6 @@ public class Speler {
 
         public Builder matches(Set<SpelerMatch> val){
             match = val;
-            return this;
-        }
-
-        public Builder reservespelerteams(Set<ReserveSpelerTeam> val){
-            reservespelerteams = val;
             return this;
         }
 

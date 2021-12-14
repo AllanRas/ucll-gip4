@@ -2,6 +2,7 @@ package com.example.demo.web;
 
 
 import com.example.demo.AbstractIntegrationTest;
+import com.example.demo.Converter.SpelerConverter;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.SpelerService;
 import com.example.demo.Services.TeamService;
@@ -139,12 +140,8 @@ public class TeamResourceTest extends AbstractIntegrationTest {
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id").exists()).andReturn();
 
-        SpelerTeam spelerTeam = fromMvcResult(result,SpelerTeam.class);
+        Team teamResponse = fromMvcResult(result,Team.class);
 
-        //Then
-        assertEquals(spelerTeam.getSpeler().getId(),josPatatCreated.getId());
-        assertEquals(spelerTeam.getTeam().getId(), createdTeam.getId());
-        assertFalse(spelerTeam.isReserve());
     }
 
     @Test

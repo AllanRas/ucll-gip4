@@ -5,6 +5,7 @@ import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
 import com.example.demo.domain.SpelerTeam;
+import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.ManagerDTO;
 import com.example.demo.dto.TeamDTO;
@@ -45,19 +46,14 @@ public class TeamResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping("/{teamId}/AddSpeler/{spelerId}/{reserve}")
-    public ResponseEntity<SpelerTeam> addSpelerToTeam(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId, @PathVariable("reserve") boolean reserve ){
+    public ResponseEntity<Team> addSpelerToTeam(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId, @PathVariable("reserve") boolean reserve ){
 
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
 
-        SpelerTeam spelerTeam = teamService.addSpelerToTeam(spelerId,teamId,reserve,managerDTO.getId());
+        Team team = teamService.addSpelerToTeam(spelerId,teamId,reserve,managerDTO.getId());
 
-        if(spelerTeam == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        System.out.println(spelerTeam.toString());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(spelerTeam);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(team);
     }
 
     @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
