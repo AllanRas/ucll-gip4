@@ -1,5 +1,8 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,6 +33,7 @@ public class Match {
     @Column(name = "DATUMTIJD")
     private Date datumtijd;
 
-    @OneToMany
+    @OneToMany(mappedBy = "match")
+    @JsonManagedReference(value = "MatchSpelers")
     private Set<SpelerMatch> spelers = new HashSet<>();
 }
