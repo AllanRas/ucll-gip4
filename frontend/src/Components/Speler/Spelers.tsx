@@ -2,7 +2,7 @@ import {Table} from "react-bootstrap";
 import axios from 'axios';
 import React from "react";
 import {Link} from "react-router-dom";
-import user from "./Login";
+import user from "../Login";
 
 
 const getSpelersURL = "http://localhost:8080/api/spelers";
