@@ -37,8 +37,6 @@ public class Match {
     @OneToMany(mappedBy = "match")
     @JsonManagedReference(value = "MatchSpelers")
     private Set<SpelerMatch> spelers = new HashSet<>();
-    @OneToMany
-    private Set<Speler> spelers = new HashSet<>();
 
     public long getId() {
         return id;
@@ -86,13 +84,5 @@ public class Match {
 
     public void setDatumtijd(Date datumtijd) {
         this.datumtijd = datumtijd;
-    }
-
-    public Set<Speler> getSpelers() {
-        return spelers;
-    }
-
-    public void setSpelers(Set<Speler> spelers) {
-        this.spelers = spelers;
     }
 }

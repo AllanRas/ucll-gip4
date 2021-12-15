@@ -9,7 +9,7 @@ import com.example.demo.dto.ManagerDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.TeamDTO;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

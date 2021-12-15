@@ -26,6 +26,17 @@ public class SpelerTeam {
     @Column(name = "Reserve")
     private boolean reserve;
 
+    public SpelerTeam(){
+
+    }
+
+    public SpelerTeam(Builder builder){
+        setId(builder.id);
+        setSpeler(builder.speler);
+        setTeam(builder.team);
+        setReserve(builder.reserve);
+    }
+
     public long getId() {
         return id;
     }
@@ -66,5 +77,45 @@ public class SpelerTeam {
                 ", team=" + team +
                 ", reserve=" + reserve +
                 '}';
+    }
+
+    public static final class Builder {
+        private long id;
+        private Speler speler;
+        private Team team;
+        private boolean reserve;
+
+        public Builder(){
+
+        }
+
+        public Builder(SpelerTeam copy){
+            this.id = copy.getId();
+            this.speler = copy.getSpeler();
+            this.team = copy.getTeam();
+            this.reserve = copy.isReserve();
+        }
+
+        public Builder id(long val){
+            id = val;
+            return this;
+        }
+
+        public Builder speler(Speler val){
+            speler = val;
+            return this;
+        }
+
+        public Builder team(Team val){
+            team = val;
+            return this;
+        }
+
+        public Builder reserve(boolean val){
+            reserve = val;
+            return this;
+        }
+
+        public SpelerTeam build(){return new SpelerTeam(this);}
     }
 }
