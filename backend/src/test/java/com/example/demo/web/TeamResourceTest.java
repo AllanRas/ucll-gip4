@@ -52,7 +52,7 @@ public class TeamResourceTest extends AbstractIntegrationTest {
     private MockMvc mockMvc;
 
     private ManagerDTO jefManager;
-
+    private CreateSpelerDTO josPatat;
 
 
     @BeforeEach
@@ -69,6 +69,24 @@ public class TeamResourceTest extends AbstractIntegrationTest {
                         .achternaam("De Manager")
                         .username("JefkeM")
                         .email("JefkeM@gmail.com").build())
+                .build();
+
+        josPatat = new CreateSpelerDTO.Builder()
+                .actief(true)
+                .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
+                .password("password")
+                .user(new UserDTO.Builder()
+                        .voornaam("Jos")
+                        .achternaam("Patat")
+                        .username("JPatat")
+                        .role("SPELER")
+                        .email("Jpatat@gmail.com").build())
+                .adres(new AdresDTO.Builder()
+                        .gemeente("Leuven")
+                        .straat("straat in leuven")
+                        .huisnummer("42")
+                        .postcode("3000")
+                        .build())
                 .build();
     }
 
@@ -103,25 +121,6 @@ public class TeamResourceTest extends AbstractIntegrationTest {
     @Test
     void addSpelerToTeam() throws Exception{
         // Given
-        CreateSpelerDTO josPatat = new CreateSpelerDTO.Builder()
-                .actief(true)
-                .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
-                .password("password")
-                .user(new UserDTO.Builder()
-                        .voornaam("Jos")
-                        .achternaam("Patat")
-                        .username("JPatat")
-                        .role("SPELER")
-                        .email("Jpatat@gmail.com").build())
-                .adres(new AdresDTO.Builder()
-                        .gemeente("Leuven")
-                        .straat("straat in leuven")
-                        .huisnummer("42")
-                        .postcode("3000")
-                        .build())
-                .build();
-
-
         SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);
         ManagerDTO managerDTO = managerService.createManager(jefManager);
 
@@ -163,6 +162,86 @@ public class TeamResourceTest extends AbstractIntegrationTest {
                         .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getTeamById() throws Exception {
+
+        // Given
+        ManagerDTO managerDTO = managerService.createManager(jefManager);
+
+        CreateTeamDTO team = new CreateTeamDTO.Builder()
+                .naam("testnaam2")
+                .managerDTO(jefManager)
+                .build();
+
+        CreateTeamDTO createdTeam = teamService.createTeam(team,managerDTO.getId());
+
+        //When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.get("/teams/{Id}/getOne",createdTeam.getId())
+                .with(httpBasic(jefManager.getUserDTO().getUsername(),jefManager.getPasswoord())));
+
+        //then
+        MvcResult result = perform
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        TeamDTO teamResponse = fromMvcResult(result,TeamDTO.class);
+
+        assertEquals(teamResponse.getNaam(), createdTeam.getNaam());
+        assertEquals(teamResponse.getId(), createdTeam.getId());
+    }
+
+    @Test
+    void deleteSpelerFromTeam() throws Exception{
+        // Given
+        SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);
+        ManagerDTO managerDTO = managerService.createManager(jefManager);
+
+        CreateTeamDTO team = new CreateTeamDTO.Builder()
+                .naam("testnaam2")
+                .managerDTO(jefManager)
+                .build();
+
+        CreateTeamDTO createdTeam = teamService.createTeam(team,managerDTO.getId());
+        teamService.addSpelerToTeam(josPatatCreated.getId(), createdTeam.getId(),false, managerDTO.getId());
+
+        //When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.delete("/teams/{teamId}/Delete/{spelerId}",createdTeam.getId(), josPatatCreated.getId())
+                .with(httpBasic(jefManager.getUserDTO().getUsername(),jefManager.getPasswoord())));
+
+        //Then
+        perform.andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void reservePromoveren() throws Exception {
+        //Given
+        SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);
+        ManagerDTO managerDTO = managerService.createManager(jefManager);
+
+        CreateTeamDTO team = new CreateTeamDTO.Builder()
+                .naam("testnaam2")
+                .managerDTO(jefManager)
+                .build();
+
+
+        CreateTeamDTO createdTeam = teamService.createTeam(team,managerDTO.getId());
+        teamService.addSpelerToTeam(josPatatCreated.getId(), createdTeam.getId(),true, managerDTO.getId());
+
+        //When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/teams/{teamId}/ReservePromoveren/{spelerId}",createdTeam.getId(), josPatatCreated.getId())
+                .with(httpBasic(jefManager.getUserDTO().getUsername(),jefManager.getPasswoord())));
+
+        //Then
+        MvcResult result = perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        SpelerTeam response = fromMvcResult(result,SpelerTeam.class);
+
+        assertFalse(response.isReserve());
     }
 
 }
