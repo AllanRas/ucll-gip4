@@ -27,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -64,7 +65,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     private SpelerDTO bert;
 
     @BeforeEach
-    void setUp(){
+    void setUp() throws ParseException {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
                 .apply(springSecurity())
@@ -149,7 +150,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .speler(bert.getId())
                 .build();
 
-        List<SpelerMatchDTO> spelers = new ArrayList<>();
+        Set<SpelerMatchDTO> spelers = new HashSet<>();
 
         spelers.add(spelerMatchDTO1);
         spelers.add(spelerMatchDTO2);
@@ -158,26 +159,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
                 .teamBlue(team1)
                 .teamRed(team2)
-                .spelers(new HashSet<>(spelers))
-                .build();
-
-
-        team1 = new TeamDTO.Builder()
-                .naam("TestBlue")
-                .actief(true)
-                .build();
-
-        team2 = new TeamDTO.Builder()
-                .naam("TestRed")
-                .actief(true)
-                .build();
-        //Given
-        match1 = new CreateMatchDTO.Builder()
-                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
-                .scoreBlueTeam(1)
-                .scoreRedTeam(2)
+                .spelers(spelers)
                 .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
