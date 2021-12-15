@@ -48,7 +48,6 @@ public class Speler {
         setActief(builder.actief);
         setGeboortedatum(builder.geboortedatum);
         setTeams(builder.teams);
-        setMatches(builder.match);
     }
 
     public long getId() {

@@ -64,7 +64,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     private SpelerDTO bert;
 
     @BeforeEach
-    void setUp() throws Exception{
+    void setUp(){
 
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
                 .apply(springSecurity())
@@ -136,6 +136,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
     @Test
     public void addMatch() throws Exception{
+
         //Given
         team1 = teamService.getTeamById(createTeam1.getId());
         team2 = teamService.getTeamById(createTeam2.getId());
@@ -160,6 +161,24 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .spelers(new HashSet<>(spelers))
                 .build();
 
+
+        team1 = new TeamDTO.Builder()
+                .naam("TestBlue")
+                .actief(true)
+                .build();
+
+        team2 = new TeamDTO.Builder()
+                .naam("TestRed")
+                .actief(true)
+                .build();
+        //Given
+        match1 = new CreateMatchDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1)
+                .teamRed(team2)
+                .scoreBlueTeam(1)
+                .scoreRedTeam(2)
+                .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
                         .with(httpBasic("manager","manager"))

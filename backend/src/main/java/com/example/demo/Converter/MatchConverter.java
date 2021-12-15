@@ -47,8 +47,8 @@ public class MatchConverter {
 
         Match match = new Match();
         match.setId(matchDTO.getId());
-        match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
-        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
+        /*match.setTeamBlue(teamConverter.createDTOtoTeam(matchDTO.getTeamBlue()));
+        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));*/
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         match.setDatumtijd(matchDTO.getDatumtijd());
