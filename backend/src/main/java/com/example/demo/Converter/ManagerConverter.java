@@ -5,6 +5,9 @@ import com.example.demo.domain.Speler;
 import com.example.demo.dto.ManagerDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ManagerConverter {
 
@@ -25,5 +28,9 @@ public class ManagerConverter {
         manager.setUser(userConverter.userDTOtoUser(managerDTO.getUserDTO()));
         manager.getUser().setPassword(managerDTO.getPasswoord());
         return manager;
+    }
+
+    public List<ManagerDTO> listToDto(List<Manager> managers){
+        return managers.stream().map(this::managerDTO).collect(Collectors.toList());
     }
 }

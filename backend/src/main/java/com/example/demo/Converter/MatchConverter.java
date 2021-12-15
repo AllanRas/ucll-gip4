@@ -25,7 +25,6 @@ public class MatchConverter {
         matchDTO.setScoreBlueTeam(match.getScoreBlueTeam());
         matchDTO.setScoreRedTeam(match.getScoreRedTeam());
         matchDTO.setDatumtijd(match.getDatumtijd());
-        matchDTO.setSpeler(match.getSpelers());
         return matchDTO;
     }
 
@@ -39,7 +38,6 @@ public class MatchConverter {
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         match.setDatumtijd(matchDTO.getDatumtijd());
-        match.setSpelers(matchDTO.getSpeler());
         return match;
     }
 
@@ -47,10 +45,9 @@ public class MatchConverter {
     public CreateMatchDTO matchToCreateMatchDTO(Match match){
 
         CreateMatchDTO matchDTO = new CreateMatchDTO();
-   /*     matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
-        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));*/
+        matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
+        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));
         matchDTO.setDatumtijd(match.getDatumtijd());
-        //matchDTO.setSpelers(match.getSpelers());
         return matchDTO;
     }
 

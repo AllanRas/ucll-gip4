@@ -14,8 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -25,7 +29,10 @@ import java.text.SimpleDateFormat;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -57,24 +64,43 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         match1 = new CreateMatchDTO.Builder()
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
                 .teamBlue(new TeamDTO.Builder()
-                        .id(1L)
                         .naam("TestBlue")
                         .build())
                 .teamRed(new TeamDTO.Builder()
-                        .id(2L)
                         .naam("TestRed")
                         .build())
                 .scoreBlueTeam(1)
-                .scoreRedTeam(0)
+                .scoreRedTeam(2)
                 .build();
 
+        team1 = new TeamDTO.Builder()
+                .naam("TestBlue")
+                .actief(true)
+                .build();
+
+        team2 = new TeamDTO.Builder()
+                .naam("TestRed")
+                .actief(true)
+                .build();
     }
 
     @Test
-    void addMatch() throws Exception{
+    public void addMatch() throws Exception{
         //Given
 
         //When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
+                        .with(httpBasic("manager","manager"))
+                        .content(toJson(match1))
+                        .contentType(MediaType.APPLICATION_JSON));
+        MvcResult result = perform
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        CreateMatchDTO gemaakteMatch = fromMvcResult(result,CreateMatchDTO.class);
         //Then
+        assertEquals(gemaakteMatch.getDatumtijd(), match1.getDatumtijd());
+        assertEquals(gemaakteMatch.getScoreBlueTeam(), match1.getScoreBlueTeam());
+        assertEquals(gemaakteMatch.getScoreRedTeam(), match1.getScoreRedTeam());
     }
 }

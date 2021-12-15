@@ -13,7 +13,6 @@ public class MatchDTO implements Serializable {
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
-    private Set<Speler> speler;
 
     public MatchDTO() {
     }
@@ -64,13 +63,5 @@ public class MatchDTO implements Serializable {
 
     public void setDatumtijd(Date datumtijd) {
         this.datumtijd = datumtijd;
-    }
-
-    public Set<Speler> getSpeler() {
-        return speler;
-    }
-
-    public void setSpeler(Set<Speler> speler) {
-        this.speler = speler;
     }
 }

@@ -31,14 +31,12 @@ public class MatchService {
 
     //Create Match
     public CreateMatchDTO addMatch(CreateMatchDTO matchDTO){
-        //Speler speler = new Speler();
         Match match = new Match();
 
-       /* match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
-        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));*/
+        match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
+        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
-        //match.setSpelers(speler.getMatches());
         matchRepository.save(match);
         return matchConverter.matchToCreateMatchDTO(match);
     }

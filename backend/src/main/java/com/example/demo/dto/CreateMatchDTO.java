@@ -7,23 +7,21 @@ import java.util.Date;
 import java.util.Set;
 
 public class CreateMatchDTO implements Serializable {
-    //private TeamDTO teamBlue;
-    //private TeamDTO teamRed;
+    private TeamDTO teamBlue;
+    private TeamDTO teamRed;
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
-    //private Set<Speler> spelers;
 
     public CreateMatchDTO() {
     }
 
     private CreateMatchDTO(Builder builder) {
-        /*setTeamBlue(builder.teamBlue);
-        setTeamRed(builder.teamRed);*/
+        setTeamBlue(builder.teamBlue);
+        setTeamRed(builder.teamRed);
         setScoreBlueTeam(builder.scoreBlueTeam);
         setScoreRedTeam(builder.scoreRedTeam);
         setDatumtijd(builder.datumtijd);
-        //setSpelers(builder.spelers);
     }
 
 
@@ -43,7 +41,7 @@ public class CreateMatchDTO implements Serializable {
         this.scoreRedTeam = scoreRedTeam;
     }
 
-/*    public TeamDTO getTeamBlue() {
+    public TeamDTO getTeamBlue() {
         return teamBlue;
     }
 
@@ -57,7 +55,7 @@ public class CreateMatchDTO implements Serializable {
 
     public void setTeamRed(TeamDTO teamRed) {
         this.teamRed = teamRed;
-    }*/
+    }
 
     public Date getDatumtijd() {
         return datumtijd;
@@ -67,13 +65,6 @@ public class CreateMatchDTO implements Serializable {
         this.datumtijd = datumtijd;
     }
 
-  /*  public Set<Speler> getSpelers() {
-        return spelers;
-    }
-
-    public void setSpelers(Set<Speler> spelers) {
-        this.spelers = spelers;
-    }*/
 
     public static final class Builder {
         private TeamDTO teamBlue;
@@ -81,7 +72,6 @@ public class CreateMatchDTO implements Serializable {
         private int scoreBlueTeam;
         private int scoreRedTeam;
         private Date datumtijd;
-        private Set<Speler> spelers;
 
         public Builder() {
         }
@@ -111,10 +101,6 @@ public class CreateMatchDTO implements Serializable {
             return this;
         }
 
-        public Builder spelers(Set<Speler> val) {
-            spelers = val;
-            return this;
-        }
 
         public CreateMatchDTO build() {
             return new CreateMatchDTO(this);

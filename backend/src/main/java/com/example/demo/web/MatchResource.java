@@ -33,7 +33,7 @@ public class MatchResource {
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateMatchDTO addMatch(@RequestBody CreateMatchDTO createMatchDTO) {
-        //sendEmail();
+        sendEmail();
         return matchService.addMatch(createMatchDTO);
     }
 
@@ -43,7 +43,7 @@ public class MatchResource {
         return matchService.getAllMatches();
     }
 
-
+    //stuurt een mail naar (de gegeven mail)
     private void sendEmail(){
         emailService.sendSimpleEmail("esportsemail.noreply@gmail.com","This is auto email","Test");
     }
@@ -56,17 +56,17 @@ public class MatchResource {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/matchstats/allteam")
-    public void matchStatsVanAlleTeam(){
-        matchService.getAllMatchStats();
+    public List<MatchStatsDTO> matchStatsVanAlleTeam(){
+        return matchService.getAllMatchStats();
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/matchstats/{id}")
-    public void matchStatsVan1Team(@PathVariable("id")long id){
-        matchService.getById(id);
+    public MatchDTO matchStatsVan1Team(@PathVariable("id")long id){
+        return matchService.getById(id);
     }
 
     /*
@@ -75,21 +75,21 @@ public class MatchResource {
 
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchhistory")
-    public void allPreviousMatches(){
-        matchService.getAllMatchesHistory();
+    public List<MatchDTO> allPreviousMatches(){
+        return matchService.getAllMatchesHistory();
     }
 
     //TODO Team statistieken bekijken
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchstats/eigen")
-    public void eigenTeamStats(long id){
-        matchService.getById(id);
+    public MatchDTO eigenTeamStats(long id){
+        return matchService.getById(id);
     }
 
     //TODO Persoonlijke matchhistoriek
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchhistory/{id}")
-    public void eigenPreviousMatches(@PathVariable("id")long id){
-        matchService.getById(id);
+    public MatchDTO eigenPreviousMatches(@PathVariable("id")long id){
+        return matchService.getById(id);
     }
 }

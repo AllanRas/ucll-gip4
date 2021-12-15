@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/teams")
 @CrossOrigin("http://localhost:3000/")
@@ -35,5 +37,10 @@ public class TeamResource {
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
 
         return teamService.createTeam(teamDTO, managerDTO.getId());
+    }
+
+    @GetMapping
+    public List<TeamDTO> getAllTeams(){
+        return teamService.finall();
     }
 }

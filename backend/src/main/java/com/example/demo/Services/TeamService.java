@@ -8,6 +8,8 @@ import com.example.demo.domain.Team;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TeamService {
 
@@ -41,5 +43,9 @@ public class TeamService {
     }
 
 
+    public List<TeamDTO> finall(){
+        List<Team> team = teamRepository.findAll();
+        return teamConverter.teamListToDTO(team);
+    }
 
 }
