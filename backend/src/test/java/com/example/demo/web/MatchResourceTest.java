@@ -9,6 +9,7 @@ import com.example.demo.dao.ManagerRepository;
 import com.example.demo.domain.Manager;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.*;
+import com.example.demo.dto.match.MatchStatsDTO;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.transaction.Transactional;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,6 +47,9 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     private WebApplicationContext wac;
 
     @Autowired
+    private MatchService matchService;
+
+    @Autowired
     private TeamService teamService;
 
     @Autowired
@@ -55,6 +60,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
     private MockMvc mockMvc;
     private CreateMatchDTO match1;
+    private MatchStatsDTO match2;
     private CreateTeamDTO createTeam1;
     private CreateTeamDTO createTeam2;
     private TeamDTO team1;
@@ -64,7 +70,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     private SpelerDTO bert;
 
     @BeforeEach
-    void setUp(){
+    void setUp() throws ParseException {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac)
                 .apply(springSecurity())
@@ -132,6 +138,14 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                         .postcode("3000")
                         .build())
                 .build());
+
+       /* match2 = new MatchStatsDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1)
+                .teamRed(team2)
+                .scoreBlueTeam(1)
+                .scoreRedTeam(1)
+                .build();*/
     }
 
     @Test
@@ -171,14 +185,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .naam("TestRed")
                 .actief(true)
                 .build();
-        //Given
-        match1 = new CreateMatchDTO.Builder()
-                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
-                .scoreBlueTeam(1)
-                .scoreRedTeam(2)
-                .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
                         .with(httpBasic("manager","manager"))
@@ -194,5 +200,93 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         assertEquals(gemaakteMatch.getId(), match1.getId());
         assertEquals(gemaakteMatch.getTeamRed().getNaam(), match1.getTeamRed().getNaam());
         assertEquals(gemaakteMatch.getTeamBlue().getNaam(),match1.getTeamBlue().getNaam());
+    }
+
+    @Test
+    void getAllMatches() throws Exception{
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
+                .with(httpBasic("manager","manager"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void matchResultsInvoeren() throws Exception{
+        // Given
+        team1 = teamService.getTeamById(createTeam1.getId());
+        team2 = teamService.getTeamById(createTeam2.getId());
+        MatchStatsDTO matchStatsDTO = matchService.setResults(match2);
+
+        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
+                .speler(josPatat.getId())
+                .build();
+
+        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
+                .speler(bert.getId())
+                .build();
+
+        List<SpelerMatchDTO> spelers = new ArrayList<>();
+
+        spelers.add(spelerMatchDTO1);
+        spelers.add(spelerMatchDTO2);
+
+        MatchStatsDTO match2updated = new MatchStatsDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1)
+                .teamRed(team2)
+                .scoreBlueTeam(2)
+                .scoreRedTeam(2)
+                .spelers(new HashSet<>(spelers))
+                .build();
+
+        team1 = new TeamDTO.Builder()
+                .naam("TestBlue")
+                .actief(true)
+                .build();
+
+        team2 = new TeamDTO.Builder()
+                .naam("TestRed")
+                .actief(true)
+                .build();
+        // When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/matchresult")
+                .with(httpBasic("manager", "manager"))
+                .content(toJson(match2updated))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        MvcResult result =  perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        MatchStatsDTO updated = fromMvcResult(result, MatchStatsDTO.class);
+
+        // Then
+        assertNotEquals(updated.getScoreBlueTeam(), match2.getScoreBlueTeam());
+        assertNotEquals(updated.getScoreRedTeam(), match2.getScoreRedTeam());
+    }
+
+    @Test
+    void matchStatsVanAlleTeams() throws Exception {
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matchstats/allteam")
+                        .with(httpBasic("manager","manager"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void allPreviousMatches() throws Exception{
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matchhistory")
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

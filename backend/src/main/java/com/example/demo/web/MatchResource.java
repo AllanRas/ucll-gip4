@@ -48,8 +48,9 @@ public class MatchResource {
         emailService.sendSimpleEmail("esportsemail.noreply@gmail.com","This is auto email","Test");
     }
 
+    //moeten nog aanpassen
     @PreAuthorize("hasRole('MANAGER')")
-    @PutMapping("/matchresult")
+    @PutMapping("matchresult")
     public MatchStatsDTO matchResultsInvoren(@RequestBody MatchStatsDTO matchStatsDTO){
         return matchService.setResults(matchStatsDTO);
     }
