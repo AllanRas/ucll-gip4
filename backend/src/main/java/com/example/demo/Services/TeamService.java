@@ -7,6 +7,7 @@ import com.example.demo.dao.SpelerTeamRepository;
 import com.example.demo.dao.TeamRepository;
 import com.example.demo.domain.*;
 import com.example.demo.dto.CreateTeamDTO;
+import com.example.demo.dto.SpelerTeamDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.stereotype.Service;
 
@@ -67,9 +68,7 @@ public class TeamService {
         team.getSpelers().add(spelerTeam);
 
         spelerTeamRepository.save(spelerTeam);
-
-        Team team1 = teamRepository.getById(teamId);
-        return team1;
+        return teamRepository.getById(teamId);
     }
 
     public List<TeamDTO> getAllTeams(){
@@ -78,5 +77,16 @@ public class TeamService {
 
     public TeamDTO getTeamById(long id){
         return teamConverter.teamToDTO(teamRepository.getById(id));
+    }
+
+    public void removeSpelerFromTeam(long spelerId, long teamId){
+        SpelerTeam spelerTeam = spelerTeamRepository.findBySpelerIdAndTeamId(spelerId,teamId).orElseThrow();
+        spelerTeamRepository.delete(spelerTeam);
+    }
+
+    public SpelerTeam reservePromoveren(long spelerId, long teamId){
+        SpelerTeam spelerTeam = spelerTeamRepository.findBySpelerIdAndTeamId(spelerId,teamId).orElseThrow();
+        spelerTeam.setReserve(!spelerTeam.isReserve());
+        return spelerTeamRepository.save(spelerTeam);
     }
 }

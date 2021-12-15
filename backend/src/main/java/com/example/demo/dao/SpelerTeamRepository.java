@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface SpelerTeamRepository extends JpaRepository<SpelerTeam, Long> {
     Optional<SpelerTeam> findBySpelerAndTeam(Speler speler, Team team);
+    Optional<SpelerTeam> findBySpelerIdAndTeamId(long spelerId, long teamId);
 }

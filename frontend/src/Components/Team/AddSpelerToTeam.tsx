@@ -9,6 +9,12 @@ interface Team {
     naam : string
     actief : boolean
     spelerDTO : SpelerDTO[]
+    managerDTO : {
+        id: number
+        userDTO: {
+            username: string
+        }
+    }
 }
 
 interface SpelerDTO{
@@ -46,6 +52,7 @@ const AddSpelerToTeam = () => {
     // get Team
     const getTeamURL = "http://localhost:8080/api/teams/" + params.id + "/getOne";
     const [team, setTeam] = useState<Team>({
+        managerDTO: {id: 0, userDTO: {username: ""}},
         spelerDTO: [],
         actief: false,
         naam: "",
@@ -59,6 +66,11 @@ const AddSpelerToTeam = () => {
 
 
     useEffect(() => {
+        getTeam();
+        getSpelers();
+    },[]);
+
+    const getTeam = () => {
         axios.get<Team>(getTeamURL, {
             headers: {
                 'Content-Type': 'application/json'
@@ -67,11 +79,10 @@ const AddSpelerToTeam = () => {
             setTeam(response.data);
         }).catch(err => {
             console.log(err);
-
         });
+    }
 
-        console.log(team);
-
+    const getSpelers = () => {
         axios.get<Speler[]>(getSpelersURL, {
             withCredentials: true
         }).then((response) =>{
@@ -79,7 +90,8 @@ const AddSpelerToTeam = () => {
         }).catch((e) => {
             console.log(e);
         });
-    },[]);
+    }
+
 
     //add speler to team
     const teamsURL = "http://localhost:8080/api/teams";
@@ -89,16 +101,37 @@ const AddSpelerToTeam = () => {
                 'Content-Type': 'application/json'
             },withCredentials : true
         }).then((response) => {
-
+            getTeam();
         }).catch(err => {
             console.log(err);
         });
     };
 
     const DeleteSpeler = (spelerid : number, teamid : number) => {
-
+        const deleteSpelerURL =  "http://localhost:8080/api/teams/" + teamid +"/Delete/" + spelerid
+        axios.delete(deleteSpelerURL, {
+            headers: {
+                'Content-Type': 'application/json'
+            },withCredentials : true
+        }).then((response) => {
+            getTeam();
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
+    const ReservePromoveren = (spelerid : number, teamid : number) => {
+        const reservePromoverenURL =  "http://localhost:8080/api/teams/" + teamid +"/ReservePromoveren/" + spelerid
+        axios.put(reservePromoverenURL, {},{
+            headers: {
+                'Content-Type': 'application/json'
+            },withCredentials : true
+        }).then((response) => {
+            getTeam();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
 
     return (
         <>
@@ -106,6 +139,7 @@ const AddSpelerToTeam = () => {
 
                 <h1>team : {team.naam}</h1>
                 <br/>
+                <h2>manager: {team.managerDTO.userDTO.username} </h2>
                 <h2>Spelers : </h2>
 
                 <Table striped bordered hover variant={'dark'}>
@@ -128,7 +162,8 @@ const AddSpelerToTeam = () => {
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>
                                         <td>{speler.userDTO.achternaam}</td>
-                                        <td><Button > Verwijderen </Button></td>
+                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Speler degraderen </Button></td>
+                                        <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
                             : ""
                             )
@@ -138,7 +173,7 @@ const AddSpelerToTeam = () => {
                     </tbody>
                 </Table>
 
-                <h2>Reserve spelers:</h2>
+                <h2>Reserve spelers :</h2>
 
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
@@ -161,7 +196,7 @@ const AddSpelerToTeam = () => {
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>
                                         <td>{speler.userDTO.achternaam}</td>
-                                        <td><Button onClick={() => PostAddSpeler(speler.id, false)}> Speler Promoveren </Button></td>
+                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Speler Promoveren </Button></td>
                                         <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
                                     : ""

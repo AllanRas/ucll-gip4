@@ -68,4 +68,17 @@ public class TeamResource {
     public ResponseEntity<TeamDTO> getById(@PathVariable("id") long id){
         return new ResponseEntity<TeamDTO>(teamService.getTeamById(id), HttpStatus.ACCEPTED);
     }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @DeleteMapping("/{teamId}/Delete/{spelerId}")
+    public ResponseEntity removeSpelerFromTeam(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId){
+        teamService.removeSpelerFromTeam(spelerId,teamId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @PutMapping("/{teamId}/ReservePromoveren/{spelerId}")
+    public ResponseEntity<SpelerTeam> reservePromoveren(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId){
+        return ResponseEntity.status(HttpStatus.OK).body(teamService.reservePromoveren(spelerId,teamId));
+    }
 }
