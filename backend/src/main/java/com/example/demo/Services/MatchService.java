@@ -33,8 +33,8 @@ public class MatchService {
     public CreateMatchDTO addMatch(CreateMatchDTO matchDTO){
         Match match = new Match();
 
-        match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
-        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
+        /*match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
+        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));*/
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         matchRepository.save(match);

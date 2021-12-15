@@ -81,9 +81,4 @@ public class TeamResource {
     public ResponseEntity<SpelerTeam> reservePromoveren(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId){
         return ResponseEntity.status(HttpStatus.OK).body(teamService.reservePromoveren(spelerId,teamId));
     }
-
-    @GetMapping
-    public List<TeamDTO> getAllTeams(){
-        return teamService.finall();
-    }
-}
+ }
