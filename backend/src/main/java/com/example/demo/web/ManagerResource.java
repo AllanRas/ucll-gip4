@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/manager")
 public class ManagerResource {
@@ -23,5 +25,10 @@ public class ManagerResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ManagerDTO createManager(@RequestBody ManagerDTO managerDTO){
         return managerService.createManager(managerDTO);
+    }
+
+    @GetMapping
+    public List<ManagerDTO> getallManagers(){
+        return managerService.getALL();
     }
 }

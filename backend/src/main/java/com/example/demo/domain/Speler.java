@@ -36,7 +36,6 @@ public class Speler {
     @OneToMany(mappedBy = "speler")
     @JsonManagedReference(value = "SpelerTeam")
     private Set<SpelerTeam> teams = new HashSet<>();
-
     @OneToMany(mappedBy = "speler")
     @JsonManagedReference(value = "SpelerMatches")
     private Set<SpelerMatch> matches = new HashSet<>();
@@ -105,7 +104,7 @@ public class Speler {
         return matches;
     }
 
-    public void setMatches(Set<SpelerMatch> matches) {
+    public void setMatches(Set<Speler> matches) {
         this.matches = matches;
     }
 
@@ -161,7 +160,7 @@ public class Speler {
             return this;
         }
 
-        public Builder matches(Set<SpelerMatch> val){
+        public Builder matches(Set<Speler> val){
             match = val;
             return this;
         }

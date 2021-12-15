@@ -77,6 +77,7 @@ public class TeamService {
 
     public TeamDTO getTeamById(long id){
         return teamConverter.teamToDTO(teamRepository.getById(id));
+
     }
 
     public void removeSpelerFromTeam(long spelerId, long teamId){

@@ -33,7 +33,66 @@ public class Match {
     @Column(name = "DATUMTIJD")
     private Date datumtijd;
 
+
     @OneToMany(mappedBy = "match")
     @JsonManagedReference(value = "MatchSpelers")
     private Set<SpelerMatch> spelers = new HashSet<>();
+    @OneToMany
+    private Set<Speler> spelers = new HashSet<>();
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Team getTeamBlue() {
+        return teamBlue;
+    }
+
+    public void setTeamBlue(Team teamBlue) {
+        this.teamBlue = teamBlue;
+    }
+
+    public Team getTeamRed() {
+        return teamRed;
+    }
+
+    public void setTeamRed(Team teamRed) {
+        this.teamRed = teamRed;
+    }
+
+    public int getScoreBlueTeam() {
+        return scoreBlueTeam;
+    }
+
+    public void setScoreBlueTeam(int scoreBlueTeam) {
+        this.scoreBlueTeam = scoreBlueTeam;
+    }
+
+    public int getScoreRedTeam() {
+        return scoreRedTeam;
+    }
+
+    public void setScoreRedTeam(int scoreRedTeam) {
+        this.scoreRedTeam = scoreRedTeam;
+    }
+
+    public Date getDatumtijd() {
+        return datumtijd;
+    }
+
+    public void setDatumtijd(Date datumtijd) {
+        this.datumtijd = datumtijd;
+    }
+
+    public Set<Speler> getSpelers() {
+        return spelers;
+    }
+
+    public void setSpelers(Set<Speler> spelers) {
+        this.spelers = spelers;
+    }
 }

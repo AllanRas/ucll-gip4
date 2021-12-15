@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ManagerService {
 
@@ -44,5 +46,10 @@ public class ManagerService {
     public ManagerDTO getManagerByUserId(User user){
         Manager manager = managerRepository.findByUser(user).orElseThrow();
         return managerConverter.managerDTO(manager);
+    }
+
+    public List<ManagerDTO> getALL(){
+        List<Manager> managers = managerRepository.findAll();
+        return managerConverter.listToDto(managers);
     }
 }
