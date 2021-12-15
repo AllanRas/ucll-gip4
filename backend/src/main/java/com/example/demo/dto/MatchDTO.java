@@ -1,10 +1,8 @@
 package com.example.demo.dto;
 
-import com.example.demo.domain.Speler;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 public class MatchDTO implements Serializable {
     private long id;

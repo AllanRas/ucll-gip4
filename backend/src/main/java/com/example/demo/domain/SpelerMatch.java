@@ -1,5 +1,6 @@
 package com.example.demo.domain;
 
+import com.example.demo.dto.SpelerMatchDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -22,6 +23,16 @@ public class SpelerMatch {
     @JoinColumn(name = "MATCH_ID")
     @JsonBackReference(value = "MatchSpelers")
     private Match match;
+
+    private SpelerMatch(Builder builder) {
+        setId(builder.id);
+        setMatch(builder.match);
+        setSpeler(builder.speler);
+    }
+
+    public SpelerMatch() {
+
+    }
 
     public long getId() {
         return id;
@@ -54,5 +65,38 @@ public class SpelerMatch {
                 ", speler=" + speler +
                 ", match=" + match +
                 '}';
+    }
+
+    public static final class Builder {
+        private long id;
+        private Speler speler;
+        private Match match;
+
+        public Builder(){
+
+        }
+
+        public Builder(SpelerMatch copy){
+            this.id = copy.getId();
+            this.speler = copy.getSpeler();
+            this.match = copy.getMatch();
+        }
+
+        public Builder id(long val){
+            id = val;
+            return this;
+        }
+
+        public Builder speler(Speler val){
+            speler = val;
+            return this;
+        }
+
+        public Builder match(Match val){
+            match = val;
+            return this;
+        }
+
+        public SpelerMatch build(){return new SpelerMatch(this);}
     }
 }

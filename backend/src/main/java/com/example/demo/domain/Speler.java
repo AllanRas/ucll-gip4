@@ -1,9 +1,7 @@
 package com.example.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import liquibase.pro.packaged.B;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -36,6 +34,7 @@ public class Speler {
     @OneToMany(mappedBy = "speler")
     @JsonManagedReference(value = "SpelerTeam")
     private Set<SpelerTeam> teams = new HashSet<>();
+
     @OneToMany(mappedBy = "speler")
     @JsonManagedReference(value = "SpelerMatches")
     private Set<SpelerMatch> matches = new HashSet<>();
@@ -103,7 +102,9 @@ public class Speler {
         return matches;
     }
 
-
+    public void setMatches(Set<SpelerMatch> matches) {
+        this.matches = matches;
+    }
 
     public static final class Builder {
         private long id;
@@ -156,6 +157,10 @@ public class Speler {
             return this;
         }
 
+        public Builder matches(Set<SpelerMatch> val){
+            match = val;
+            return this;
+        }
 
         public Speler build(){return new Speler(this);}
     }

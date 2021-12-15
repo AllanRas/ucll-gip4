@@ -1,5 +1,6 @@
 package com.example.demo.Converter;
 
+import com.example.demo.dao.SpelerTeamRepository;
 import com.example.demo.domain.SpelerTeam;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
@@ -19,7 +20,15 @@ import java.util.stream.Collectors;
 public class TeamConverter {
 
     ManagerConverter managerConverter = new ManagerConverter();
-    SpelerConverter spelerConverter = new SpelerConverter();
+
+    private SpelerTeamRepository spelerTeamRepository;
+
+    public TeamConverter() {
+    }
+
+    public TeamConverter(SpelerTeamRepository spelerTeamRepository) {
+        this.spelerTeamRepository = spelerTeamRepository;
+    }
 
     // user to userDTO
     public TeamDTO teamToDTO(Team team){
@@ -35,20 +44,20 @@ public class TeamConverter {
         return teamDTO;
     }
 
-    /**
+
     public Team DTOtoTeam(TeamDTO teamDTO){
         Team team = new Team();
         team.setId(teamDTO.getId());
         team.setNaam(teamDTO.getNaam());
         team.setManager(managerConverter.dtoToManager(teamDTO.getManagerDTO()));
         team.setActief(team.isActief());
-        team.setSpelers(teamDTO.getSpelerDTO());
+        team.setSpelers(dtoToSpelerTeamSet(teamDTO.getSpelerDTO()));
         team.setMatchesteamRed(teamDTO.getMatchesteamRed());
         team.setMatchesteamBlue(teamDTO.getMatchesteamBlue());
 
         return team;
     }
-     **/
+
 
     public Team createDTOtoTeam(CreateTeamDTO createTeamDTO){
         Team team = new Team();
@@ -81,6 +90,20 @@ public class TeamConverter {
                 .reserve(spelerTeam.isReserve())
                 .team(spelerTeam.getTeam().getId())
                 .build();
+    }
+
+    public SpelerTeam dtoToSpelerTeam(SpelerTeamDTO spelerTeamDTO){
+        SpelerTeam spelerTeam = spelerTeamRepository.findBySpelerIdAndTeamId(spelerTeamDTO.getSpelerid(), spelerTeamDTO.getTeamid()).orElseThrow();
+        return new SpelerTeam.Builder()
+                .id(spelerTeamDTO.getId())
+                .speler(spelerTeam.getSpeler())
+                .reserve(spelerTeamDTO.isReserve())
+                .team(spelerTeam.getTeam())
+                .build();
+    }
+
+    public Set<SpelerTeam> dtoToSpelerTeamSet(Set<SpelerTeamDTO> spelerTeams){
+        return spelerTeams.stream().map(this::dtoToSpelerTeam).collect(Collectors.toSet());
     }
 
     public Set<SpelerTeamDTO> spelerTeamSetToDTO(Set<SpelerTeam> spelerTeams){

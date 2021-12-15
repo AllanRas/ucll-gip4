@@ -52,7 +52,6 @@ public class TeamService {
         Team team = teamRepository.findById(teamId).orElseThrow();
         Speler speler = spelerRepository.findById(spelerId).orElseThrow();
 
-
         boolean exists =  spelerTeamRepository.findBySpelerAndTeam(speler,team).isPresent();
 
         if(team.getManager().getId() != managerId || exists){
