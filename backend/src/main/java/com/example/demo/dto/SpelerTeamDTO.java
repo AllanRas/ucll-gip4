@@ -8,10 +8,10 @@ import java.io.Serializable;
 
 public class SpelerTeamDTO implements Serializable {
 
-        private long id;
-        private long spelerid;
-        private long teamid;
-        private boolean reserve;
+    private long id;
+    private long spelerid;
+    private long teamid;
+    private boolean reserve;
 
     public SpelerTeamDTO(Builder builder) {
         setId(builder.id);

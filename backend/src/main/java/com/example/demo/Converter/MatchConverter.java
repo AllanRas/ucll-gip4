@@ -1,20 +1,33 @@
 package com.example.demo.Converter;
 
-import com.example.demo.dao.SpelerTeamRepository;
+import com.example.demo.dao.MatchRepository;
+import com.example.demo.dao.SpelerRepository;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
+import com.example.demo.domain.SpelerMatch;
+import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
+import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 public class MatchConverter {
 
     TeamConverter teamConverter = new TeamConverter();
+
+    private SpelerRepository spelerRepository;
+    private MatchRepository matchRepository;
+
+    public MatchConverter(SpelerRepository spelerRepository, MatchRepository matchRepository) {
+        this.spelerRepository = spelerRepository;
+        this.matchRepository = matchRepository;
+    }
 
     // match to matchDTO
     public MatchDTO matchToMatchDTO(Match match){
@@ -71,5 +84,34 @@ public class MatchConverter {
 
     public List<MatchDTO> matchToMatchDTOList(List<Match> matches){
         return matches.stream().map(this::matchToMatchDTO).collect(Collectors.toList());
+    }
+
+
+    // SPELERMATCH CONVERTERS
+
+    public SpelerMatchDTO spelerMatchToDTO(SpelerMatch spelerMatch){
+        return new SpelerMatchDTO.Builder()
+                .id(spelerMatch.getId())
+                .speler(spelerMatch.getSpeler().getId())
+                .match(spelerMatch.getMatch().getId())
+                .build();
+    }
+
+    public SpelerMatch dtoToSpelerMatch(SpelerMatchDTO spelerMatchDTO){
+        Speler speler = spelerRepository.findById(spelerMatchDTO.getSpelerid()).orElseThrow();
+        Match match = matchRepository.findById(spelerMatchDTO.getMatchid()).get();
+        return new SpelerMatch.Builder()
+                .id(spelerMatchDTO.getId())
+                .speler(speler)
+                .match(match)
+                .build();
+    }
+
+    public Set<SpelerMatch> dtoToSpelerTeamSet(Set<SpelerMatchDTO> spelerMatches){
+        return spelerMatches.stream().map(this::dtoToSpelerMatch).collect(Collectors.toSet());
+    }
+
+    public Set<SpelerMatchDTO> spelerTeamSetToDTO(Set<SpelerMatch> spelerMatches){
+        return spelerMatches.stream().map(this::spelerMatchToDTO).collect(Collectors.toSet());
     }
 }

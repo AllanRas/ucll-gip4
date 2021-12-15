@@ -7,38 +7,30 @@ import java.util.Date;
 import java.util.Set;
 
 public class CreateMatchDTO implements Serializable {
+
+    private long id;
     private TeamDTO teamBlue;
     private TeamDTO teamRed;
-    private int scoreBlueTeam;
-    private int scoreRedTeam;
     private Date datumtijd;
+    public Set<SpelerMatchDTO> spelers;
 
     public CreateMatchDTO() {
     }
 
     private CreateMatchDTO(Builder builder) {
+        setId(builder.id);
         setTeamBlue(builder.teamBlue);
         setTeamRed(builder.teamRed);
-        setScoreBlueTeam(builder.scoreBlueTeam);
-        setScoreRedTeam(builder.scoreRedTeam);
         setDatumtijd(builder.datumtijd);
+        setSpelers(builder.spelers);
     }
 
-
-    public int getScoreBlueTeam() {
-        return scoreBlueTeam;
+    public long getId() {
+        return id;
     }
 
-    public void setScoreBlueTeam(int scoreBlueTeam) {
-        this.scoreBlueTeam = scoreBlueTeam;
-    }
-
-    public int getScoreRedTeam() {
-        return scoreRedTeam;
-    }
-
-    public void setScoreRedTeam(int scoreRedTeam) {
-        this.scoreRedTeam = scoreRedTeam;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public TeamDTO getTeamBlue() {
@@ -65,15 +57,32 @@ public class CreateMatchDTO implements Serializable {
         this.datumtijd = datumtijd;
     }
 
+    public Set<SpelerMatchDTO> getSpelers() {
+        return spelers;
+    }
+
+    public void setSpelers(Set<SpelerMatchDTO> spelers) {
+        this.spelers = spelers;
+    }
 
     public static final class Builder {
+        private long id;
         private TeamDTO teamBlue;
         private TeamDTO teamRed;
-        private int scoreBlueTeam;
-        private int scoreRedTeam;
         private Date datumtijd;
+        private Set<SpelerMatchDTO> spelers;
+
+
 
         public Builder() {
+        }
+
+        public Builder(CreateMatchDTO copy) {
+            this.id = copy.getId();
+            this.teamBlue = copy.getTeamBlue();
+            this.teamRed = copy.getTeamRed();
+            this.datumtijd = copy.getDatumtijd();
+            this.spelers = copy.getSpelers();
         }
 
         public Builder teamBlue(TeamDTO val) {
@@ -86,21 +95,15 @@ public class CreateMatchDTO implements Serializable {
             return this;
         }
 
-        public Builder scoreBlueTeam(int val) {
-            scoreBlueTeam = val;
-            return this;
-        }
-
-        public Builder scoreRedTeam(int val) {
-            scoreRedTeam = val;
-            return this;
-        }
-
         public Builder datumtijd(Date val) {
             datumtijd = val;
             return this;
         }
 
+        public Builder spelers(Set<SpelerMatchDTO> val){
+            spelers = val;
+            return this;
+        }
 
         public CreateMatchDTO build() {
             return new CreateMatchDTO(this);
