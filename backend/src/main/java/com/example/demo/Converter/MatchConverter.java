@@ -47,8 +47,8 @@ public class MatchConverter {
 
         Match match = new Match();
         match.setId(matchDTO.getId());
-        /*match.setTeamBlue(teamConverter.createDTOtoTeam(matchDTO.getTeamBlue()));
-        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));*/
+        match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
+        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         match.setDatumtijd(matchDTO.getDatumtijd());
@@ -73,13 +73,14 @@ public class MatchConverter {
     public MatchStatsDTO matchToMatchStatsDTO(Match match){
         MatchStatsDTO matchStatsDTO = new MatchStatsDTO();
 
+
         matchStatsDTO.setScoreBlueTeam(match.getScoreBlueTeam());
         matchStatsDTO.setScoreRedTeam(match.getScoreRedTeam());
         return matchStatsDTO;
     }
 
-    public List<MatchStatsDTO> matchStatsDTOList(List<Match> matches){
-        return matches.stream().map(this::matchToMatchStatsDTO).collect(Collectors.toList());
+    public List<MatchDTO> matchDTOList(List<Match> matches){
+        return matches.stream().map(this::matchToMatchDTO).collect(Collectors.toList());
     }
 
     public List<MatchDTO> matchToMatchDTOList(List<Match> matches){
@@ -114,4 +115,5 @@ public class MatchConverter {
     public Set<SpelerMatchDTO> spelerTeamSetToDTO(Set<SpelerMatch> spelerMatches){
         return spelerMatches.stream().map(this::spelerMatchToDTO).collect(Collectors.toSet());
     }
+
 }

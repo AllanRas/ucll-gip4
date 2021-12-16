@@ -1,12 +1,15 @@
 package com.example.demo.web;
 
 import com.example.demo.AbstractIntegrationTest;
+import com.example.demo.Converter.MatchConverter;
+import com.example.demo.Converter.TeamConverter;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.MatchService;
 import com.example.demo.Services.SpelerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.dao.ManagerRepository;
 import com.example.demo.domain.Manager;
+import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.*;
 import com.example.demo.dto.match.MatchStatsDTO;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
@@ -58,9 +62,12 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     @Autowired
     private SpelerService spelerService;
 
+    @Autowired
+    private TeamConverter converter;
+
     private MockMvc mockMvc;
     private CreateMatchDTO match1;
-    private MatchStatsDTO match2;
+    private MatchDTO match2;
     private CreateTeamDTO createTeam1;
     private CreateTeamDTO createTeam2;
     private TeamDTO team1;
@@ -138,14 +145,27 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                         .postcode("3000")
                         .build())
                 .build());
+        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
+                .speler(josPatat.getId())
+                .build();
 
-       /* match2 = new MatchStatsDTO.Builder()
+        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
+                .speler(bert.getId())
+                .build();
+
+        List<SpelerMatchDTO> spelers = new ArrayList<>();
+
+        spelers.add(spelerMatchDTO1);
+        spelers.add(spelerMatchDTO2);
+
+        match2 = matchService.createMatch(new MatchDTO.Builder()
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
+                .teamBlue(converter.createDTOtoTeamDTO(createTeam1))
+                .teamRed(converter.createDTOtoTeamDTO(createTeam2))
                 .scoreBlueTeam(1)
                 .scoreRedTeam(1)
-                .build();*/
+                .spelers(new HashSet<>(spelers))
+                .build());
     }
 
     @Test
@@ -175,16 +195,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .spelers(new HashSet<>(spelers))
                 .build();
 
-
-        team1 = new TeamDTO.Builder()
-                .naam("TestBlue")
-                .actief(true)
-                .build();
-
-        team2 = new TeamDTO.Builder()
-                .naam("TestRed")
-                .actief(true)
-                .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
                         .with(httpBasic("manager","manager"))
@@ -221,7 +231,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         // Given
         team1 = teamService.getTeamById(createTeam1.getId());
         team2 = teamService.getTeamById(createTeam2.getId());
-        MatchStatsDTO matchStatsDTO = matchService.setResults(match2);
 
         SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
                 .speler(josPatat.getId())
@@ -236,7 +245,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         spelers.add(spelerMatchDTO1);
         spelers.add(spelerMatchDTO2);
 
-        MatchStatsDTO match2updated = new MatchStatsDTO.Builder()
+        MatchDTO matchDTOUpdated = new MatchDTO.Builder()
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
                 .teamBlue(team1)
                 .teamRed(team2)
@@ -245,19 +254,10 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .spelers(new HashSet<>(spelers))
                 .build();
 
-        team1 = new TeamDTO.Builder()
-                .naam("TestBlue")
-                .actief(true)
-                .build();
-
-        team2 = new TeamDTO.Builder()
-                .naam("TestRed")
-                .actief(true)
-                .build();
         // When
-        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/matchresult")
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/match/{id}/matchresult", match2.getId())
                 .with(httpBasic("manager", "manager"))
-                .content(toJson(match2updated))
+                .content(toJson(matchDTOUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -265,7 +265,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists()).andReturn();
 
-        MatchStatsDTO updated = fromMvcResult(result, MatchStatsDTO.class);
+        MatchDTO updated = fromMvcResult(result, MatchDTO.class);
 
         // Then
         assertNotEquals(updated.getScoreBlueTeam(), match2.getScoreBlueTeam());
@@ -275,18 +275,57 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     @Test
     void matchStatsVanAlleTeams() throws Exception {
         //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/matchstats/allteam")
-                        .with(httpBasic("manager","manager"))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+                    .with(httpBasic("manager","manager"))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+
+        //Foute Auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+                        .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    void allPreviousMatches() throws Exception{
+    void matxhStatsVan1Team() throws Exception {
+        // Given
+
         //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/matchhistory")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", match2.getId())
+                        .with(httpBasic("manager","manager"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Speler
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", match2.getId())
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", match2.getId())
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    //SPELER
+
+    @Test
+    void allPreviousMatches() throws Exception{
+        // Speler
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory")
                         .with(httpBasic("speler","speler"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory")
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
+
+
 }
