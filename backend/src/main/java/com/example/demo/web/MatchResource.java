@@ -8,6 +8,7 @@ import com.example.demo.domain.User;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,10 +89,10 @@ public class MatchResource {
     //TODO nog moeten fixen
 
 
-    /*@PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory/{id}")
-    public List<MatchDTO> allPreviousMatches(@PathVariable("id")long id){
-        return spelerService.
+    @PreAuthorize("hasRole('SPELER')")
+    @GetMapping("/matchhistory")
+    public List<SpelerMatchDTO> allPreviousMatches(){
+        return matchService.allMatchesVanSpeler();
     }
 
 
@@ -99,7 +100,7 @@ public class MatchResource {
     @GetMapping("/matchstats/eigen")
     public MatchDTO eigenTeamStats(long id){
         return matchService.getById(id);
-    }*/
+    }
 
    /* //TODO Persoonlijke matchhistoriek
     @PreAuthorize("hasRole('SPELER')")

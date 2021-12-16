@@ -142,4 +142,35 @@ public class MatchService {
     public List<MatchDTO> getAllMatchesHistory(){
         return matchConverter.matchToMatchDTOList(matchRepository.findAll());
     }
+
+    public List<SpelerMatchDTO> allMatchesVanSpeler(){
+
+        List<SpelerMatch> spelers = spelerMatchRepository.findAll();/*
+        Optional<SpelerMatch> spelerMatch1 = spelerMatchRepository.findById(idSpeler);
+
+        for (SpelerMatch spelerMatch: spelers){
+            Match matchSpeler = matchRepository.getById(spelerMatch1.orElseThrow().getId());
+        }
+
+        for (SpelerMatchDTO spelerMatchDTO: spelers) {
+
+
+            Match matchspeler = matchRepository.getById(newmatch.getId());
+            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
+
+            SpelerMatch spelerMatch = new SpelerMatch.Builder()
+                    .match(matchspeler)
+                    .speler(speler)
+                    .build();
+
+            spelerMatchRepository.save(spelerMatch);
+        }
+
+        SpelerMatchDTO spelerMatchDTO = new SpelerMatchDTO();
+        spelerMatchDTO.setMatchid(spelers.get((int)idSpeler).getMatch().getId());
+
+        matchRepository.getById(spelerMatchDTO.getMatchid());*/
+
+        return matchConverter.spelerMatchToListDto(spelers);
+    }
 }

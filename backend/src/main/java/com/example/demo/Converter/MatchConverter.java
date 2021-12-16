@@ -110,6 +110,10 @@ public class MatchConverter {
                 .build();
     }
 
+    public List<SpelerMatchDTO> spelerMatchToListDto(List<SpelerMatch> spelerMatches){
+        return spelerMatches.stream().map(this::spelerMatchToDTO).collect(Collectors.toList());
+    }
+
     public SpelerMatch dtoToSpelerMatch(SpelerMatchDTO spelerMatchDTO){
         Speler speler = spelerRepository.findById(spelerMatchDTO.getSpelerid()).orElseThrow();
         Match match = matchRepository.findById(spelerMatchDTO.getMatchid()).get();
