@@ -78,20 +78,19 @@ public class MatchResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping(value = "/matchstats/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MatchDTO matchStatsVan1Team(@PathVariable("id")long id){
-        return matchService.getById(id);
+    public List<MatchDTO> matchStatsVan1Team(@PathVariable("id")long id){
+        // id = TeamId
+        return matchService.getByTeamId(id);
     }
 
     /*
      * SPELER
      */
-    //TODO nog moeten fixen
-
 
     @PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory")
-    public List<SpelerMatchDTO> allPreviousMatches(){
-        return matchService.allMatchesVanSpeler();
+    @GetMapping("/matchhistory/{id}")
+    public List<MatchDTO> allPreviousMatches(@PathVariable("id")long id){
+        return matchService.getByTeamId(id);
     }
 
 
@@ -101,10 +100,10 @@ public class MatchResource {
         return matchService.getById(id);
     }
 
-   /* //TODO Persoonlijke matchhistoriek
+    //TODO Persoonlijke matchhistoriek
     @PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory/{id}")
-    public MatchDTO eigenPreviousMatches(@PathVariable("id")long id){
-        return matchService.getById(id);
-    }*/
+    @GetMapping("/matchhistory/speler/{id}")
+    public List<MatchDTO> eigenPreviousMatches(@PathVariable("id")long id){
+        return matchService.getBySpelerId(id);
+    }
 }
