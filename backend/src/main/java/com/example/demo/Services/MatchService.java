@@ -2,10 +2,7 @@ package com.example.demo.Services;
 
 import com.example.demo.Converter.MatchConverter;
 import com.example.demo.Converter.TeamConverter;
-import com.example.demo.dao.MatchRepository;
-import com.example.demo.dao.SpelerMatchRepository;
-import com.example.demo.dao.SpelerRepository;
-import com.example.demo.dao.TeamRepository;
+import com.example.demo.dao.*;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
@@ -15,8 +12,10 @@ import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
 import liquibase.pro.packaged.T;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -138,6 +137,16 @@ public class MatchService {
         return matchConverter.matchToMatchDTO(match.orElseThrow());
     }
 
+    public List<MatchDTO> getByTeamId(long teamId){
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        return matchConverter.matchToMatchDTOList(matchRepository.findByTeamBlueOrTeamRed(team, team).orElseThrow()) ;
+    }
+
+    public List<MatchDTO> getBySpelerId(long spelerId){
+        Speler speler = spelerRepository.findById(spelerId).orElseThrow();
+        return matchConverter.matchToMatchDTOList(matchRepository.findBySpelers(speler).orElseThrow()) ;
+    }
+
     //match historiek
     public List<MatchDTO> getAllMatchesHistory(){
         return matchConverter.matchToMatchDTOList(matchRepository.findAll());
@@ -145,31 +154,7 @@ public class MatchService {
 
     public List<SpelerMatchDTO> allMatchesVanSpeler(){
 
-        List<SpelerMatch> spelers = spelerMatchRepository.findAll();/*
-        Optional<SpelerMatch> spelerMatch1 = spelerMatchRepository.findById(idSpeler);
-
-        for (SpelerMatch spelerMatch: spelers){
-            Match matchSpeler = matchRepository.getById(spelerMatch1.orElseThrow().getId());
-        }
-
-        for (SpelerMatchDTO spelerMatchDTO: spelers) {
-
-
-            Match matchspeler = matchRepository.getById(newmatch.getId());
-            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
-
-            SpelerMatch spelerMatch = new SpelerMatch.Builder()
-                    .match(matchspeler)
-                    .speler(speler)
-                    .build();
-
-            spelerMatchRepository.save(spelerMatch);
-        }
-
-        SpelerMatchDTO spelerMatchDTO = new SpelerMatchDTO();
-        spelerMatchDTO.setMatchid(spelers.get((int)idSpeler).getMatch().getId());
-
-        matchRepository.getById(spelerMatchDTO.getMatchid());*/
+        List<SpelerMatch> spelers = spelerMatchRepository.findAll();
 
         return matchConverter.spelerMatchToListDto(spelers);
     }
