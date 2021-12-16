@@ -1,14 +1,21 @@
 package com.example.demo.web;
 
 import com.example.demo.Services.MatchService;
+import com.example.demo.Services.SpelerService;
 import com.example.demo.Services.emailService.EmailSenderService;
+import com.example.demo.config.UserPrincipal;
+import com.example.demo.domain.User;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
+import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +25,9 @@ import java.util.List;
 public class MatchResource {
 
     private final MatchService matchService;
+
+    @Autowired
+    private SpelerService spelerService;
 
     @Autowired
     private EmailSenderService emailService;
@@ -51,21 +61,23 @@ public class MatchResource {
 
     //moeten nog aanpassen
     @PreAuthorize("hasRole('MANAGER')")
-    @PutMapping("matchresult")
-    public MatchStatsDTO matchResultsInvoren(@RequestBody MatchStatsDTO matchStatsDTO){
-        return matchService.setResults(matchStatsDTO);
+    @PutMapping(value = "/{id}/matchresult", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MatchDTO> matchResultsInvoren(@PathVariable("id")long id, @RequestBody MatchDTO matchStatsDTO){
+        MatchDTO updatedmatch = matchService.setResults(id, matchStatsDTO);
+
+        return new ResponseEntity<MatchDTO>(updatedmatch, HttpStatus.OK);
     }
 
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/matchstats/allteam")
-    public List<MatchStatsDTO> matchStatsVanAlleTeam(){
+    @GetMapping(value = "/matchstats/allteam", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<MatchDTO> matchStatsVanAlleTeam(){
         return matchService.getAllMatchStats();
     }
 
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/matchstats/{id}")
+    @GetMapping(value = "/matchstats/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public MatchDTO matchStatsVan1Team(@PathVariable("id")long id){
         return matchService.getById(id);
     }
@@ -73,24 +85,26 @@ public class MatchResource {
     /*
      * SPELER
      */
+    //TODO nog moeten fixen
 
-    @PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory")
-    public List<MatchDTO> allPreviousMatches(){
-        return matchService.getAllMatchesHistory();
+
+    /*@PreAuthorize("hasRole('SPELER')")
+    @GetMapping("/matchhistory/{id}")
+    public List<MatchDTO> allPreviousMatches(@PathVariable("id")long id){
+        return spelerService.
     }
 
-    //TODO Team statistieken bekijken
+
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchstats/eigen")
     public MatchDTO eigenTeamStats(long id){
         return matchService.getById(id);
-    }
+    }*/
 
-    //TODO Persoonlijke matchhistoriek
+   /* //TODO Persoonlijke matchhistoriek
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchhistory/{id}")
     public MatchDTO eigenPreviousMatches(@PathVariable("id")long id){
         return matchService.getById(id);
-    }
+    }*/
 }

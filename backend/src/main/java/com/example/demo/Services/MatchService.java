@@ -68,29 +68,73 @@ public class MatchService {
         return matchConverter.matchToCreateMatchDTO(newmatch);
     }
 
+    public MatchDTO createMatch(MatchDTO matchDTO){
+        Match match = new Match();
+        Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
+
+        match.setId(matchDTO.getId());
+        match.setDatumtijd(matchDTO.getDatumtijd());
+        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
+        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
+        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
+        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
+        match.setDatumtijd(matchDTO.getDatumtijd());
+
+        Match newmatch = matchRepository.save(match);
+
+        for (SpelerMatchDTO spelerMatchDTO: spelers) {
+
+
+            Match matchspeler = matchRepository.getById(newmatch.getId());
+            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
+
+            SpelerMatch spelerMatch = new SpelerMatch.Builder()
+                    .match(matchspeler)
+                    .speler(speler)
+                    .build();
+
+            spelerMatchRepository.save(spelerMatch);
+        }
+        return matchConverter.matchToMatchDTO(newmatch);
+    }
+
     //get all matches
     public List<MatchDTO> getAllMatches(){
         return matchConverter.matchListToMatchDTO(matchRepository.findAll());
     }
 
     //match results invoeren
-    public MatchStatsDTO setResults(MatchStatsDTO matchStatsDTO){
-        Match match = new Match();
+    public MatchDTO setResults(long id,MatchDTO matchDTO){
 
-        match.setScoreBlueTeam(matchStatsDTO.getScoreBlueTeam());
-        match.setScoreRedTeam(matchStatsDTO.getScoreRedTeam());
-        matchRepository.save(match);
-        return matchConverter.matchToMatchStatsDTO(match);
+        Optional<Match> match = matchRepository.findById(id);
+
+        if (match.isPresent()){
+            Match updatedMatch = matchConverter.matchDTOToMatch(matchDTO);
+            Match newmatch = match.get();
+
+            newmatch.setScoreBlueTeam(updatedMatch.getScoreBlueTeam());
+            newmatch.setScoreRedTeam(updatedMatch.getScoreRedTeam());
+
+            matchRepository.save(newmatch);
+        }
+        return matchConverter.matchToMatchDTO(match.orElseThrow());
     }
 
     //matchstatsbekijken
-    public List<MatchStatsDTO> getAllMatchStats(){
-        return matchConverter.matchStatsDTOList(matchRepository.findAll());
+    public List<MatchDTO> getAllMatchStats(){
+        return matchConverter.matchDTOList(matchRepository.findAll());
     }
 
     public MatchDTO getById(long id){
         Optional<Match> match = matchRepository.findById(id);
         matchConverter.matchListToMatchDTO(matchRepository.findAll());
+
+        if (match.isPresent()){
+            Match newMatch = match.get();
+
+            matchRepository.save(newMatch);
+        }
+
         return matchConverter.matchToMatchDTO(match.orElseThrow());
     }
 
