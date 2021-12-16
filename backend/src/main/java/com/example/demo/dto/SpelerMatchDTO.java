@@ -6,11 +6,13 @@ public class SpelerMatchDTO implements Serializable {
     private long id;
     private long spelerid;
     private long matchid;
+    private long teamId;
 
     private SpelerMatchDTO(Builder builder) {
         setId(builder.id);
         setSpelerid(builder.spelerid);
         setMatchid(builder.matchid);
+        setTeamId(builder.teamId);
     }
 
     public SpelerMatchDTO(){
@@ -41,6 +43,14 @@ public class SpelerMatchDTO implements Serializable {
         this.matchid = matchid;
     }
 
+    public long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(long teamId) {
+        this.teamId = teamId;
+    }
+
     @Override
     public String toString() {
         return "SpelerMatchDTO{" +
@@ -54,6 +64,7 @@ public class SpelerMatchDTO implements Serializable {
         private long id;
         private long spelerid;
         private long matchid;
+        private long teamId;
 
         public Builder(){
 
@@ -63,6 +74,7 @@ public class SpelerMatchDTO implements Serializable {
             this.id = copy.getId();
             this.spelerid = copy.getSpelerid();
             this.matchid = copy.getMatchid();
+            this.teamId = copy.getTeamId();
         }
 
         public Builder id(long val){
@@ -75,6 +87,11 @@ public class SpelerMatchDTO implements Serializable {
         }
         public Builder match(long val){
             matchid = val;
+            return this;
+        }
+
+        public Builder teamId(long val){
+            teamId = val;
             return this;
         }
 

@@ -18,10 +18,12 @@ public class Match {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TEAM_BLUE_ID")
+    @JsonBackReference(value = "teamBlue")
     private Team teamBlue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="TEAM_RED_ID")
+    @JsonBackReference(value = "teamRed")
     private Team teamRed;
 
     @Column(name = "TEAM_BLUE_SCORE")
@@ -32,7 +34,6 @@ public class Match {
 
     @Column(name = "DATUMTIJD")
     private Date datumtijd;
-
 
     @OneToMany(mappedBy = "match")
     @JsonManagedReference(value = "MatchSpelers")
@@ -84,5 +85,13 @@ public class Match {
 
     public void setDatumtijd(Date datumtijd) {
         this.datumtijd = datumtijd;
+    }
+
+    public Set<SpelerMatch> getSpelers() {
+        return spelers;
+    }
+
+    public void setSpelers(Set<SpelerMatch> spelers) {
+        this.spelers = spelers;
     }
 }

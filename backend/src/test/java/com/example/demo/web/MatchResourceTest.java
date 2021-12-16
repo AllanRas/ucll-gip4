@@ -144,10 +144,12 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
         SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
                 .speler(josPatat.getId())
+                .teamId(team1.getId())
                 .build();
 
         SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
                 .speler(bert.getId())
+                .teamId(team2.getId())
                 .build();
 
         Set<SpelerMatchDTO> spelers = new HashSet<>();
@@ -157,12 +159,12 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
         match1 = new CreateMatchDTO.Builder()
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
+                .teamBlue(team1.getId())
+                .teamRed(team2.getId())
                 .spelers(spelers)
                 .build();
         //When
-        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/match")
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/matches")
                         .with(httpBasic("manager","manager"))
                         .content(toJson(match1))
                         .contentType(MediaType.APPLICATION_JSON));
@@ -174,7 +176,28 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
         //Then
         assertEquals(gemaakteMatch.getId(), match1.getId());
-        assertEquals(gemaakteMatch.getTeamRed().getNaam(), match1.getTeamRed().getNaam());
-        assertEquals(gemaakteMatch.getTeamBlue().getNaam(),match1.getTeamBlue().getNaam());
+        assertEquals(gemaakteMatch.getTeamRedId(), match1.getTeamRedId());
+        assertEquals(gemaakteMatch.getTeamBlueId(), match1.getTeamBlueId());
+    }
+
+    @Test
+    void getAllMatches() throws Exception{
+        // manager auth return 400 : Ok
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches")
+                        .with(httpBasic("manager","manager"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // speler auth returns 403 : Forbidden
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches")
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        // foute auth returns 401 : Unauthorized
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches")
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.Converter;
 
 import com.example.demo.dao.MatchRepository;
 import com.example.demo.dao.SpelerRepository;
+import com.example.demo.dao.TeamRepository;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
@@ -23,10 +24,12 @@ public class MatchConverter {
 
     private SpelerRepository spelerRepository;
     private MatchRepository matchRepository;
+    private TeamRepository teamRepository;
 
-    public MatchConverter(SpelerRepository spelerRepository, MatchRepository matchRepository) {
+    public MatchConverter(SpelerRepository spelerRepository, MatchRepository matchRepository, TeamRepository teamRepository) {
         this.spelerRepository = spelerRepository;
         this.matchRepository = matchRepository;
+        this.teamRepository = teamRepository;
     }
 
     // match to matchDTO
@@ -45,10 +48,13 @@ public class MatchConverter {
     // matchDTO to match
     public Match matchDTOToMatch(MatchDTO matchDTO){
 
+        Team teamBlue = teamRepository.getById(matchDTO.getTeamBlue().getId());
+        Team teamRed = teamRepository.getById(matchDTO.getTeamRed().getId());
+
         Match match = new Match();
         match.setId(matchDTO.getId());
-        /*match.setTeamBlue(teamConverter.createDTOtoTeam(matchDTO.getTeamBlue()));
-        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));*/
+        match.setTeamBlue(teamBlue);
+        match.setTeamRed(teamRed);
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
         match.setScoreRedTeam(matchDTO.getScoreRedTeam());
         match.setDatumtijd(matchDTO.getDatumtijd());
@@ -58,15 +64,20 @@ public class MatchConverter {
     // match to matchDTO
     public CreateMatchDTO matchToCreateMatchDTO(Match match){
 
+
         CreateMatchDTO matchDTO = new CreateMatchDTO();
-        matchDTO.setTeamBlue(teamConverter.teamToDTO(match.getTeamBlue()));
-        matchDTO.setTeamRed(teamConverter.teamToDTO(match.getTeamRed()));
+        matchDTO.setTeamBlueId(match.getTeamBlue().getId());
+        matchDTO.setTeamRedId(match.getTeamRed().getId());
         matchDTO.setDatumtijd(match.getDatumtijd());
         return matchDTO;
     }
 
     public List<CreateMatchDTO> matchListToDTO(List<Match> matches){
         return matches.stream().map(this::matchToCreateMatchDTO).collect(Collectors.toList());
+    }
+
+    public List<MatchDTO> matchListToMatchDTO(List<Match> matches){
+        return matches.stream().map(this::matchToMatchDTO).collect(Collectors.toList());
     }
 
     // match to matchstatsDTO
@@ -94,6 +105,7 @@ public class MatchConverter {
                 .id(spelerMatch.getId())
                 .speler(spelerMatch.getSpeler().getId())
                 .match(spelerMatch.getMatch().getId())
+                .teamId(spelerMatch.getTeamId())
                 .build();
     }
 
@@ -104,6 +116,7 @@ public class MatchConverter {
                 .id(spelerMatchDTO.getId())
                 .speler(speler)
                 .match(match)
+                .teamId(spelerMatchDTO.getTeamId())
                 .build();
     }
 

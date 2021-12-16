@@ -23,9 +23,11 @@ public class Team {
     private Set<SpelerTeam> spelers = new HashSet<>();
 
     @OneToMany(mappedBy = "teamBlue")
+    @JsonManagedReference("teamBlue")
     private Set<Match> matchesteamBlue = new HashSet<>();
 
     @OneToMany(mappedBy = "teamRed")
+    @JsonManagedReference("teamRed")
     private Set<Match> matchesteamRed = new HashSet<>();
 
     @ManyToOne

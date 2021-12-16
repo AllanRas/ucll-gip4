@@ -45,15 +45,13 @@ public class MatchService {
 
         Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
 
-        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
-        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
+        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlueId()));
+        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRedId()));
         match.setDatumtijd(matchDTO.getDatumtijd());
 
         Match newmatch = matchRepository.save(match);
 
         for (SpelerMatchDTO spelerMatchDTO: spelers) {
-
-
             Match matchspeler = matchRepository.getById(newmatch.getId());
             Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
 
@@ -68,8 +66,8 @@ public class MatchService {
     }
 
     //get all matches
-    public List<CreateMatchDTO> getAllMatches(){
-        return matchConverter.matchListToDTO(matchRepository.findAll());
+    public List<MatchDTO> getAllMatches(){
+        return matchConverter.matchListToMatchDTO(matchRepository.findAll());
     }
 
     //match results invoeren

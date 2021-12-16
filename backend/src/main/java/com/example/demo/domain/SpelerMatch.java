@@ -24,10 +24,14 @@ public class SpelerMatch {
     @JsonBackReference(value = "MatchSpelers")
     private Match match;
 
+    @Column(name = "teamId")
+    private long teamId;
+
     private SpelerMatch(Builder builder) {
         setId(builder.id);
         setMatch(builder.match);
         setSpeler(builder.speler);
+        setTeamId(builder.teamId);
     }
 
     public SpelerMatch() {
@@ -58,6 +62,14 @@ public class SpelerMatch {
         this.match = match;
     }
 
+    public long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(long teamId) {
+        this.teamId = teamId;
+    }
+
     @Override
     public String toString() {
         return "SpelerMatch{" +
@@ -71,6 +83,7 @@ public class SpelerMatch {
         private long id;
         private Speler speler;
         private Match match;
+        private long teamId;
 
         public Builder(){
 
@@ -80,6 +93,7 @@ public class SpelerMatch {
             this.id = copy.getId();
             this.speler = copy.getSpeler();
             this.match = copy.getMatch();
+            this.teamId = copy.getTeamId();
         }
 
         public Builder id(long val){
@@ -94,6 +108,11 @@ public class SpelerMatch {
 
         public Builder match(Match val){
             match = val;
+            return this;
+        }
+
+        public Builder teamId(long val){
+            teamId = val;
             return this;
         }
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/match")
+@RequestMapping("/matches")
 public class MatchResource {
 
     private final MatchService matchService;
@@ -39,7 +39,7 @@ public class MatchResource {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping
-    public List<CreateMatchDTO> getAllMatches(){
+    public List<MatchDTO> getAllMatches(){
         return matchService.getAllMatches();
     }
 
