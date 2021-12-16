@@ -9,10 +9,12 @@ import com.example.demo.dao.TeamRepository;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
+import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
+import liquibase.pro.packaged.T;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,12 +54,13 @@ public class MatchService {
         Match newmatch = matchRepository.save(match);
 
         for (SpelerMatchDTO spelerMatchDTO: spelers) {
-            Match matchspeler = matchRepository.getById(newmatch.getId());
-            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
+            Match matchspeler = matchRepository.findById(newmatch.getId()).orElseThrow();
+            Speler speler = spelerRepository.findById(spelerMatchDTO.getSpelerid()).orElseThrow();
 
             SpelerMatch spelerMatch = new SpelerMatch.Builder()
                     .match(matchspeler)
                     .speler(speler)
+                    .teamid(spelerMatchDTO.getTeamid())
                     .build();
 
             spelerMatchRepository.save(spelerMatch);
@@ -87,6 +90,7 @@ public class MatchService {
 
     public MatchDTO getById(long id){
         Optional<Match> match = matchRepository.findById(id);
+        matchConverter.matchListToMatchDTO(matchRepository.findAll());
         return matchConverter.matchToMatchDTO(match.orElseThrow());
     }
 

@@ -105,7 +105,7 @@ public class MatchConverter {
                 .id(spelerMatch.getId())
                 .speler(spelerMatch.getSpeler().getId())
                 .match(spelerMatch.getMatch().getId())
-                .teamId(spelerMatch.getTeamId())
+                .teamId(spelerMatch.getTeamid())
                 .build();
     }
 
@@ -116,7 +116,7 @@ public class MatchConverter {
                 .id(spelerMatchDTO.getId())
                 .speler(speler)
                 .match(match)
-                .teamId(spelerMatchDTO.getTeamId())
+                .teamid(spelerMatchDTO.getTeamid())
                 .build();
     }
 

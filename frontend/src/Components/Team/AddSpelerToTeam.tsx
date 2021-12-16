@@ -149,7 +149,8 @@ const AddSpelerToTeam = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
-                        <th></th>
+                        <th className="col-md-2"></th>
+                        <th className="col-md-2"></th>
                     </tr>
                     </thead>
 
@@ -162,7 +163,7 @@ const AddSpelerToTeam = () => {
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>
                                         <td>{speler.userDTO.achternaam}</td>
-                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Speler degraderen </Button></td>
+                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> degraderen </Button></td>
                                         <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
                             : ""
@@ -182,8 +183,8 @@ const AddSpelerToTeam = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
-                        <th></th>
-                        <th></th>
+                        <th className="col-md-2"></th>
+                        <th className="col-md-2"></th>
                     </tr>
                     </thead>
 
@@ -196,7 +197,7 @@ const AddSpelerToTeam = () => {
                                         <td>{speler.userDTO.username}</td>
                                         <td>{speler.userDTO.voornaam}</td>
                                         <td>{speler.userDTO.achternaam}</td>
-                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Speler Promoveren </Button></td>
+                                        <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Promoveren </Button></td>
                                         <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
                                     : ""
@@ -217,8 +218,8 @@ const AddSpelerToTeam = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
-                        <th> </th>
-                        <th> </th>
+                        <th className="col-md-1"> speler </th>
+                        <th className="col-md-1"> reserve </th>
                     </tr>
                     </thead>
 
@@ -231,8 +232,8 @@ const AddSpelerToTeam = () => {
                                     <td>{speler.userDTO.username}</td>
                                     <td>{speler.userDTO.voornaam}</td>
                                     <td>{speler.userDTO.achternaam}</td>
-                                    <td><Button onClick={() => PostAddSpeler(speler.id, false)}> Speler toevoegen </Button></td>
-                                    <td><Button onClick={() => PostAddSpeler(speler.id, true)}> Reserve Speler Toevoegen</Button></td>
+                                    <td><Button className="btn-success" onClick={() => PostAddSpeler(speler.id, false)}> + </Button></td>
+                                    <td><Button className="btn-warning" onClick={() => PostAddSpeler(speler.id, true)}> + </Button></td>
                                 </tr>
                             )
                         )

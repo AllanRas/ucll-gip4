@@ -2,7 +2,7 @@ import user from "../Login";
 import React from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {Table} from "react-bootstrap";
+import {Container, Table} from "react-bootstrap";
 
 const getTeamsURL = "http://localhost:8080/api/teams";
 
@@ -36,36 +36,39 @@ const Teams = () => {
 
     return(
         <>
-            <h1>Teams</h1>
-            <br/>
-            <Link to={"/AddTeam"}>Team toevoegen</Link>
-            <br/>
-            <br/>
-            <Table striped bordered hover variant={'dark'}>
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>naam</th>
-                    <th>manager</th>
-                    <th>actief</th>
-                    <th> </th>
-                </tr>
-                </thead>
+            <Container className="bg-dark text-white-50">
+                <h1>Teams</h1>
+                <br/>
+                <Link to={"/AddTeam"}>Team toevoegen</Link>
+                <br/>
+                <br/>
+                <Table striped bordered hover variant={'dark'}>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>naam</th>
+                        <th>manager</th>
+                        <th>actief</th>
+                        <th> </th>
+                    </tr>
+                    </thead>
 
-                <tbody>
-                {
-                    teams.map(team => (
-                        <tr key={team.id}>
-                            <td>{team.id}</td>
-                            <td>{team.naam}</td>
-                            <td>{team.managerDTO.userDTO.username}</td>
-                            <td>{team.actief ? "Ja" : "Nee" }</td>
-                            <td><Link to={"/Teams/" + team.id}>Details</Link></td>
-                        </tr>
-                    ))
-                }
-                </tbody>
-            </Table>
+                    <tbody>
+                    {
+                        teams.map(team => (
+                            <tr key={team.id}>
+                                <td>{team.id}</td>
+                                <td>{team.naam}</td>
+                                <td>{team.managerDTO.userDTO.username}</td>
+                                <td>{team.actief ? "Ja" : "Nee" }</td>
+                                <td><Link to={"/Teams/" + team.id}>Details</Link></td>
+                            </tr>
+                        ))
+                    }
+                    </tbody>
+                </Table>
+            </Container>
+
         </>
     )
 }

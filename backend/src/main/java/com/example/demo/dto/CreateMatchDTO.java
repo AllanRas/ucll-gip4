@@ -65,6 +65,17 @@ public class CreateMatchDTO implements Serializable {
         this.spelers = spelers;
     }
 
+    @Override
+    public String toString() {
+        return "CreateMatchDTO{" +
+                "id=" + id +
+                ", teamBlueId=" + teamBlueId +
+                ", teamRedId=" + teamRedId +
+                ", datumtijd=" + datumtijd +
+                ", spelers=" + spelers +
+                '}';
+    }
+
     public static final class Builder {
         private long id;
         private long teamBlueId;

@@ -1,4 +1,4 @@
-import {Table} from "react-bootstrap";
+import {Container, Table} from "react-bootstrap";
 import axios from 'axios';
 import React from "react";
 import {Link} from "react-router-dom";
@@ -49,13 +49,14 @@ const Spelers = () => {
 
     return(
         <>
-            <h1>Spelers</h1>
-            <br/>
-            <Link to={"/AddSpeler"}>Speler toevoegen</Link>
-            <br/>
-            <br/>
-            <Table striped bordered hover variant={'dark'}>
-                <thead>
+            <Container className="bg-dark text-white-50">
+                <h1>Spelers</h1>
+                <br/>
+                <Link to={"/AddSpeler"}>Speler toevoegen</Link>
+                <br/>
+                <br/>
+                <Table striped bordered hover variant={'dark'}>
+                    <thead>
                     <tr>
                         <th>id</th>
                         <th>username</th>
@@ -63,22 +64,23 @@ const Spelers = () => {
                         <th>achternaam</th>
                         <th> </th>
                     </tr>
-                </thead>
+                    </thead>
 
-                <tbody>
+                    <tbody>
                     {
                         spelers.map(speler => (
                             <tr key={speler.id}>
-                                        <td>{speler.id}</td>
-                                        <td>{speler.userDTO.username}</td>
-                                        <td>{speler.userDTO.voornaam}</td>
-                                        <td>{speler.userDTO.achternaam}</td>
-                                        <td><Link to={"/Spelers/" + speler.id}>Details</Link></td>
+                                <td>{speler.id}</td>
+                                <td>{speler.userDTO.username}</td>
+                                <td>{speler.userDTO.voornaam}</td>
+                                <td>{speler.userDTO.achternaam}</td>
+                                <td><Link to={"/Spelers/" + speler.id}>Details</Link></td>
                             </tr>
                         ))
                     }
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </Container>
         </>
     )
 }

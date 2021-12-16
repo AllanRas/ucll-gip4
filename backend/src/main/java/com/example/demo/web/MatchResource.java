@@ -34,6 +34,7 @@ public class MatchResource {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateMatchDTO addMatch(@RequestBody CreateMatchDTO createMatchDTO) {
         sendEmail();
+        System.out.println(createMatchDTO.toString());
         return matchService.addMatch(createMatchDTO);
     }
 

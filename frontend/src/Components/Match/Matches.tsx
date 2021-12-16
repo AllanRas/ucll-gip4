@@ -2,7 +2,7 @@ import user from "../Login";
 import React from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-import {Table} from "react-bootstrap";
+import {Container, Table} from "react-bootstrap";
 
 const getSpelersURL = "http://localhost:8080/api/matches";
 
@@ -57,38 +57,41 @@ const Matches = () => {
 
     return(
         <>
-            <h1>Matches</h1>
-            <br/>
-            <Link to={"/AddMatch"}>Match aanmaken</Link>
-            <br/>
-            <br/>
-            <Table striped bordered hover variant={'dark'}>
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>Team Blue</th>
-                    <th>Team Red</th>
-                    <th>score blue</th>
-                    <th>score red</th>
-                    <th> </th>
-                </tr>
-                </thead>
 
-                <tbody>
-                {
-                    matches.map(match => (
-                        <tr key={match.id}>
-                            <td>{match.id}</td>
-                            <td>{match.teamBlue.naam}</td>
-                            <td>{match.teamRed.naam}</td>
-                            <td>{match.scoreBlueTeam}</td>
-                            <td>{match.scoreRedTeam}</td>
-                            <td><Link to={"/Matches/" + match.id}>Details</Link></td>
-                        </tr>
-                    ))
-                }
-                </tbody>
-            </Table>
+            <Container className="bg-dark text-white-50">
+                <h1>Matches</h1>
+                <br/>
+                <Link to={"/AddMatch"}>Match aanmaken</Link>
+                <br/>
+                <br/>
+                <Table striped bordered hover variant={'dark'}>
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Team Blue</th>
+                        <th>Team Red</th>
+                        <th>score blue</th>
+                        <th>score red</th>
+                        <th> </th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {
+                        matches.map(match => (
+                            <tr key={match.id}>
+                                <td>{match.id}</td>
+                                <td>{match.teamBlue.naam}</td>
+                                <td>{match.teamRed.naam}</td>
+                                <td>{match.scoreBlueTeam}</td>
+                                <td>{match.scoreRedTeam}</td>
+                                <td><Link to={"/Matches/" + match.id}>Details</Link></td>
+                            </tr>
+                        ))
+                    }
+                    </tbody>
+                </Table>
+            </Container>
         </>
     )
 }

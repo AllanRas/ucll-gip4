@@ -12,7 +12,7 @@ interface CreateTeam {
     actief: boolean
 }
 
-const postSpelerURL = "http://localhost:8080/api/teams";
+const postTeamURL = "http://localhost:8080/api/teams";
 
 const AddTeam = () => {
 
@@ -29,7 +29,7 @@ const AddTeam = () => {
 
     const PostTeam = async () => {
         console.log(team)
-        await axios.post<CreateTeam>(postSpelerURL, team, {
+        await axios.post<CreateTeam>(postTeamURL, team, {
             headers: {
                 'Content-Type': 'application/json'
             },withCredentials : true
