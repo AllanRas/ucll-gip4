@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MatchService {
@@ -151,8 +148,13 @@ public class MatchService {
     }
 
     public List<MatchDTO> getBySpelerId(long spelerId){
-        SpelerMatch spelerMatch = spelerMatchRepository.findById(spelerId).orElseThrow();
-        return matchConverter.matchToMatchDTOList(matchRepository.findBySpelersContaining(spelerMatch).orElseThrow()) ;
+        Speler speler = spelerRepository.findById(spelerId).orElseThrow();
+        List<SpelerMatch> spelerMatches = spelerMatchRepository.findBySpeler(speler).orElseThrow();
+        List<MatchDTO> matches = new ArrayList<>();
+        for (SpelerMatch sp: spelerMatches) {
+            matches.add( matchConverter.matchToMatchDTO(matchRepository.findBySpelersContaining(sp).orElseThrow()));
+        }
+        return matches;
     }
 
     //match historiek

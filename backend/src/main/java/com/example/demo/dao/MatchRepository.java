@@ -14,5 +14,5 @@ import java.util.Set;
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
     Optional<List<Match>> findByTeamBlueOrTeamRed(Team team, Team team1);
-    Optional<List<Match>> findBySpelersContaining(SpelerMatch spelerMatch);
+    Optional<Match> findBySpelersContaining(SpelerMatch spelerMatch);
 }
