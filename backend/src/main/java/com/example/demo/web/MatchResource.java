@@ -19,9 +19,6 @@ public class MatchResource {
 
     private final MatchService matchService;
 
-    @Autowired
-    private EmailSenderService emailService;
-
     public MatchResource(MatchService matchService) {
         this.matchService = matchService;
     }
@@ -33,7 +30,6 @@ public class MatchResource {
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateMatchDTO addMatch(@RequestBody CreateMatchDTO createMatchDTO) {
-        sendEmail();
         System.out.println(createMatchDTO.toString());
         return matchService.addMatch(createMatchDTO);
     }
@@ -44,15 +40,10 @@ public class MatchResource {
         return matchService.getAllMatches();
     }
 
-    //stuurt een mail naar (de gegeven mail)
-    private void sendEmail(){
-        emailService.sendSimpleEmail("esportsemail.noreply@gmail.com","This is auto email","Test");
-    }
-
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/matchresult")
-    public MatchStatsDTO matchResultsInvoren(@RequestBody MatchStatsDTO matchStatsDTO){
-        return matchService.setResults(matchStatsDTO);
+    public MatchDTO matchResultsInvoren(@RequestBody MatchDTO matchDTO){
+        return matchService.setResults(matchDTO);
     }
 
 

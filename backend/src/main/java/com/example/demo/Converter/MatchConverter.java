@@ -42,6 +42,7 @@ public class MatchConverter {
         matchDTO.setScoreBlueTeam(match.getScoreBlueTeam());
         matchDTO.setScoreRedTeam(match.getScoreRedTeam());
         matchDTO.setDatumtijd(match.getDatumtijd());
+        matchDTO.setSpelers(spelerMatchSetToDTO(match.getSpelers()));
         return matchDTO;
     }
 
@@ -120,11 +121,11 @@ public class MatchConverter {
                 .build();
     }
 
-    public Set<SpelerMatch> dtoToSpelerTeamSet(Set<SpelerMatchDTO> spelerMatches){
+    public Set<SpelerMatch> dtoToSpelerMatchSet(Set<SpelerMatchDTO> spelerMatches){
         return spelerMatches.stream().map(this::dtoToSpelerMatch).collect(Collectors.toSet());
     }
 
-    public Set<SpelerMatchDTO> spelerTeamSetToDTO(Set<SpelerMatch> spelerMatches){
+    public Set<SpelerMatchDTO> spelerMatchSetToDTO(Set<SpelerMatch> spelerMatches){
         return spelerMatches.stream().map(this::spelerMatchToDTO).collect(Collectors.toSet());
     }
 }

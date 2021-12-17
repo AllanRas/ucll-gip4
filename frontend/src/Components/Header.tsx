@@ -68,6 +68,9 @@ const Header = () => {
                     <Navbar.Toggle />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
+                            <Nav.Link as={Link} to={"/Spelers/0"}>
+                                Speler gegevens
+                            </Nav.Link>
                             <Nav.Link as={Link} to={"/Teams"}>
                                 Teams
                             </Nav.Link>

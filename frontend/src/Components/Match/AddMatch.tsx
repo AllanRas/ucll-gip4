@@ -1,9 +1,8 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import DateTimePicker from 'react-datetime-picker';
-import DatePicker from 'react-datepicker';
-
+import {useNavigate} from "react-router-dom";
 
 interface Team {
     id : number
@@ -59,6 +58,7 @@ interface SpelerMatchDTO {
 
 const AddMatch = () => {
 
+    let navigate = useNavigate();
 
     //get all teams
     const getAllTeamsURL = "http://localhost:8080/api/teams/";
@@ -374,6 +374,7 @@ const AddMatch = () => {
                 </div>
                 <br/>
                 <Button onClick={() => matchAanmaken()}> Match aanmaken</Button>
+                <Button onClick={() => navigate("/Matches")}>Terug</Button>
             </Container>
         </>
     )

@@ -15,6 +15,7 @@ import Team from "./Components/Team/Team";
 import AddSpelerToTeam from "./Components/Team/AddSpelerToTeam";
 import Matches from "./Components/Match/Matches";
 import AddMatch from "./Components/Match/AddMatch";
+import Match from "./Components/Match/Match";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
 
                             <Route path="/Matches" element={<Matches/>}/>
                             <Route path="/AddMatch" element={<AddMatch/>}/>
+                            <Route path="/Matches/:id"  element={<Match/>}/>
 
                             <Route path="/Login" element={<Login/>}/>
                         </>
