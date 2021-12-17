@@ -14,6 +14,7 @@ import com.example.demo.domain.Speler;
 import com.example.demo.dto.*;
 import com.example.demo.dto.match.MatchStatsDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
+import com.example.demo.dto.match.MatchStatsDTO;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
@@ -248,6 +249,138 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                         .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getAllMatches() throws Exception{
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
+                .with(httpBasic("manager","manager"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void matchResultsInvoeren() throws Exception{
+        // Given
+        team1 = teamService.getTeamById(createTeam1.getId());
+        team2 = teamService.getTeamById(createTeam2.getId());
+
+        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
+                .speler(josPatat.getId())
+                .build();
+
+        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
+                .speler(bert.getId())
+                .build();
+
+        List<SpelerMatchDTO> spelers = new ArrayList<>();
+
+        spelers.add(spelerMatchDTO1);
+        spelers.add(spelerMatchDTO2);
+
+        MatchDTO matchDTOUpdated = new MatchDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1)
+                .teamRed(team2)
+                .scoreBlueTeam(2)
+                .scoreRedTeam(2)
+                .spelers(new HashSet<>(spelers))
+                .build();
+
+        // When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/match/{id}/matchresult", match2.getId())
+                .with(httpBasic("manager", "manager"))
+                .content(toJson(matchDTOUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        MvcResult result =  perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        MatchDTO updated = fromMvcResult(result, MatchDTO.class);
+
+        // Then
+        assertNotEquals(updated.getScoreBlueTeam(), match2.getScoreBlueTeam());
+        assertNotEquals(updated.getScoreRedTeam(), match2.getScoreRedTeam());
+    }
+
+    @Test
+    void matchStatsVanAlleTeams() throws Exception {
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+                    .with(httpBasic("manager","manager"))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+
+        //Foute Auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void matxhStatsVan1Team() throws Exception {
+        // Given
+        team1 = teamService.getTeamById(createTeam1.getId());
+        //Manager
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+                        .with(httpBasic("manager","manager"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Speler
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    //SPELER
+
+    @Test
+    void allPreviousMatches() throws Exception{
+        // Given
+        team1 = teamService.getTeamById(createTeam1.getId());
+
+        // Speler
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/{id}", team1.getId())
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // foute auth
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory{id}", team1.getId())
+                        .with(httpBasic("",""))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void eigenPreviousMatches() throws Exception{
+
+        // Speler
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/speler/{id}", josPatat.getId())
+                        .with(httpBasic("speler","speler"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void name() {
     }
 
     @Test

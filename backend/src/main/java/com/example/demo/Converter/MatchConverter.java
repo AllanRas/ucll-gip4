@@ -53,6 +53,8 @@ public class MatchConverter {
 
         Match match = new Match();
         match.setId(matchDTO.getId());
+        match.setTeamBlue(teamConverter.DTOtoTeam(matchDTO.getTeamBlue()));
+        match.setTeamRed(teamConverter.DTOtoTeam(matchDTO.getTeamRed()));
         match.setTeamBlue(teamBlue);
         match.setTeamRed(teamRed);
         match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
@@ -83,7 +85,6 @@ public class MatchConverter {
     // match to matchstatsDTO
     public MatchStatsDTO matchToMatchStatsDTO(Match match){
         MatchStatsDTO matchStatsDTO = new MatchStatsDTO();
-
 
         matchStatsDTO.setScoreBlueTeam(match.getScoreBlueTeam());
         matchStatsDTO.setScoreRedTeam(match.getScoreRedTeam());
@@ -132,5 +133,4 @@ public class MatchConverter {
     public Set<SpelerMatchDTO> spelerTeamSetToDTO(Set<SpelerMatch> spelerMatches){
         return spelerMatches.stream().map(this::spelerMatchToDTO).collect(Collectors.toSet());
     }
-
 }

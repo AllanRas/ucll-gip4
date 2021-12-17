@@ -13,6 +13,7 @@ import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
 import liquibase.pro.packaged.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -97,6 +98,36 @@ public class MatchService {
         return matchConverter.matchToMatchDTO(newmatch);
     }
 
+    public MatchDTO createMatch(MatchDTO matchDTO){
+        Match match = new Match();
+        Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
+
+        match.setId(matchDTO.getId());
+        match.setDatumtijd(matchDTO.getDatumtijd());
+        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
+        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
+        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
+        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
+        match.setDatumtijd(matchDTO.getDatumtijd());
+
+        Match newmatch = matchRepository.save(match);
+
+        for (SpelerMatchDTO spelerMatchDTO: spelers) {
+
+
+            Match matchspeler = matchRepository.getById(newmatch.getId());
+            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
+
+            SpelerMatch spelerMatch = new SpelerMatch.Builder()
+                    .match(matchspeler)
+                    .speler(speler)
+                    .build();
+
+            spelerMatchRepository.save(spelerMatch);
+        }
+        return matchConverter.matchToMatchDTO(newmatch);
+    }
+
     //get all matches
     public List<MatchDTO> getAllMatches(){
         return matchConverter.matchListToMatchDTO(matchRepository.findAll());
@@ -126,6 +157,13 @@ public class MatchService {
 
     public MatchDTO getById(long id){
         Optional<Match> match = matchRepository.findById(id);
+
+        if (match.isPresent()){
+            Match newMatch = match.get();
+
+            matchRepository.save(newMatch);
+        }
+
         matchConverter.matchListToMatchDTO(matchRepository.findAll());
 
         if (match.isPresent()){
