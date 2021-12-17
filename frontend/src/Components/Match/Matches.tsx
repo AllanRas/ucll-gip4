@@ -70,11 +70,12 @@ const Matches = () => {
                     <thead>
                     <tr>
                         <th className="col-md-0">id</th>
-                        <th className="col-md-4">Team Blue</th>
-                        <th className="col-md-4">Team Red</th>
-                        <th className="col-md-1">blue - red</th>
+                        <th className="col-md-3">Team Blue</th>
+                        <th className="col-md-3">Team Red</th>
+                        <th>won</th>
+                        <th className="col-md-0">blue - red</th>
                         <th className="col-md-2">datum en tijd</th>
-                        <th> </th>
+                        <th className="col-md-2"> </th>
                     </tr>
                     </thead>
 
@@ -85,9 +86,14 @@ const Matches = () => {
                                 <td>{match.id}</td>
                                 <td>{match.teamBlue.naam}</td>
                                 <td>{match.teamRed.naam}</td>
+                                <td>{
+                                    match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---":
+                                    match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam :  match.teamRed.naam
+                                }
+                                </td>
                                 <td>{match.scoreBlueTeam} - {match.scoreRedTeam}</td>
                                 <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
-                                <td><Link to={"/Matches/" + match.id}>Details</Link></td>
+                                <td><Link to={"/Matches/" + match.id}>Details & Score</Link></td>
                             </tr>
                         ))
                     }

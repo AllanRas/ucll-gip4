@@ -77,14 +77,6 @@ const Header = () => {
                             <Nav.Link as={Link} to={"/Matches"}>
                                 Matches
                             </Nav.Link>
-                            <NavDropdown title={"exampleDropdown"} menuVariant={"dark"}>
-                                <NavDropdown.Item>
-                                    <Nav.Link as={Link} to={"/example1"}>example1</Nav.Link>
-                                </NavDropdown.Item>
-                                <NavDropdown.Item>
-                                    <Nav.Link as={Link} to={"/example2"}>example2</Nav.Link>
-                                </NavDropdown.Item>
-                            </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
