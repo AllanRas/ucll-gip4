@@ -2,6 +2,7 @@ package com.example.demo.web;
 
 import com.example.demo.AbstractIntegrationTest;
 import com.example.demo.Converter.MatchConverter;
+import com.example.demo.Converter.SpelerConverter;
 import com.example.demo.Converter.TeamConverter;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.MatchService;
@@ -66,6 +67,9 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
     @Autowired
     private TeamConverter converter;
+
+    @Autowired
+    private SpelerConverter spelerConverter;
 
     private MockMvc mockMvc;
     private CreateMatchDTO match1;
@@ -194,8 +198,8 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
         match1 = new CreateMatchDTO.Builder()
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
+                .teamBlue(team1.getId())
+                .teamRed(team2.getId())
                 .spelers(new HashSet<>(spelers))
                 .build();
 
@@ -207,11 +211,10 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
         team2 = new TeamDTO.Builder()
                 .naam("TestRed")
-                .actief(true)
-                .build();
+                .actief(true)/*
                 .teamBlue(team1.getId())
                 .teamRed(team2.getId())
-                .spelers(spelers)
+                .spelers(spelers)*/
                 .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/matches")
@@ -252,20 +255,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void getAllMatches() throws Exception{
-        //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
-                .with(httpBasic("manager","manager"))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
     void matchResultsInvoeren() throws Exception{
         // Given
         team1 = teamService.getTeamById(createTeam1.getId());
@@ -294,7 +283,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .build();
 
         // When
-        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/match/{id}/matchresult", match2.getId())
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/matches/{id}/matchresult", match2.getId())
                 .with(httpBasic("manager", "manager"))
                 .content(toJson(matchDTOUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -314,13 +303,13 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     @Test
     void matchStatsVanAlleTeams() throws Exception {
         //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/allteam")
                     .with(httpBasic("manager","manager"))
                     .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk());
 
         //Foute Auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/allteam")
                         .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
@@ -331,19 +320,19 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         // Given
         team1 = teamService.getTeamById(createTeam1.getId());
         //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
                         .with(httpBasic("manager","manager"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
                         .with(httpBasic("speler","speler"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
 
         // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
                         .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
@@ -357,13 +346,13 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         team1 = teamService.getTeamById(createTeam1.getId());
 
         // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/{id}", team1.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory/{id}", team1.getId())
                         .with(httpBasic("speler","speler"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory{id}", team1.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory{id}", team1.getId())
                         .with(httpBasic("",""))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
@@ -372,146 +361,13 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     @Test
     void eigenPreviousMatches() throws Exception{
 
+        Speler speler = spelerConverter.dtoToSpeler(spelerService.getById(josPatat.getId()));
+
         // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/speler/{id}", josPatat.getId())
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory/speler/{id}", speler.getId())
                         .with(httpBasic("speler","speler"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void name() {
-    }
-
-    @Test
-    void getAllMatches() throws Exception{
-        //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
-                .with(httpBasic("manager","manager"))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-        // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match")
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void matchResultsInvoeren() throws Exception{
-        // Given
-        team1 = teamService.getTeamById(createTeam1.getId());
-        team2 = teamService.getTeamById(createTeam2.getId());
-
-        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
-                .speler(josPatat.getId())
-                .build();
-
-        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
-                .speler(bert.getId())
-                .build();
-
-        List<SpelerMatchDTO> spelers = new ArrayList<>();
-
-        spelers.add(spelerMatchDTO1);
-        spelers.add(spelerMatchDTO2);
-
-        MatchDTO matchDTOUpdated = new MatchDTO.Builder()
-                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
-                .scoreBlueTeam(2)
-                .scoreRedTeam(2)
-                .spelers(new HashSet<>(spelers))
-                .build();
-
-        // When
-        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/match/{id}/matchresult", match2.getId())
-                .with(httpBasic("manager", "manager"))
-                .content(toJson(matchDTOUpdated))
-                .contentType(MediaType.APPLICATION_JSON)
-        );
-
-        MvcResult result =  perform
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists()).andReturn();
-
-        MatchDTO updated = fromMvcResult(result, MatchDTO.class);
-
-        // Then
-        assertNotEquals(updated.getScoreBlueTeam(), match2.getScoreBlueTeam());
-        assertNotEquals(updated.getScoreRedTeam(), match2.getScoreRedTeam());
-    }
-
-    @Test
-    void matchStatsVanAlleTeams() throws Exception {
-        //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
-                    .with(httpBasic("manager","manager"))
-                    .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk());
-
-        //Foute Auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/allteam")
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void matxhStatsVan1Team() throws Exception {
-        // Given
-        team1 = teamService.getTeamById(createTeam1.getId());
-        //Manager
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
-                        .with(httpBasic("manager","manager"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
-                        .with(httpBasic("speler","speler"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden());
-
-        // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchstats/{id}", team1.getId())
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
-
-    //SPELER
-
-    @Test
-    void allPreviousMatches() throws Exception{
-        // Given
-        team1 = teamService.getTeamById(createTeam1.getId());
-
-        // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/{id}", team1.getId())
-                        .with(httpBasic("speler","speler"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory{id}", team1.getId())
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void eigenPreviousMatches() throws Exception{
-
-        // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/match/matchhistory/speler/{id}", josPatat.getId())
-                        .with(httpBasic("speler","speler"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void name() {
-    }
 }

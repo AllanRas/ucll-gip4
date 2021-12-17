@@ -98,36 +98,6 @@ public class MatchService {
         return matchConverter.matchToMatchDTO(newmatch);
     }
 
-    public MatchDTO createMatch(MatchDTO matchDTO){
-        Match match = new Match();
-        Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
-
-        match.setId(matchDTO.getId());
-        match.setDatumtijd(matchDTO.getDatumtijd());
-        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
-        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
-        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
-        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
-        match.setDatumtijd(matchDTO.getDatumtijd());
-
-        Match newmatch = matchRepository.save(match);
-
-        for (SpelerMatchDTO spelerMatchDTO: spelers) {
-
-
-            Match matchspeler = matchRepository.getById(newmatch.getId());
-            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
-
-            SpelerMatch spelerMatch = new SpelerMatch.Builder()
-                    .match(matchspeler)
-                    .speler(speler)
-                    .build();
-
-            spelerMatchRepository.save(spelerMatch);
-        }
-        return matchConverter.matchToMatchDTO(newmatch);
-    }
-
     //get all matches
     public List<MatchDTO> getAllMatches(){
         return matchConverter.matchListToMatchDTO(matchRepository.findAll());
@@ -181,8 +151,8 @@ public class MatchService {
     }
 
     public List<MatchDTO> getBySpelerId(long spelerId){
-        Speler speler = spelerRepository.findById(spelerId).orElseThrow();
-        return matchConverter.matchToMatchDTOList(matchRepository.findBySpelers(speler).orElseThrow()) ;
+        SpelerMatch spelerMatch = spelerMatchRepository.findById(spelerId).orElseThrow();
+        return matchConverter.matchToMatchDTOList(matchRepository.findBySpelersContaining(spelerMatch).orElseThrow()) ;
     }
 
     //match historiek
