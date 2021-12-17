@@ -142,7 +142,7 @@ const AddSpeler = () => {
                             </Col>
                         </Row>
 
-                        <Form.Group className={"mb-3"}>
+                        <Form.Group className={"mb-3"} controlId="formBasicEmail">
                             <Form.Label>Email</Form.Label>
                             <Form.Control name="email"
                                           type={"email"}
@@ -213,7 +213,7 @@ const AddSpeler = () => {
 
                         <Row className="justify-content-center">
                             <Col lg="3">
-                                <Button variant={"primary"}  onClick={() => PostSpeler()}>
+                                <Button variant={"primary"} type="submit" onClick={() => PostSpeler()}>
                                     Submit
                                 </Button>
                             </Col>

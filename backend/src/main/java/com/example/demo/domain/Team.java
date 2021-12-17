@@ -1,5 +1,8 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,17 +18,21 @@ public class Team {
     @Column(name = "NAAM")
     private String naam;
 
-    @OneToMany
+    @OneToMany(mappedBy = "team")
+    @JsonManagedReference(value = "TeamSpeler")
     private Set<SpelerTeam> spelers = new HashSet<>();
 
-    @OneToMany
-    private Set<ReserveSpelerTeam> reservespelers = new HashSet<>();
+    @OneToMany(mappedBy = "teamBlue")
+    @JsonManagedReference("teamBlue")
+    private Set<Match> matchesteamBlue = new HashSet<>();
 
-    @OneToMany
-    private Set<Match> matches = new HashSet<>();
+    @OneToMany(mappedBy = "teamRed")
+    @JsonManagedReference("teamRed")
+    private Set<Match> matchesteamRed = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "MANAGER_ID")
+    @JsonBackReference("ManagerTeams")
     private Manager manager;
 
     @Column(name = "ACTIEF")
@@ -39,8 +46,8 @@ public class Team {
         setId(builder.id);
         setNaam(builder.naam);
         setSpelers(builder.spelers);
-        setReservespelers(builder.reservespelers);
-        setMatches(builder.matches);
+        setMatchesteamBlue(builder.matchesteamBlue);
+        setMatchesteamRed(builder.matchesteamRed);
         setManager(builder.manager);
         setActief(builder.actief);
     }
@@ -69,20 +76,20 @@ public class Team {
         this.spelers = spelers;
     }
 
-    public Set<ReserveSpelerTeam> getReservespelers() {
-        return reservespelers;
+    public Set<Match> getMatchesteamBlue() {
+        return matchesteamBlue;
     }
 
-    public void setReservespelers(Set<ReserveSpelerTeam> reservespelers) {
-        this.reservespelers = reservespelers;
+    public void setMatchesteamBlue(Set<Match> matchesteamBlue) {
+        this.matchesteamBlue = matchesteamBlue;
     }
 
-    public Set<Match> getMatches() {
-        return matches;
+    public Set<Match> getMatchesteamRed() {
+        return matchesteamRed;
     }
 
-    public void setMatches(Set<Match> matches) {
-        this.matches = matches;
+    public void setMatchesteamRed(Set<Match> matchesteamRed) {
+        this.matchesteamRed = matchesteamRed;
     }
 
     public Manager getManager() {
@@ -107,8 +114,8 @@ public class Team {
                 "id=" + id +
                 ", naam='" + naam + '\'' +
                 ", spelers=" + spelers +
-                ", reservespelers=" + reservespelers +
-                ", matches=" + matches +
+                ", matchesteamBlue=" + matchesteamBlue +
+                ", matchesteamRed=" + matchesteamRed +
                 ", manager=" + manager +
                 ", actief=" + actief +
                 '}';
@@ -118,8 +125,8 @@ public class Team {
         private long id;
         private String naam;
         private Set<SpelerTeam> spelers = new HashSet<>();
-        private Set<ReserveSpelerTeam> reservespelers = new HashSet<>();
-        private Set<Match> matches = new HashSet<>();
+        private Set<Match> matchesteamBlue = new HashSet<>();
+        private Set<Match> matchesteamRed = new HashSet<>();
         private Manager manager;
         private boolean actief;
 
@@ -131,8 +138,8 @@ public class Team {
             this.id = copy.getId();
             this.naam = copy.getNaam();
             this.spelers = copy.getSpelers();
-            this.reservespelers = copy.getReservespelers();
-            this.matches = copy.getMatches();
+            this.matchesteamBlue = copy.getMatchesteamBlue();
+            this.matchesteamRed = copy.getMatchesteamRed();
             this.manager = copy.getManager();
             this.actief = copy.isActief();
         }
@@ -152,13 +159,13 @@ public class Team {
             return this;
         }
 
-        public Builder reservespelers(Set<ReserveSpelerTeam> val){
-            reservespelers = val;
+        public Builder matchesteamBlue(Set<Match> val){
+            matchesteamBlue = val;
             return this;
         }
 
-        public Builder matches(Set<Match> val){
-            matches = val;
+        public Builder matchesteamRed(Set<Match> val){
+            matchesteamRed = val;
             return this;
         }
 

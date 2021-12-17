@@ -16,6 +16,9 @@
             <column name="team_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="reserve" type="boolean">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_spelerteam_speler"

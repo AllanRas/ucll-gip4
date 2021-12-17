@@ -2,7 +2,6 @@ package com.example.demo.web;
     
 import com.example.demo.Services.SpelerService;
 import com.example.demo.config.UserPrincipal;
-import com.example.demo.config.UserUserDetailService;
 import com.example.demo.domain.User;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
@@ -23,11 +22,9 @@ import java.util.List;
 public class SpelerResource {
 
     private final SpelerService spelerService;
-    private final UserUserDetailService userUserDetailService;
 
-    public SpelerResource(SpelerService spelerService, UserUserDetailService userUserDetailService){
+    public SpelerResource(SpelerService spelerService){
         this.spelerService = spelerService;
-        this.userUserDetailService = userUserDetailService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,22 +45,21 @@ public class SpelerResource {
     @GetMapping(value = "/{id}/getOne")
     public ResponseEntity<SpelerDTO> getById(@PathVariable("id") long id){
 
-        SpelerDTO spelerDTO = spelerService.getById(id);
-
         // Get the logged in user
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+        boolean isManagerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_MANAGER"));
 
-        System.out.println(isSpelerRole);
+        SpelerDTO spelerDTO = new SpelerDTO();
+
+        if(isManagerRole){
+            spelerDTO = spelerService.getById(id);
+        }
 
         // check if user is in SPELER role
         if(isSpelerRole){
-            User ingelogdeUser = userPrincipal.getUser();
+            spelerDTO = spelerService.getByIdAndUser(id, userPrincipal);
 
-            // check if logged in user id equals to get speler user id if not return forbidden
-            if(!(ingelogdeUser.getId() == spelerDTO.getUserDTO().getId())){
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
         }
         return new ResponseEntity<SpelerDTO>(spelerDTO, HttpStatus.ACCEPTED);
     }

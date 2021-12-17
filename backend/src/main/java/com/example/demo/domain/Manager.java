@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +18,8 @@ public class Manager {
     @JoinColumn(name="USER_ID")
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "manager")
+    @JsonManagedReference("ManagerTeams")
     private Set<Team> teams = new HashSet<>();
 
     public Manager(){

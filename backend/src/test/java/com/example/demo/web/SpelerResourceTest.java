@@ -48,6 +48,8 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
 
     private CreateSpelerDTO josPatat;
 
+    private CreateSpelerDTO bert;
+
     private ManagerDTO jefManager;
 
     @BeforeEach
@@ -67,6 +69,24 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
                         .username("JPatat")
                         .role("SPELER")
                         .email("Jpatat@gmail.com").build())
+                .adres(new AdresDTO.Builder()
+                        .gemeente("Leuven")
+                        .straat("straat in leuven")
+                        .huisnummer("42")
+                        .postcode("3000")
+                        .build())
+                .build();
+
+        bert = new CreateSpelerDTO.Builder()
+                .actief(true)
+                .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1992-07-03"))
+                .password("password")
+                .user(new UserDTO.Builder()
+                        .voornaam("bert")
+                        .achternaam("achternaam")
+                        .username("BertA")
+                        .role("SPELER")
+                        .email("BertA@gmail.com").build())
                 .adres(new AdresDTO.Builder()
                         .gemeente("Leuven")
                         .straat("straat in leuven")
@@ -112,9 +132,63 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
         assertEquals(gemaakteSpeler.getAdresDTO().getStraat(), josPatat.getAdresDTO().getStraat());
     }
 
-    // Werkt nog niet, weet niet waarom
     @Test
-    void updateSpeler() throws Exception {
+    void updateSpelerAsSpeler() throws Exception {
+        // Given
+        SpelerDTO josPatatDTO = spelerService.createSpeler(josPatat);
+        SpelerDTO bertDTO = spelerService.createSpeler(bert);
+
+        // update de voornaam en achternaam
+        SpelerDTO josUpdated = new SpelerDTO.Builder()
+                .id((long)0)
+                .actief(true)
+                .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
+                .user(new UserDTO.Builder()
+                        .voornaam("Josupdated")
+                        .achternaam("Patatupdated")
+                        .username("JPatat")
+                        .email("Jpatat@gmail.com")
+                        .role("SPELER")
+                        .id((long)0)
+                        .build())
+                .adres(new AdresDTO.Builder()
+                        .gemeente("Leuven")
+                        .straat("straat in leuven")
+                        .huisnummer("42")
+                        .postcode("3000")
+                        .id((long)0)
+                        .build())
+                .build();
+
+        //When
+        //update speler eigen gegevens
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/spelers/{id}/update", josPatatDTO.getId())
+                .with(httpBasic(josPatat.getUserDTO().getUsername(),josPatat.getPassword()))
+                .content(toJson(josUpdated))
+                .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        MvcResult result =  perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        // update speler met een andere speler geeft Forbidden 403
+        ResultActions perform2 = this.mockMvc.perform(MockMvcRequestBuilders.put("/spelers/{id}/update", josPatatDTO.getId())
+                        .with(httpBasic(bert.getUserDTO().getUsername(),bert.getPassword()))
+                        .content(toJson(bertDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+        perform2.andExpect(status().isForbidden());
+
+        SpelerDTO  updatedSpeler= fromMvcResult(result,SpelerDTO.class);
+
+        // Then
+        assertNotEquals(updatedSpeler.getUserDTO().getVoornaam(), josPatat.getUserDTO().getVoornaam());
+        assertNotEquals(updatedSpeler.getUserDTO().getAchternaam(), josPatat.getUserDTO().getAchternaam());
+    }
+
+    @Test
+    void updateSpelerAsManager() throws Exception {
         // Given
         SpelerDTO josPatatDTO = spelerService.createSpeler(josPatat);
 
@@ -140,20 +214,10 @@ public class SpelerResourceTest extends AbstractIntegrationTest {
                         .build())
                 .build();
 
-        System.out.println(josPatat.toString());
-        System.out.println(josPatatDTO.toString());
-        System.out.println(josUpdated);
-        System.out.println(josPatatDTO.getId());
-
-        String mapper = toJson(josUpdated);
-
-        System.out.println(mapper);
-
-
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/spelers/{id}/update", josPatatDTO.getId())
                 .with(httpBasic(josPatat.getUserDTO().getUsername(),josPatat.getPassword()))
-                .contentType(toJson(josUpdated))
+                .content(toJson(josUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
         );
 

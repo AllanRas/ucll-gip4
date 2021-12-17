@@ -15,6 +15,9 @@
             <column name="match_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="team_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_spelermatch_speler"

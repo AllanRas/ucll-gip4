@@ -1,14 +1,11 @@
 package com.example.demo.Converter;
 
 import com.example.demo.domain.Speler;
-import com.example.demo.domain.User;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
-import com.example.demo.dto.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
