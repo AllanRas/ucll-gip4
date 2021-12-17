@@ -168,8 +168,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
                 .teamBlue(converter.createDTOtoTeamDTO(createTeam1))
                 .teamRed(converter.createDTOtoTeamDTO(createTeam2))
-                .scoreBlueTeam(1)
-                .scoreRedTeam(1)
                 .spelers(new HashSet<>(spelers))
                 .build());
     }
@@ -273,17 +271,13 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         spelers.add(spelerMatchDTO1);
         spelers.add(spelerMatchDTO2);
 
-        MatchDTO matchDTOUpdated = new MatchDTO.Builder()
-                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(team1)
-                .teamRed(team2)
-                .scoreBlueTeam(2)
-                .scoreRedTeam(2)
-                .spelers(new HashSet<>(spelers))
-                .build();
+        MatchDTO matchDTOUpdated = matchService.createMatch(match2);
+
+        matchDTOUpdated.setScoreBlueTeam(5);
+        matchDTOUpdated.setScoreRedTeam(7);
 
         // When
-        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/matches/{id}/matchresult", match2.getId())
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/matches/matchresult")
                 .with(httpBasic("manager", "manager"))
                 .content(toJson(matchDTOUpdated))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -296,8 +290,11 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         MatchDTO updated = fromMvcResult(result, MatchDTO.class);
 
         // Then
-        assertNotEquals(updated.getScoreBlueTeam(), match2.getScoreBlueTeam());
-        assertNotEquals(updated.getScoreRedTeam(), match2.getScoreRedTeam());
+        assertNotEquals(updated.getScoreBlueTeam(), 0);
+        assertNotEquals(updated.getScoreRedTeam(), 0);
+        assertEquals(updated.getScoreRedTeam(), 7);
+        assertEquals(updated.getScoreBlueTeam(), 5);
+
     }
 
     @Test

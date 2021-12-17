@@ -14,6 +14,7 @@ import com.example.demo.dao.TeamRepository;
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
+import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;

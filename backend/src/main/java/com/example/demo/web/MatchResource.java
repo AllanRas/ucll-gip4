@@ -45,7 +45,6 @@ public class MatchResource {
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateMatchDTO addMatch(@RequestBody CreateMatchDTO createMatchDTO) {
-        System.out.println(createMatchDTO.toString());
         return matchService.addMatch(createMatchDTO);
     }
 
@@ -54,6 +53,7 @@ public class MatchResource {
     public List<MatchDTO> getAllMatches(){
         return matchService.getAllMatches();
     }
+
     @PreAuthorize("hasRole('MANAGER')")
     @PutMapping("/matchresult")
     public MatchDTO matchResultsInvoren(@RequestBody MatchDTO matchDTO){
