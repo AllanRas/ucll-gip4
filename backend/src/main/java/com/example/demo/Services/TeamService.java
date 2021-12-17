@@ -80,21 +80,16 @@ public class TeamService {
     }
 
 
-    public TeamDTO updateTeamNaam(long id, TeamDTO teamDTO){
+    public TeamDTO updateTeamNaam(long teamid, String naam, long managerid){
+        Team team = teamRepository.findById(teamid).orElseThrow();
 
-        Optional<Team> team = teamRepository.findById(id);
-
-        if(team.isPresent()){
-            Team updateTeamNaam = teamConverter.DTOtoTeam(teamDTO);
-            Team newTeam = team.get();
-
-            // Team.Naam update
-            newTeam.setNaam(updateTeamNaam.getNaam());
-
-            //Team update
-            teamRepository.save(newTeam);
+        if(team.getManager().getId() != managerid){
+            return null;
+        }else{
+            team.setNaam(naam);
         }
-        return teamConverter.teamToDTO(team.orElseThrow());
+        return teamConverter.teamToDTO(teamRepository.save(team));
+    }
 
     public List<TeamDTO> getAllTeams(){
         return teamConverter.teamListToDTO(teamRepository.findAll());

@@ -119,6 +119,33 @@ public class TeamResourceTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void changeTeamNaam() throws Exception {
+        // Given
+        ManagerDTO managerDTO = managerService.createManager(jefManager);
+
+        CreateTeamDTO createTeamDTO = new CreateTeamDTO.Builder()
+                .naam("voor update")
+                .build();
+
+        CreateTeamDTO team = teamService.createTeam(createTeamDTO, managerDTO.getId());
+
+        String naupdate = "na update";
+
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.put("/teams/{id}/update/{teamNaam}", team.getId(),naupdate)
+                .with(httpBasic(jefManager.getUserDTO().getUsername(),jefManager.getPasswoord()))
+        );
+
+        MvcResult result = perform
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists()).andReturn();
+
+        TeamDTO updatedTeam = fromMvcResult(result, TeamDTO.class);
+
+        assertEquals(updatedTeam.getNaam(),naupdate);
+
+    }
+
+    @Test
     void addSpelerToTeam() throws Exception{
         // Given
         SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);

@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/matches")
+@CrossOrigin("http://localhost:3000/")
 public class MatchResource {
 
     private final MatchService matchService;

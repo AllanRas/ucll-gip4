@@ -96,12 +96,13 @@ public class TeamResource {
     //TeamNaam wijzigen van een Team
     @Transactional
     @PreAuthorize("hasAnyRole('MANAGER')")
-    @PutMapping(value = "/{id}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TeamDTO> updateTeamNaam(@PathVariable("id") long id, @RequestBody TeamDTO teamDTO){
-
-        TeamDTO updateTeamNaam = teamService.updateTeamNaam(id, teamDTO);
+    @PutMapping(value = "/{id}/update/{teamNaam}")
+    public ResponseEntity<TeamDTO> updateTeamNaam(@PathVariable("id") long id, @PathVariable("teamNaam") String teamNaam){
+        // Get manager from authentication
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
+        TeamDTO updateTeamNaam = teamService.updateTeamNaam(id, teamNaam, managerDTO.getId());
         return new ResponseEntity<TeamDTO>(updateTeamNaam, HttpStatus.OK);
     }
-}
 }
 
