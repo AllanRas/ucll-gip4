@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {Container, Table} from "react-bootstrap";
+import moment from "moment";
 
 const getSpelersURL = "http://localhost:8080/api/matches";
 
@@ -12,6 +13,7 @@ interface Match {
     teamRed : Team
     scoreBlueTeam : number
     scoreRedTeam : number
+    datumtijd: Date
 }
 
 interface Team {
@@ -67,12 +69,13 @@ const Matches = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th>id</th>
-                        <th>Team Blue</th>
-                        <th>Team Red</th>
-                        <th>score blue</th>
-                        <th>score red</th>
-                        <th> </th>
+                        <th className="col-md-0">id</th>
+                        <th className="col-md-3">Team Blue</th>
+                        <th className="col-md-3">Team Red</th>
+                        <th>won</th>
+                        <th className="col-md-0">blue - red</th>
+                        <th className="col-md-2">datum en tijd</th>
+                        <th className="col-md-2"> </th>
                     </tr>
                     </thead>
 
@@ -83,9 +86,14 @@ const Matches = () => {
                                 <td>{match.id}</td>
                                 <td>{match.teamBlue.naam}</td>
                                 <td>{match.teamRed.naam}</td>
-                                <td>{match.scoreBlueTeam}</td>
-                                <td>{match.scoreRedTeam}</td>
-                                <td><Link to={"/Matches/" + match.id}>Details</Link></td>
+                                <td>{
+                                    match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---":
+                                    match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam :  match.teamRed.naam
+                                }
+                                </td>
+                                <td>{match.scoreBlueTeam} - {match.scoreRedTeam}</td>
+                                <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
+                                <td><Link to={"/Matches/" + match.id}>Details & Score</Link></td>
                             </tr>
                         ))
                     }

@@ -1,6 +1,8 @@
 package com.example.demo.Services;
+
 import com.example.demo.Converter.ManagerConverter;
 import com.example.demo.Converter.TeamConverter;
+import com.example.demo.config.UserPrincipal;
 import com.example.demo.dao.ManagerRepository;
 import com.example.demo.dao.SpelerRepository;
 import com.example.demo.dao.SpelerTeamRepository;
@@ -9,9 +11,16 @@ import com.example.demo.domain.*;
 import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.SpelerTeamDTO;
 import com.example.demo.dto.TeamDTO;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
+import java.util.Optional;
+
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class TeamService {
@@ -70,8 +79,30 @@ public class TeamService {
         return teamRepository.getById(teamId);
     }
 
+
+    public TeamDTO updateTeamNaam(long teamid, String naam, long managerid){
+        Team team = teamRepository.findById(teamid).orElseThrow();
+
+        if(team.getManager().getId() != managerid){
+            return null;
+        }else{
+            team.setNaam(naam);
+        }
+        return teamConverter.teamToDTO(teamRepository.save(team));
+    }
+
     public List<TeamDTO> getAllTeams(){
         return teamConverter.teamListToDTO(teamRepository.findAll());
+    }
+
+    public List<TeamDTO> getAllTeamsBySpeler(UserPrincipal userPrincipal){
+            Speler speler = spelerRepository.findByUser(userPrincipal.getUser()).orElseThrow();
+            List<SpelerTeam> spelerTeams = spelerTeamRepository.findBySpeler(speler).orElseThrow();
+            List<Team> teamList = new ArrayList<>();
+            for (SpelerTeam sp: spelerTeams) {
+                teamList.add(teamRepository.findBySpelersContains(sp).orElseThrow());
+            }
+        return teamConverter.teamListToDTO(teamList);
     }
 
     public TeamDTO getTeamById(long id){

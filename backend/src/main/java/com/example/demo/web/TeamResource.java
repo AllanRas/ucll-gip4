@@ -4,6 +4,8 @@ package com.example.demo.web;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
+
+
 import com.example.demo.domain.SpelerTeam;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
@@ -13,11 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/teams")
@@ -59,6 +64,12 @@ public class TeamResource {
     @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
     @GetMapping
     public List<TeamDTO> getAllTeams(){
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+
+        if(isSpelerRole){
+            return teamService.getAllTeamsBySpeler(userPrincipal);
+        }
         return teamService.getAllTeams();
     }
 
@@ -81,4 +92,17 @@ public class TeamResource {
     public ResponseEntity<SpelerTeam> reservePromoveren(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId){
         return ResponseEntity.status(HttpStatus.OK).body(teamService.reservePromoveren(spelerId,teamId));
     }
+
+    //TeamNaam wijzigen van een Team
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PutMapping(value = "/{id}/update/{teamNaam}")
+    public ResponseEntity<TeamDTO> updateTeamNaam(@PathVariable("id") long id, @PathVariable("teamNaam") String teamNaam){
+        // Get manager from authentication
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
+        TeamDTO updateTeamNaam = teamService.updateTeamNaam(id, teamNaam, managerDTO.getId());
+        return new ResponseEntity<TeamDTO>(updateTeamNaam, HttpStatus.OK);
+    }
 }
+

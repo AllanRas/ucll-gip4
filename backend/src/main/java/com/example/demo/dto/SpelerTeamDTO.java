@@ -13,6 +13,10 @@ public class SpelerTeamDTO implements Serializable {
     private long teamid;
     private boolean reserve;
 
+    public SpelerTeamDTO(){
+
+    }
+
     public SpelerTeamDTO(Builder builder) {
         setId(builder.id);
         setReserve(builder.reserve);

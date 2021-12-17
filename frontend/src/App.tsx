@@ -15,6 +15,8 @@ import Team from "./Components/Team/Team";
 import AddSpelerToTeam from "./Components/Team/AddSpelerToTeam";
 import Matches from "./Components/Match/Matches";
 import AddMatch from "./Components/Match/AddMatch";
+import Match from "./Components/Match/Match";
+import EditTeam from "./Components/Team/EditTeamnaam";
 
 
 function App() {
@@ -36,9 +38,11 @@ function App() {
                             <Route path="/AddTeam" element={<AddTeam/>}/>
                             <Route path="/Teams/:id" element={<Team/>}/>
                             <Route path="/Teams/:id/AddSpeler" element={<AddSpelerToTeam/>}/>
+                            <Route path="/Teams/:id/EditTeamnaam" element={<EditTeam/>}/>
 
                             <Route path="/Matches" element={<Matches/>}/>
                             <Route path="/AddMatch" element={<AddMatch/>}/>
+                            <Route path="/Matches/:id"  element={<Match/>}/>
 
                             <Route path="/Login" element={<Login/>}/>
                         </>

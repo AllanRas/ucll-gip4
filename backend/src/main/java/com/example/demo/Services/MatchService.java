@@ -2,15 +2,23 @@ package com.example.demo.Services;
 
 import com.example.demo.Converter.MatchConverter;
 import com.example.demo.Converter.TeamConverter;
+
 import com.example.demo.dao.*;
+
+import com.example.demo.Services.emailService.EmailSenderService;
+import com.example.demo.dao.MatchRepository;
+import com.example.demo.dao.SpelerMatchRepository;
+import com.example.demo.dao.SpelerRepository;
+import com.example.demo.dao.TeamRepository;
+
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
-import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
+
 import liquibase.pro.packaged.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +35,17 @@ public class MatchService {
     private final SpelerRepository spelerRepository;
     private final MatchConverter matchConverter;
     private final TeamConverter teamConverter;
+    private final EmailSenderService emailSenderService;
 
 
-    public MatchService(MatchRepository matchRepository, SpelerMatchRepository spelerMatchRepository, TeamRepository teamRepository, SpelerRepository spelerRepository, MatchConverter matchConverter, TeamConverter teamConverter) {
+    public MatchService(MatchRepository matchRepository, SpelerMatchRepository spelerMatchRepository, TeamRepository teamRepository, SpelerRepository spelerRepository, MatchConverter matchConverter, TeamConverter teamConverter, EmailSenderService emailSenderService) {
         this.matchRepository = matchRepository;
         this.spelerMatchRepository = spelerMatchRepository;
         this.teamRepository = teamRepository;
         this.spelerRepository = spelerRepository;
         this.matchConverter = matchConverter;
         this.teamConverter = teamConverter;
+        this.emailSenderService = emailSenderService;
     }
 
     //Create Match
@@ -61,6 +71,7 @@ public class MatchService {
                     .build();
 
             spelerMatchRepository.save(spelerMatch);
+            emailSenderService.sendEmailToSpelers(speler, newmatch);
         }
         return matchConverter.matchToCreateMatchDTO(newmatch);
     }
@@ -101,20 +112,11 @@ public class MatchService {
     }
 
     //match results invoeren
-    public MatchDTO setResults(long id,MatchDTO matchDTO){
-
-        Optional<Match> match = matchRepository.findById(id);
-
-        if (match.isPresent()){
-            Match updatedMatch = matchConverter.matchDTOToMatch(matchDTO);
-            Match newmatch = match.get();
-
-            newmatch.setScoreBlueTeam(updatedMatch.getScoreBlueTeam());
-            newmatch.setScoreRedTeam(updatedMatch.getScoreRedTeam());
-
-            matchRepository.save(newmatch);
-        }
-        return matchConverter.matchToMatchDTO(match.orElseThrow());
+    public MatchDTO setResults(MatchDTO matchDTO){
+        Match match = matchRepository.findById(matchDTO.getId()).orElseThrow();
+        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
+        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
+        return matchConverter.matchToMatchDTO(matchRepository.save(match));
     }
 
     //matchstatsbekijken
@@ -123,23 +125,9 @@ public class MatchService {
     }
 
     public MatchDTO getById(long id){
-        Optional<Match> match = matchRepository.findById(id);
 
-        if (match.isPresent()){
-            Match newMatch = match.get();
+        return matchConverter.matchToMatchDTO(matchRepository.findById(id).orElseThrow());
 
-            matchRepository.save(newMatch);
-        }
-
-        matchConverter.matchListToMatchDTO(matchRepository.findAll());
-
-        if (match.isPresent()){
-            Match newMatch = match.get();
-
-            matchRepository.save(newMatch);
-        }
-
-        return matchConverter.matchToMatchDTO(match.orElseThrow());
     }
 
     public List<MatchDTO> getByTeamId(long teamId){

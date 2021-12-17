@@ -1,6 +1,8 @@
 package com.example.demo.dto;
 
 
+import com.example.demo.domain.SpelerMatch;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -13,7 +15,8 @@ public class MatchDTO implements Serializable {
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
-    public Set<SpelerMatchDTO> spelers;
+
+    private Set<SpelerMatchDTO> spelers;
 
     private MatchDTO(Builder builder) {
         setId(builder.id);
@@ -84,6 +87,7 @@ public class MatchDTO implements Serializable {
     public void setSpelers(Set<SpelerMatchDTO> spelers) {
         this.spelers = spelers;
     }
+
 
     public static final class Builder {
         private long id;

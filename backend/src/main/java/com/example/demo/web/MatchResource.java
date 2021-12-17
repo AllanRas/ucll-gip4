@@ -23,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/matches")
+@CrossOrigin("http://localhost:3000/")
 public class MatchResource {
 
     private final MatchService matchService;
@@ -44,7 +45,6 @@ public class MatchResource {
     @PreAuthorize("hasRole('MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public CreateMatchDTO addMatch(@RequestBody CreateMatchDTO createMatchDTO) {
-        sendEmail();
         System.out.println(createMatchDTO.toString());
         return matchService.addMatch(createMatchDTO);
     }
@@ -54,19 +54,10 @@ public class MatchResource {
     public List<MatchDTO> getAllMatches(){
         return matchService.getAllMatches();
     }
-
-    //stuurt een mail naar (de gegeven mail)
-    private void sendEmail(){
-        emailService.sendSimpleEmail("esportsemail.noreply@gmail.com","This is auto email","Test");
-    }
-
-    //moeten nog aanpassen
     @PreAuthorize("hasRole('MANAGER')")
-    @PutMapping(value = "/{id}/matchresult", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MatchDTO> matchResultsInvoren(@PathVariable("id")long id, @RequestBody MatchDTO matchStatsDTO){
-        MatchDTO updatedmatch = matchService.setResults(id, matchStatsDTO);
-
-        return new ResponseEntity<MatchDTO>(updatedmatch, HttpStatus.OK);
+    @PutMapping("/matchresult")
+    public MatchDTO matchResultsInvoren(@RequestBody MatchDTO matchDTO){
+        return matchService.setResults(matchDTO);
     }
 
 

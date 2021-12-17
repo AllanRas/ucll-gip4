@@ -1,6 +1,7 @@
 package com.example.demo.Services;
 
 import com.example.demo.Converter.SpelerConverter;
+import com.example.demo.config.UserPrincipal;
 import com.example.demo.dao.SpelerRepository;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateSpelerDTO;
@@ -44,7 +45,13 @@ public class SpelerService {
     }
 
     public SpelerDTO getById(long id){
+
         Optional<Speler> speler = spelerRepository.findById(id);
+        return spelerConverter.spelerToDTO(speler.orElseThrow());
+    }
+
+    public SpelerDTO getByIdAndUser(long id, UserPrincipal userPrincipal){
+        Optional<Speler> speler = spelerRepository.findByUser(userPrincipal.getUser());
         return spelerConverter.spelerToDTO(speler.orElseThrow());
     }
 

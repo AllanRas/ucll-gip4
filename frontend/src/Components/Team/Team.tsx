@@ -99,7 +99,7 @@ const Team = () => {
                     <Button onClick={() => navigate("/Teams/" + team.id + "/AddSpeler")}>
                         Spelers
                     </Button>
-                    <Button onClick={() => navigate("/EditTeam/" + team.id)}>
+                    <Button onClick={() => navigate("/Teams/ "+ team.id + "/EditTeamnaam")}>
                         Team naam aanpassen
                     </Button>
                     <Button onClick={() => navigate("/Teams")}>
