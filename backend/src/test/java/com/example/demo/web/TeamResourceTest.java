@@ -145,15 +145,18 @@ public class TeamResourceTest extends AbstractIntegrationTest {
 
     @Test
     void getAllTeams() throws Exception{
+        SpelerDTO josPatatCreated = spelerService.createSpeler(josPatat);
+        ManagerDTO managerDTO = managerService.createManager(jefManager);
+
         // manager auth return 400 : Ok
         this.mockMvc.perform(MockMvcRequestBuilders.get("/teams")
-                        .with(httpBasic("manager","manager"))
+                        .with(httpBasic(josPatatCreated.getUserDTO().getUsername(),josPatat.getPassword()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // speler auth returns 403 : Forbidden
         this.mockMvc.perform(MockMvcRequestBuilders.get("/teams")
-                        .with(httpBasic("speler","speler"))
+                        .with(httpBasic(managerDTO.getUserDTO().getUsername(), jefManager.getPasswoord()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

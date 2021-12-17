@@ -78,6 +78,16 @@ public class TeamService {
         return teamConverter.teamListToDTO(teamRepository.findAll());
     }
 
+    public List<TeamDTO> getAllTeamsBySpeler(UserPrincipal userPrincipal){
+            Speler speler = spelerRepository.findByUser(userPrincipal.getUser()).orElseThrow();
+            List<SpelerTeam> spelerTeams = spelerTeamRepository.findBySpeler(speler).orElseThrow();
+            List<Team> teamList = new ArrayList<>();
+            for (SpelerTeam sp: spelerTeams) {
+                teamList.add(teamRepository.findBySpelersContains(sp).orElseThrow());
+            }
+        return teamConverter.teamListToDTO(teamList);
+    }
+
     public TeamDTO getTeamById(long id){
         return teamConverter.teamToDTO(teamRepository.getById(id));
 
