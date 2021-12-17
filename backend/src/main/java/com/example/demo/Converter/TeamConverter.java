@@ -77,6 +77,16 @@ public class TeamConverter {
         return createTeamDTO;
     }
 
+    //Test
+    public TeamDTO createDTOtoTeamDTO(CreateTeamDTO createTeamDTO){
+        TeamDTO team = new TeamDTO();
+        team.setId(createTeamDTO.getId());
+        team.setNaam(createTeamDTO.getNaam());
+        team.setActief(createTeamDTO.isActief());
+        return team;
+    }
+
+
     public List<TeamDTO> teamListToDTO(List<Team> teams){
         return teams.stream().map(this::teamToDTO).collect(Collectors.toList());
     }

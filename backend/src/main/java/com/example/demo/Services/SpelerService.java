@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @Service
 public class SpelerService {
-
     private final SpelerRepository spelerRepository;
 
     private final SpelerConverter spelerConverter;

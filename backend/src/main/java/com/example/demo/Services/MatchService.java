@@ -2,11 +2,15 @@ package com.example.demo.Services;
 
 import com.example.demo.Converter.MatchConverter;
 import com.example.demo.Converter.TeamConverter;
+
+import com.example.demo.dao.*;
+
 import com.example.demo.Services.emailService.EmailSenderService;
 import com.example.demo.dao.MatchRepository;
 import com.example.demo.dao.SpelerMatchRepository;
 import com.example.demo.dao.SpelerRepository;
 import com.example.demo.dao.TeamRepository;
+
 import com.example.demo.domain.Match;
 import com.example.demo.domain.Speler;
 import com.example.demo.domain.SpelerMatch;
@@ -14,11 +18,13 @@ import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.match.MatchStatsDTO;
+
+import liquibase.pro.packaged.T;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MatchService {
@@ -70,6 +76,36 @@ public class MatchService {
         return matchConverter.matchToCreateMatchDTO(newmatch);
     }
 
+    public MatchDTO createMatch(MatchDTO matchDTO){
+        Match match = new Match();
+        Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
+
+        match.setId(matchDTO.getId());
+        match.setDatumtijd(matchDTO.getDatumtijd());
+        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
+        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
+        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
+        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
+        match.setDatumtijd(matchDTO.getDatumtijd());
+
+        Match newmatch = matchRepository.save(match);
+
+        for (SpelerMatchDTO spelerMatchDTO: spelers) {
+
+
+            Match matchspeler = matchRepository.getById(newmatch.getId());
+            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
+
+            SpelerMatch spelerMatch = new SpelerMatch.Builder()
+                    .match(matchspeler)
+                    .speler(speler)
+                    .build();
+
+            spelerMatchRepository.save(spelerMatch);
+        }
+        return matchConverter.matchToMatchDTO(newmatch);
+    }
+
     //get all matches
     public List<MatchDTO> getAllMatches(){
         return matchConverter.matchListToMatchDTO(matchRepository.findAll());
@@ -84,16 +120,40 @@ public class MatchService {
     }
 
     //matchstatsbekijken
-    public List<MatchStatsDTO> getAllMatchStats(){
-        return matchConverter.matchStatsDTOList(matchRepository.findAll());
+    public List<MatchDTO> getAllMatchStats(){
+        return matchConverter.matchDTOList(matchRepository.findAll());
     }
 
     public MatchDTO getById(long id){
+
         return matchConverter.matchToMatchDTO(matchRepository.findById(id).orElseThrow());
+
+    }
+
+    public List<MatchDTO> getByTeamId(long teamId){
+        Team team = teamRepository.findById(teamId).orElseThrow();
+        return matchConverter.matchToMatchDTOList(matchRepository.findByTeamBlueOrTeamRed(team, team).orElseThrow()) ;
+    }
+
+    public List<MatchDTO> getBySpelerId(long spelerId){
+        Speler speler = spelerRepository.findById(spelerId).orElseThrow();
+        List<SpelerMatch> spelerMatches = spelerMatchRepository.findBySpeler(speler).orElseThrow();
+        List<MatchDTO> matches = new ArrayList<>();
+        for (SpelerMatch sp: spelerMatches) {
+            matches.add( matchConverter.matchToMatchDTO(matchRepository.findBySpelersContaining(sp).orElseThrow()));
+        }
+        return matches;
     }
 
     //match historiek
     public List<MatchDTO> getAllMatchesHistory(){
         return matchConverter.matchToMatchDTOList(matchRepository.findAll());
+    }
+
+    public List<SpelerMatchDTO> allMatchesVanSpeler(){
+
+        List<SpelerMatch> spelers = spelerMatchRepository.findAll();
+
+        return matchConverter.spelerMatchToListDto(spelers);
     }
 }

@@ -1,9 +1,11 @@
 package com.example.demo.dto.match;
 
+import com.example.demo.dto.SpelerMatchDTO;
 import com.example.demo.dto.TeamDTO;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 public class MatchStatsDTO implements Serializable {
 
@@ -12,6 +14,7 @@ public class MatchStatsDTO implements Serializable {
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
+    private Set<SpelerMatchDTO> spelers;
 
     public MatchStatsDTO() {
     }
@@ -22,6 +25,7 @@ public class MatchStatsDTO implements Serializable {
         setScoreBlueTeam(builder.scoreBlueTeam);
         setScoreRedTeam(builder.scoreRedTeam);
         setDatumtijd(builder.datumtijd);
+        setSpelers(builder.spelers);
     }
 
 
@@ -65,12 +69,21 @@ public class MatchStatsDTO implements Serializable {
         this.datumtijd = datumtijd;
     }
 
+    public Set<SpelerMatchDTO> getSpelers() {
+        return spelers;
+    }
+
+    public void setSpelers(Set<SpelerMatchDTO> spelers) {
+        this.spelers = spelers;
+    }
+
     public static final class Builder {
         private TeamDTO teamBlue;
         private TeamDTO teamRed;
         private int scoreBlueTeam;
         private int scoreRedTeam;
         private Date datumtijd;
+        private Set<SpelerMatchDTO> spelers;
 
         public Builder() {
         }
@@ -97,6 +110,11 @@ public class MatchStatsDTO implements Serializable {
 
         public Builder datumtijd(Date val) {
             datumtijd = val;
+            return this;
+        }
+
+        public Builder spelers(Set<SpelerMatchDTO> val) {
+            spelers = val;
             return this;
         }
 

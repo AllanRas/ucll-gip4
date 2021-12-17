@@ -6,10 +6,11 @@
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
-      <secret-storage>session</secret-storage>
+      <secret-storage>forget</secret-storage>
       <user-name>postgres</user-name>
       <schema-mapping>
         <introspection-scope>
+
           <node negative="1">
             <node kind="database" qname="postgres" negative="1">
               <node kind="schema" negative="1" />
