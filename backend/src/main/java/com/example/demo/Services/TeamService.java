@@ -1,4 +1,5 @@
 package com.example.demo.Services;
+
 import com.example.demo.Converter.ManagerConverter;
 import com.example.demo.Converter.TeamConverter;
 import com.example.demo.config.UserPrincipal;
@@ -14,8 +15,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
+import java.util.Optional;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 public class TeamService {
@@ -73,6 +78,23 @@ public class TeamService {
         spelerTeamRepository.save(spelerTeam);
         return teamRepository.getById(teamId);
     }
+
+
+    public TeamDTO updateTeamNaam(long id, TeamDTO teamDTO){
+
+        Optional<Team> team = teamRepository.findById(id);
+
+        if(team.isPresent()){
+            Team updateTeamNaam = teamConverter.DTOtoTeam(teamDTO);
+            Team newTeam = team.get();
+
+            // Team.Naam update
+            newTeam.setNaam(updateTeamNaam.getNaam());
+
+            //Team update
+            teamRepository.save(newTeam);
+        }
+        return teamConverter.teamToDTO(team.orElseThrow());
 
     public List<TeamDTO> getAllTeams(){
         return teamConverter.teamListToDTO(teamRepository.findAll());

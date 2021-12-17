@@ -4,6 +4,8 @@ package com.example.demo.web;
 import com.example.demo.Services.ManagerService;
 import com.example.demo.Services.TeamService;
 import com.example.demo.config.UserPrincipal;
+
+
 import com.example.demo.domain.SpelerTeam;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
@@ -18,7 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/teams")
@@ -88,4 +92,16 @@ public class TeamResource {
     public ResponseEntity<SpelerTeam> reservePromoveren(@PathVariable("spelerId") long spelerId, @PathVariable("teamId") long teamId){
         return ResponseEntity.status(HttpStatus.OK).body(teamService.reservePromoveren(spelerId,teamId));
     }
+
+    //TeamNaam wijzigen van een Team
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER')")
+    @PutMapping(value = "/{id}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TeamDTO> updateTeamNaam(@PathVariable("id") long id, @RequestBody TeamDTO teamDTO){
+
+        TeamDTO updateTeamNaam = teamService.updateTeamNaam(id, teamDTO);
+        return new ResponseEntity<TeamDTO>(updateTeamNaam, HttpStatus.OK);
+    }
 }
+}
+
