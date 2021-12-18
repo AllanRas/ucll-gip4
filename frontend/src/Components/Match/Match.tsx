@@ -259,7 +259,7 @@ const Match = () => {
 
                 <Button onClick={addScore}>set Score</Button>
 
-                <Button onClick={() => navigate("/Matches")}>
+                <Button onClick={() => navigate(-1)}>
                     Terug
                 </Button>
             </Container>
