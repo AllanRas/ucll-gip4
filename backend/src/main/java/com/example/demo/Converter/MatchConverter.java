@@ -66,12 +66,12 @@ public class MatchConverter {
 
     // match to matchDTO
     public CreateMatchDTO matchToCreateMatchDTO(Match match){
-
-
         CreateMatchDTO matchDTO = new CreateMatchDTO();
+        matchDTO.setId(match.getId());
         matchDTO.setTeamBlueId(match.getTeamBlue().getId());
         matchDTO.setTeamRedId(match.getTeamRed().getId());
         matchDTO.setDatumtijd(match.getDatumtijd());
+        matchDTO.setSpelers(spelerMatchSetToDTO( match.getSpelers()));
         return matchDTO;
     }
 

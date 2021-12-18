@@ -4,6 +4,8 @@ import com.example.demo.Services.MatchService;
 import com.example.demo.Services.SpelerService;
 import com.example.demo.Services.emailService.EmailSenderService;
 import com.example.demo.config.UserPrincipal;
+import com.example.demo.domain.Match;
+import com.example.demo.domain.Speler;
 import com.example.demo.domain.User;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;

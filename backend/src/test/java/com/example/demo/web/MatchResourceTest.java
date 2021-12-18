@@ -73,7 +73,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
 
     private MockMvc mockMvc;
     private CreateMatchDTO match1;
-    private MatchDTO match2;
+    private CreateMatchDTO match2;
     private CreateTeamDTO createTeam1;
     private CreateTeamDTO createTeam2;
     private TeamDTO team1;
@@ -109,10 +109,10 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         createTeam2 = teamService.createTeam(
                 new CreateTeamDTO.Builder()
                         .naam("TestRed")
-                        .actief(true)
                         .managerDTO(Jefmanager)
                         .build(), Jefmanager.getId()
         );
+
 
         josPatat = spelerService.createSpeler(
                 new CreateSpelerDTO.Builder()
@@ -151,25 +151,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                         .postcode("3000")
                         .build())
                 .build());
-        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
-                .speler(josPatat.getId())
-                .build();
-
-        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
-                .speler(bert.getId())
-                .build();
-
-        List<SpelerMatchDTO> spelers = new ArrayList<>();
-
-        spelers.add(spelerMatchDTO1);
-        spelers.add(spelerMatchDTO2);
-
-        match2 = matchService.createMatch(new MatchDTO.Builder()
-                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
-                .teamBlue(converter.createDTOtoTeamDTO(createTeam1))
-                .teamRed(converter.createDTOtoTeamDTO(createTeam2))
-                .spelers(new HashSet<>(spelers))
-                .build());
     }
 
     @Test
@@ -202,23 +183,12 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                 .build();
 
 
-        team1 = new TeamDTO.Builder()
-                .naam("TestBlue")
-                .actief(true)
-                .build();
-
-        team2 = new TeamDTO.Builder()
-                .naam("TestRed")
-                .actief(true)/*
-                .teamBlue(team1.getId())
-                .teamRed(team2.getId())
-                .spelers(spelers)*/
-                .build();
         //When
         ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/matches")
                         .with(httpBasic("manager","manager"))
                         .content(toJson(match1))
                         .contentType(MediaType.APPLICATION_JSON));
+
         MvcResult result = perform
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists()).andReturn();
@@ -226,7 +196,6 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         CreateMatchDTO gemaakteMatch = fromMvcResult(result,CreateMatchDTO.class);
 
         //Then
-        assertEquals(gemaakteMatch.getId(), match1.getId());
         assertEquals(gemaakteMatch.getTeamRedId(), match1.getTeamRedId());
         assertEquals(gemaakteMatch.getTeamBlueId(), match1.getTeamBlueId());
     }
@@ -258,20 +227,30 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         team1 = teamService.getTeamById(createTeam1.getId());
         team2 = teamService.getTeamById(createTeam2.getId());
 
-        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
+
+        SpelerMatchDTO spelerMatchDTO1 =  new SpelerMatchDTO.Builder()
                 .speler(josPatat.getId())
+                .teamId(team1.getId())
                 .build();
 
         SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
                 .speler(bert.getId())
+                .teamId(team2.getId())
                 .build();
 
-        List<SpelerMatchDTO> spelers = new ArrayList<>();
+        Set<SpelerMatchDTO> spelers = new HashSet<>();
 
         spelers.add(spelerMatchDTO1);
         spelers.add(spelerMatchDTO2);
 
-        MatchDTO matchDTOUpdated = matchService.createMatch(match2);
+        CreateMatchDTO created = matchService.addMatch(new CreateMatchDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1.getId())
+                .teamRed(team2.getId())
+                .spelers(new HashSet<>(spelers))
+                .build());
+
+        MatchDTO matchDTOUpdated = matchService.getById(created.getId());
 
         matchDTOUpdated.setScoreBlueTeam(5);
         matchDTOUpdated.setScoreRedTeam(7);

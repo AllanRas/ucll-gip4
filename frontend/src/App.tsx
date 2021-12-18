@@ -17,6 +17,7 @@ import Matches from "./Components/Match/Matches";
 import AddMatch from "./Components/Match/AddMatch";
 import Match from "./Components/Match/Match";
 import EditTeam from "./Components/Team/EditTeamnaam";
+import SpelerMatchHist from "./Components/Speler/SpelerMatchHist";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                             <Route path="/Spelers/:id" element={<Speler/>}/>
                             <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
                             <Route path="/EditSpeler/:id" element={<EditSpeler/>}/>
+                            <Route path="/SpelerMatchHist" element={<SpelerMatchHist/>}/>
 
                             <Route path="/Teams" element={<Teams/>}/>
                             <Route path="/AddTeam" element={<AddTeam/>}/>

@@ -39,6 +39,7 @@ public class MatchService {
     private final EmailSenderService emailSenderService;
 
 
+
     public MatchService(MatchRepository matchRepository, SpelerMatchRepository spelerMatchRepository, TeamRepository teamRepository, SpelerRepository spelerRepository, MatchConverter matchConverter, TeamConverter teamConverter, EmailSenderService emailSenderService) {
         this.matchRepository = matchRepository;
         this.spelerMatchRepository = spelerMatchRepository;
@@ -61,6 +62,8 @@ public class MatchService {
 
         Match newmatch = matchRepository.save(match);
 
+        System.out.println("this is newmatch id : " + newmatch.getId());
+
         for (SpelerMatchDTO spelerMatchDTO: spelers) {
             Match matchspeler = matchRepository.findById(newmatch.getId()).orElseThrow();
             Speler speler = spelerRepository.findById(spelerMatchDTO.getSpelerid()).orElseThrow();
@@ -70,41 +73,11 @@ public class MatchService {
                     .speler(speler)
                     .teamid(spelerMatchDTO.getTeamid())
                     .build();
-
             spelerMatchRepository.save(spelerMatch);
             emailSenderService.sendEmailToSpelers(speler, newmatch);
         }
+
         return matchConverter.matchToCreateMatchDTO(newmatch);
-    }
-
-    public MatchDTO createMatch(MatchDTO matchDTO){
-        Match match = new Match();
-        Set<SpelerMatchDTO> spelers = matchDTO.getSpelers();
-
-        match.setId(matchDTO.getId());
-        match.setDatumtijd(matchDTO.getDatumtijd());
-        match.setScoreBlueTeam(matchDTO.getScoreBlueTeam());
-        match.setScoreRedTeam(matchDTO.getScoreRedTeam());
-        match.setTeamBlue(teamRepository.getById(matchDTO.getTeamBlue().getId()));
-        match.setTeamRed(teamRepository.getById(matchDTO.getTeamRed().getId()));
-        match.setDatumtijd(matchDTO.getDatumtijd());
-
-        Match newmatch = matchRepository.save(match);
-
-        for (SpelerMatchDTO spelerMatchDTO: spelers) {
-
-
-            Match matchspeler = matchRepository.getById(newmatch.getId());
-            Speler speler = spelerRepository.getById(spelerMatchDTO.getSpelerid());
-
-            SpelerMatch spelerMatch = new SpelerMatch.Builder()
-                    .match(matchspeler)
-                    .speler(speler)
-                    .build();
-
-            spelerMatchRepository.save(spelerMatch);
-        }
-        return matchConverter.matchToMatchDTO(newmatch);
     }
 
     //get all matches
@@ -128,7 +101,6 @@ public class MatchService {
     public MatchDTO getById(long id){
 
         return matchConverter.matchToMatchDTO(matchRepository.findById(id).orElseThrow());
-
     }
 
     public List<MatchDTO> getByTeamId(long teamId){
@@ -141,7 +113,7 @@ public class MatchService {
         List<SpelerMatch> spelerMatches = spelerMatchRepository.findBySpeler(speler).orElseThrow();
         List<MatchDTO> matches = new ArrayList<>();
         for (SpelerMatch sp: spelerMatches) {
-            matches.add( matchConverter.matchToMatchDTO(matchRepository.findBySpelersContaining(sp).orElseThrow()));
+            matches.add(matchConverter.matchToMatchDTO(matchRepository.findBySpelersContaining(sp).orElseThrow()));
         }
         return matches;
     }
