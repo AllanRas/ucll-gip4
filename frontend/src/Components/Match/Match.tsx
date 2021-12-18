@@ -64,7 +64,7 @@ const Match = () => {
 
     let navigate = useNavigate();
     let params = useParams();
-    const getMatchURL = "http://localhost:8080/api/matches/matchstats/" + params.id
+    const getMatchURL = "http://localhost:8080/api/matches/" + params.id
     const [match, setMatch] = React.useState<MatchDTO>({
         spelers: [],
         datumtijd: "",

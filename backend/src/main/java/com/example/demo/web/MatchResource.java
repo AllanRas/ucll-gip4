@@ -62,16 +62,22 @@ public class MatchResource {
         return matchService.setResults(matchDTO);
     }
 
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping(value = "/{id}")
+    public MatchDTO getMatchById(@PathVariable("id")long id){
+        // id = TeamId
+        return matchService.getById(id);
+    }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping(value = "/matchstats/allteam", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/matchstats/allteam")
     public List<MatchDTO> matchStatsVanAlleTeam(){
         return matchService.getAllMatchStats();
     }
 
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping(value = "/matchstats/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/matchstats/{id}")
     public List<MatchDTO> matchStatsVan1Team(@PathVariable("id")long id){
         // id = TeamId
         return matchService.getByTeamId(id);
