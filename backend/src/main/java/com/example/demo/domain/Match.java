@@ -94,4 +94,18 @@ public class Match {
     public void setSpelers(Set<SpelerMatch> spelers) {
         this.spelers = spelers;
     }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id=" + id +
+                ", teamBlue=" + teamBlue.getId() +
+                ", teamRed=" + teamRed.getId() +
+                ", scoreBlueTeam=" + scoreBlueTeam +
+                ", scoreRedTeam=" + scoreRedTeam +
+                ", datumtijd=" + datumtijd +
+                '}';
+    }
+
+
 }

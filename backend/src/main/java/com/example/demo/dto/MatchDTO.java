@@ -15,7 +15,6 @@ public class MatchDTO implements Serializable {
     private int scoreBlueTeam;
     private int scoreRedTeam;
     private Date datumtijd;
-
     private Set<SpelerMatchDTO> spelers;
 
     private MatchDTO(Builder builder) {

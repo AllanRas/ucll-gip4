@@ -74,7 +74,7 @@ const Header = () => {
                             <Nav.Link as={Link} to={"/Teams"}>
                                 Teams
                             </Nav.Link>
-                            <Nav.Link as={Link} to={"/SpelerMatchHistory"}>
+                            <Nav.Link as={Link} to={"/SpelerMatchHist"}>
                                 Matches
                             </Nav.Link>
                         </Nav>

@@ -100,10 +100,12 @@ public class MatchResource {
         return matchService.getById(id);
     }
 
-    //TODO Persoonlijke matchhistoriek
+
     @PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory/speler/{id}")
-    public List<MatchDTO> eigenPreviousMatches(@PathVariable("id")long id){
-        return matchService.getBySpelerId(id);
+    @GetMapping("/matchhistory/speler")
+    public List<MatchDTO> eigenPreviousMatches(){
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SpelerDTO speler = spelerService.getByIdAndUser(userPrincipal);
+        return matchService.getBySpelerId(speler.getId());
     }
 }

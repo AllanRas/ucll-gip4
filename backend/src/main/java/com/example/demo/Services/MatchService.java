@@ -113,7 +113,8 @@ public class MatchService {
         List<SpelerMatch> spelerMatches = spelerMatchRepository.findBySpeler(speler).orElseThrow();
         List<MatchDTO> matches = new ArrayList<>();
         for (SpelerMatch sp: spelerMatches) {
-            matches.add(matchConverter.matchToMatchDTO(matchRepository.findBySpelersContaining(sp).orElseThrow()));
+            Match match = matchRepository.findBySpelersContaining(sp).orElseThrow();
+            matches.add(matchConverter.matchToMatchDTO(match));
         }
         return matches;
     }

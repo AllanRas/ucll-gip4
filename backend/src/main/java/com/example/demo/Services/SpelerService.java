@@ -55,6 +55,11 @@ public class SpelerService {
         return spelerConverter.spelerToDTO(speler.orElseThrow());
     }
 
+    public SpelerDTO getByIdAndUser(UserPrincipal userPrincipal){
+        Optional<Speler> speler = spelerRepository.findByUser(userPrincipal.getUser());
+        return spelerConverter.spelerToDTO(speler.orElseThrow());
+    }
+
     public SpelerDTO inActiveSpeler(long id){
         Optional<Speler> speler = spelerRepository.findById(id);
         // speler is niet meer actief dus = verwijderd
