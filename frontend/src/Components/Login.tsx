@@ -55,7 +55,7 @@ const Login = () => {
 
     return (
         <>
-            <Container className="col-md-5">
+            <Container className="col-md-5 bg-dark text-white-50">
                 <Form>
                     <FormGroup>
                         <FormLabel>Username</FormLabel>
