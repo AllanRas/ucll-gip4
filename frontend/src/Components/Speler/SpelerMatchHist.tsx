@@ -40,8 +40,6 @@ interface SpelerDTO{
 
 const SpelerMatchHist = () => {
 
-    let params = useParams();
-
     const [matches, setMatches] = React.useState<Match[]>([]);
     const getMatchURL = "http://localhost:8080/api/matches/matchhistory/speler/";
 

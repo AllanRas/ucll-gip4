@@ -2,7 +2,6 @@ import {Button, Col, Container, Form, FormControl, FormGroup, FormLabel} from "r
 import React, {ChangeEvent, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import Header from "./Header";
 
 interface IUser{
     username: string,

@@ -1,10 +1,10 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
 import {Button, Container, Table} from "react-bootstrap";
 import moment from "moment";
 
-interface Team {
+interface ITeam {
     id : number
     naam : string
     actief : boolean
@@ -52,8 +52,8 @@ interface Speler {
 
 interface Match {
     id : number
-    teamBlue : Team
-    teamRed : Team
+    teamBlue : ITeam
+    teamRed : ITeam
     scoreBlueTeam : number
     scoreRedTeam : number
     datumtijd: Date
@@ -67,7 +67,7 @@ const Team = () => {
     const getSpelersURL = "http://localhost:8080/api/teams/" + params.id +"/spelers";
     const [spelers, setSpelers] = React.useState<Speler[]>([]);
 
-    const [team, setTeam] = React.useState<Team>({
+    const [team, setTeam] = React.useState<ITeam>({
         actief: false,
         id: 0,
         managerDTO: {id: 0, userDTO: {achternaam: "", email: "", id: 0, role: "", username: "", voornaam: ""}},
@@ -83,7 +83,7 @@ const Team = () => {
 
 
     useEffect(() => {
-        axios.get<Team>(getTeamURL, {
+        axios.get<ITeam>(getTeamURL, {
             withCredentials : true
         }).then((response) =>{
             console.log(response.data);

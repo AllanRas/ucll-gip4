@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from 'moment';
 import {Button, Container} from "react-bootstrap";
 
-interface Speler {
+interface ISpeler {
     id: number;
     actief: boolean;
     adresDTO: {
@@ -32,7 +32,7 @@ const Speler = () => {
 
     const getSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/getOne";
 
-    const [speler, setSpeler] = React.useState<Speler | any>(    {
+    const [speler, setSpeler] = React.useState<ISpeler | any>(    {
             id: 0,
             actief: false,
             adresDTO: {
@@ -55,7 +55,7 @@ const Speler = () => {
 
     // get spelers from api
     useEffect(() => {
-        axios.get<Speler[]>(getSpelerURL, {
+        axios.get<ISpeler[]>(getSpelerURL, {
             withCredentials : true
         }).then((response) =>{
             console.log(response.data);

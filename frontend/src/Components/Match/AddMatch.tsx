@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Row, Table} from "react-bootstrap";
 import DateTimePicker from 'react-datetime-picker';
 import {useNavigate} from "react-router-dom";
 
@@ -152,7 +152,7 @@ const AddMatch = () => {
     }
 
     const addToSpelerMatch = (spelerid: number, teamid: number) => {
-        if(match.spelers.length == 0){
+        if(match.spelers.length === 0){
             match.spelers.push({spelerid: spelerid, teamid: teamid})
         }else{
             if(match.spelers.some(speler => speler.spelerid === spelerid)){

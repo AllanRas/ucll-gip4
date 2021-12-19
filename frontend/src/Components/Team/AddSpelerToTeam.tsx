@@ -1,8 +1,7 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import { useNavigate, useParams} from "react-router-dom";
+import React, { useEffect, useState} from "react";
 import axios from "axios";
-import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
-import {map} from "react-bootstrap/ElementChildren";
+import {Button, Container, Table} from "react-bootstrap";
 
 interface Team {
     id : number

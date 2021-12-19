@@ -1,5 +1,5 @@
 import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useEffect} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -100,19 +100,17 @@ const Match = () => {
     const getAllSpelersURL = "http://localhost:8080/api/spelers";
     const [allSpelers, setAllSpelers] = React.useState<Speler[]>([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         axios.get<MatchDTO>(getMatchURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setMatch(response.data);
         }).catch((e) => {
             console.log(e);
         });
 
         getSpelers();
-        console.log(match)
-    }, []);
+    }, [getMatchURL]);
 
     const getSpelers = () => {
         axios.get<Speler[]>(getAllSpelersURL, {
@@ -146,7 +144,6 @@ const Match = () => {
         axios.put<MatchDTO>(PostScoreURL, match ,{
             withCredentials: true
         }).then((response) =>{
-            console.log(response)
         }).catch((e) => {
             console.log(e);
         });
