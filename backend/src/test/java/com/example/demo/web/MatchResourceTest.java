@@ -81,6 +81,7 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     private ManagerDTO Jefmanager;
     private SpelerDTO josPatat;
     private SpelerDTO bert;
+    private  CreateSpelerDTO joske;
 
     @BeforeEach
     void setUp() throws ParseException {
@@ -114,24 +115,26 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         );
 
 
-        josPatat = spelerService.createSpeler(
-                new CreateSpelerDTO.Builder()
-                        .actief(true)
-                        .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
-                        .password("password")
-                        .user(new UserDTO.Builder()
-                                .voornaam("Jos")
-                                .achternaam("Patat")
-                                .username("JPatat")
-                                .role("SPELER")
-                                .email("Jpatat@gmail.com").build())
-                        .adres(new AdresDTO.Builder()
-                                .gemeente("Leuven")
-                                .straat("straat in leuven")
-                                .huisnummer("42")
-                                .postcode("3000")
-                                .build())
-                        .build());
+        CreateSpelerDTO joske = new CreateSpelerDTO.Builder()
+                .actief(true)
+                .geboortedatum(new SimpleDateFormat("yyyy-MM-dd").parse("1990-05-11"))
+                .password("password")
+                .user(new UserDTO.Builder()
+                        .voornaam("Jos")
+                        .achternaam("Patat")
+                        .username("JPatat")
+                        .role("SPELER")
+                        .email("Jpatat@gmail.com").build())
+                .adres(new AdresDTO.Builder()
+                        .gemeente("Leuven")
+                        .straat("straat in leuven")
+                        .huisnummer("42")
+                        .postcode("3000")
+                        .build())
+                .build();
+
+        josPatat = spelerService.createSpeler(joske);
+
 
         bert = spelerService.createSpeler(
                 new CreateSpelerDTO.Builder()
@@ -340,9 +343,8 @@ public class MatchResourceTest extends AbstractIntegrationTest {
         Speler speler = spelerConverter.dtoToSpeler(spelerService.getById(josPatat.getId()));
 
         // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory/speler/{id}", speler.getId())
-                        .with(httpBasic("speler","speler"))
-                        .contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory/speler")
+                        .with(httpBasic(speler.getUser().getUsername(),"password")))
                 .andExpect(status().isOk());
     }
 

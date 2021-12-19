@@ -137,8 +137,11 @@ const AddSpelerToTeam = () => {
         <>
             <Container className="col-md-11 bg-dark text-white-50">
 
+
+
                 <h1>team : {team.naam}</h1>
                 <br/>
+                <Button onClick={() => navigate(-1)}>Terug</Button>
                 <h2>manager: {team.managerDTO.userDTO.username} </h2>
                 <h2>Spelers : </h2>
 
@@ -226,6 +229,7 @@ const AddSpelerToTeam = () => {
                     <tbody>
                     {
                         spelers.map(speler => (
+                            speler.actief?
                             team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) ? "" :
                                 <tr key={speler.id}>
                                     <td>{speler.id}</td>
@@ -235,6 +239,7 @@ const AddSpelerToTeam = () => {
                                     <td><Button className="btn-success" onClick={() => PostAddSpeler(speler.id, false)}> + </Button></td>
                                     <td><Button className="btn-warning" onClick={() => PostAddSpeler(speler.id, true)}> + </Button></td>
                                 </tr>
+                                : ""
                             )
                         )
                     }

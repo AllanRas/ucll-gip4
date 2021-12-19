@@ -49,9 +49,8 @@ const EditTeam = () => {
                             </Button>
                         </Col>
                         <Col>
-                            <Button onClick={() => navigate("/Teams"+ params.id)}>
-                                Cancel
-                            </Button>
+                            <Button onClick={() => navigate(-1)}>Terug</Button>
+
                         </Col>
                     </Row>
                 </Form>

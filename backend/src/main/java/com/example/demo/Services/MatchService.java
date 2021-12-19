@@ -23,6 +23,7 @@ import com.example.demo.dto.match.MatchStatsDTO;
 import liquibase.pro.packaged.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -61,8 +62,6 @@ public class MatchService {
         match.setDatumtijd(matchDTO.getDatumtijd());
 
         Match newmatch = matchRepository.save(match);
-
-        System.out.println("this is newmatch id : " + newmatch.getId());
 
         for (SpelerMatchDTO spelerMatchDTO: spelers) {
             Match matchspeler = matchRepository.findById(newmatch.getId()).orElseThrow();
