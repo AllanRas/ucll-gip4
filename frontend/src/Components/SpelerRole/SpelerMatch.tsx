@@ -105,7 +105,6 @@ const SpelerMatch = () => {
         axios.get<SimpleSpeler[]>(getAllSpelersURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setAllSpelers(response.data);
         }).catch((e) => {
             console.log(e);
