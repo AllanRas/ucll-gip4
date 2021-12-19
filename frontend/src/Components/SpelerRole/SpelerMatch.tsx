@@ -2,6 +2,7 @@ import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import React, {ChangeEvent, useEffect} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
+import moment from "moment";
 
 
 interface MatchDTO {
@@ -144,6 +145,9 @@ const SpelerMatch = () => {
     return (
         <>
             <Container className="bg-dark text-white-50">
+
+                <h2>datum : {moment(match.datumtijd).format('DD-MM-YYYY HH:mm')} </h2>
+
                 <Row>
                     <Col>
                         {/* selected blue team*/}
@@ -169,7 +173,7 @@ const SpelerMatch = () => {
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }
@@ -200,7 +204,7 @@ const SpelerMatch = () => {
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }

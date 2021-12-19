@@ -83,7 +83,7 @@ const SpelerMatchHist = () => {
                                 }
                                 </td>
                                 <td>{match.scoreBlueTeam} - {match.scoreRedTeam}</td>
-                                <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
+                                <td>{moment(match.datumtijd).format('DD-MM-YYYY HH:mm')}</td>
                                 <td><Link to={"/SpelerMatches/" + match.id}>Details</Link></td>
                             </tr>
                         ))

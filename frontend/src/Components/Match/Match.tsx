@@ -2,6 +2,7 @@ import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import React, {ChangeEvent, useEffect} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
+import moment from "moment";
 
 
 interface MatchDTO {
@@ -156,6 +157,10 @@ const Match = () => {
         <>
             <Container className="bg-dark text-white-50">
                 <h1>{match.id}</h1>
+                <h2>datum : {moment(match.datumtijd).format('DD-MM-YYYY HH:mm')} </h2>
+
+                <br/>
+                <hr/>
 
                 <Row>
                     <Col>
@@ -184,14 +189,12 @@ const Match = () => {
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }
                             </tbody>
                         </Table>
-
-
 
                     </Col>
                     <Col>
@@ -199,7 +202,6 @@ const Match = () => {
                         <h1>red team</h1>
                         <h2>{match.teamRed.naam}</h2>
                         <h2>manager : {match.teamRed.managerDTO.userDTO.username} </h2>
-
                         <br/>
                         <h2>Spelers : </h2>
 
@@ -221,7 +223,7 @@ const Match = () => {
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }

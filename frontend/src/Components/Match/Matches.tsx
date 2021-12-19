@@ -92,7 +92,7 @@ const Matches = () => {
                                 }
                                 </td>
                                 <td>{match.scoreBlueTeam} - {match.scoreRedTeam}</td>
-                                <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
+                                <td>{moment(match.datumtijd).format('DD-MM-YYYY HH:mm')}</td>
                                 <td><Link to={"/Matches/" + match.id}>Details & Score</Link></td>
                             </tr>
                         ))

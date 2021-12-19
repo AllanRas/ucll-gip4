@@ -71,10 +71,11 @@ public class MatchResource {
             SpelerDTO speler = spelerService.getByIdAndUser(userPrincipal);
             List<MatchDTO> matchDTOList = matchService.getMatchesBySpelerId(speler.getId());
             for (MatchDTO mdto: matchDTOList) {
-                if(mdto.getId() != matchDTO.getId()){
-                    return ResponseEntity.badRequest().build();
+                if(mdto.getId() == matchDTO.getId()){
+                    return ResponseEntity.ok().body(matchDTO);
                 }
             }
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().body(matchDTO);
     }
