@@ -178,7 +178,7 @@ const AddMatch = () => {
         return "nee";
     }
 
-    const RemoveSpeler = (spelerid : number, teamid: number) => {
+    const RemoveSpeler = (spelerid : number) => {
         setMatch(prevMatch => ({
                 ...prevMatch,
                 spelers :  match.spelers.filter(speler => speler.spelerid !== spelerid)
@@ -321,7 +321,7 @@ const AddMatch = () => {
                                                 <td>{speler.id}</td>
                                                 <td>{speler.userDTO.username}</td>
                                                 <td>{isReserve(teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
-                                                <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id, teamRed.id)} >-</Button></td>
+                                                <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id)} >-</Button></td>
                                             </tr>
                                             : ""
                                     )
@@ -353,7 +353,7 @@ const AddMatch = () => {
                                                 <td>{speler.id}</td>
                                                 <td>{speler.userDTO.username}</td>
                                                 <td>{isReserve(teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
-                                                <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id, teamRed.id)} >-</Button></td>
+                                                <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id)} >-</Button></td>
                                             </tr>
                                             : ""
                                     )

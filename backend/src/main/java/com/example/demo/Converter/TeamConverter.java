@@ -5,9 +5,6 @@ import com.example.demo.domain.SpelerTeam;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.SpelerTeamDTO;
-import com.example.demo.domain.Match;
-import com.example.demo.domain.Team;
-import com.example.demo.dto.CreateMatchDTO;
 
 import com.example.demo.dto.TeamDTO;
 import org.springframework.stereotype.Component;

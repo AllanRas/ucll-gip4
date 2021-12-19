@@ -1,7 +1,6 @@
 package com.example.demo.Converter;
 
 import com.example.demo.domain.Manager;
-import com.example.demo.domain.Speler;
 import com.example.demo.dto.ManagerDTO;
 import org.springframework.stereotype.Component;
 

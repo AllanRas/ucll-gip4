@@ -1,7 +1,5 @@
 package com.example.demo.dto;
 
-import liquibase.pro.packaged.B;
-
 public class CreateTeamDTO {
 
     private long id;

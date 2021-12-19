@@ -1,8 +1,5 @@
 package com.example.demo.dto;
 
-import com.example.demo.domain.Speler;
-import com.example.demo.domain.SpelerTeam;
-import com.example.demo.domain.Team;
 
 import java.io.Serializable;
 

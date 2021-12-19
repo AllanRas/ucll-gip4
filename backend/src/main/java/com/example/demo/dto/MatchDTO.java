@@ -1,8 +1,6 @@
 package com.example.demo.dto;
 
 
-import com.example.demo.domain.SpelerMatch;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;

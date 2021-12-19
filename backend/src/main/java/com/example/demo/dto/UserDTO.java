@@ -1,10 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.domain.User;
-
-import javax.persistence.Column;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class UserDTO implements Serializable {
 

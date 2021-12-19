@@ -1,8 +1,6 @@
 package com.example.demo.domain;
 
-import com.example.demo.dto.SpelerMatchDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 

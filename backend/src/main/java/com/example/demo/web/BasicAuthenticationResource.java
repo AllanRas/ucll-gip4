@@ -1,17 +1,10 @@
 package com.example.demo.web;
 
 import com.example.demo.config.UserUserDetailService;
-import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserLoginDTO;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.security.PermitAll;
 
 
 @RestController
