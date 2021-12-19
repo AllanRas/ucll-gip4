@@ -66,7 +66,7 @@ const Login = () => {
                         />
                     </FormGroup>
                     <FormGroup>
-                        <FormLabel>Username</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl name="password"
                                      type="password"
                                      value={user.password}
