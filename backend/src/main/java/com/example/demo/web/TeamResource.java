@@ -10,6 +10,7 @@ import com.example.demo.domain.SpelerTeam;
 import com.example.demo.domain.Team;
 import com.example.demo.dto.CreateTeamDTO;
 import com.example.demo.dto.ManagerDTO;
+import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.TeamDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -77,7 +78,8 @@ public class TeamResource {
     @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
     @GetMapping(value = "/{id}/getOne")
     public ResponseEntity<TeamDTO> getById(@PathVariable("id") long id){
-        return new ResponseEntity<TeamDTO>(teamService.getTeamById(id), HttpStatus.ACCEPTED);
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<TeamDTO>(teamService.getTeamById(id, userPrincipal), HttpStatus.ACCEPTED);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -103,6 +105,14 @@ public class TeamResource {
         ManagerDTO managerDTO = managerService.getManagerByUserId(userPrincipal.getUser());
         TeamDTO updateTeamNaam = teamService.updateTeamNaam(id, teamNaam, managerDTO.getId());
         return new ResponseEntity<TeamDTO>(updateTeamNaam, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @GetMapping(value = "/{id}/spelers")
+    public List<SpelerDTO> getSpelersFromTeam(@PathVariable("id") long teamid){
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return teamService.getTeamSpelersById(teamid,userPrincipal);
     }
 }
 

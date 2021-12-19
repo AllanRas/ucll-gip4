@@ -295,20 +295,23 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void matxhStatsVan1Team() throws Exception {
+    void matchStatsVan1Team() throws Exception {
         // Given
         team1 = teamService.getTeamById(createTeam1.getId());
+
+        teamService.addSpelerToTeam(josPatat.getId(), team1.getId(), false, Jefmanager.getId());
+
         //Manager
         this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
-                        .with(httpBasic("manager","manager"))
+                        .with(httpBasic(Jefmanager.getUserDTO().getUsername(),"password"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
         // Speler
         this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
-                        .with(httpBasic("speler","speler"))
+                        .with(httpBasic(josPatat.getUserDTO().getUsername(),"password"))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
 
         // foute auth
         this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchstats/{id}", team1.getId())
@@ -316,26 +319,10 @@ public class MatchResourceTest extends AbstractIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
+
+
 
     //SPELER
-
-    @Test
-    void allPreviousMatches() throws Exception{
-        // Given
-        team1 = teamService.getTeamById(createTeam1.getId());
-
-        // Speler
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory/{id}", team1.getId())
-                        .with(httpBasic("speler","speler"))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        // foute auth
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/matches/matchhistory{id}", team1.getId())
-                        .with(httpBasic("",""))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized());
-    }
 
     @Test
     void eigenPreviousMatches() throws Exception{

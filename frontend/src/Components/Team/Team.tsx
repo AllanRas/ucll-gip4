@@ -64,7 +64,7 @@ const Team = () => {
     let navigate = useNavigate();
 
     const getTeamURL = "http://localhost:8080/api/teams/" + params.id + "/getOne";
-    const getSpelersURL = "http://localhost:8080/api/spelers";
+    const getSpelersURL = "http://localhost:8080/api/teams/" + params.id +"/spelers";
     const [spelers, setSpelers] = React.useState<Speler[]>([]);
 
     const [team, setTeam] = React.useState<Team>({

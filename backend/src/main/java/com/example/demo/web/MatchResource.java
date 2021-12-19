@@ -76,23 +76,17 @@ public class MatchResource {
     }
 
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
     @GetMapping(value = "/matchstats/{id}")
     public List<MatchDTO> matchStatsVan1Team(@PathVariable("id")long id){
         // id = TeamId
-        return matchService.getByTeamId(id);
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return matchService.getByTeamId(id, userPrincipal);
     }
 
     /*
      * SPELER
      */
-
-    @PreAuthorize("hasRole('SPELER')")
-    @GetMapping("/matchhistory/{id}")
-    public List<MatchDTO> allPreviousMatches(@PathVariable("id")long id){
-        return matchService.getByTeamId(id);
-    }
-
 
     @PreAuthorize("hasRole('SPELER')")
     @GetMapping("/matchstats/eigen")
