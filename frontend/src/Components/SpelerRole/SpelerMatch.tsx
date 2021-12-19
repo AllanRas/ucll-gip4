@@ -167,7 +167,7 @@ const SpelerMatch = () => {
                             <tbody>
                             {
                                 allSpelers.map(speler => (
-                                        match.teamBlue.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) && !match.spelers.some(sp => sp.spelerid === speler.id && (sp.teamid === match.teamBlue.id)) ?
+                                        match.spelers.some(sp => sp.spelerid === speler.id && (sp.teamid === match.teamBlue.id)) ?
                                             <tr key={speler.id}>
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
@@ -198,7 +198,7 @@ const SpelerMatch = () => {
                             <tbody>
                             {
                                 allSpelers.map(speler => (
-                                        match.teamRed.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) && match.spelers.some(sp => sp.spelerid === speler.id && sp.teamid === match.teamRed.id) ?
+                                        match.spelers.some(sp => sp.spelerid === speler.id && sp.teamid === match.teamRed.id) ?
                                             <tr key={speler.id}>
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
