@@ -24,7 +24,6 @@ const Teams = () => {
         axios.get<Team[]>(getTeamsURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setTeams(response.data);
         }).catch((e) => {
             console.log(e);

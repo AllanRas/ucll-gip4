@@ -58,7 +58,6 @@ const Speler = () => {
         axios.get<ISpeler[]>(getSpelerURL, {
             withCredentials : true
         }).then((response) =>{
-            console.log(response.data);
             setSpeler(response.data);
         });
     }, [getSpelerURL]);

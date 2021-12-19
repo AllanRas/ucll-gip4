@@ -144,6 +144,7 @@ const Match = () => {
         axios.put<MatchDTO>(PostScoreURL, match ,{
             withCredentials: true
         }).then((response) =>{
+            navigate(-1);
         }).catch((e) => {
             console.log(e);
         });

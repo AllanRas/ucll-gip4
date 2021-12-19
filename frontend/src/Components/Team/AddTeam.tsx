@@ -28,13 +28,11 @@ const AddTeam = () => {
     );
 
     const PostTeam = async () => {
-        console.log(team)
         await axios.post<CreateTeam>(postTeamURL, team, {
             headers: {
                 'Content-Type': 'application/json'
             },withCredentials : true
         }).then((response) => {
-            console.log(response.data);
             navigate("/Teams");
         }).catch(err => {
             console.log(err);

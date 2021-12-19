@@ -17,7 +17,6 @@ const EditTeam = () => {
                 'Content-Type': 'application/json'
             },withCredentials : true
         }).then((response) => {
-            console.log(response.data);
             navigate("/Teams/" + params.id);
         }).catch(err => {
             console.log(err);

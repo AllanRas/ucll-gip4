@@ -38,7 +38,6 @@ const Spelers = () => {
         axios.get<Speler[]>(getSpelersURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setSpelers(response.data);
         }).catch((e) => {
             console.log(e);

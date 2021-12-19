@@ -112,7 +112,6 @@ const AddMatch = () => {
                 'Content-Type': 'application/json'
             },withCredentials : true
         }).then((response) => {
-            console.log(response.data);
             setAllTeams(response.data);
         }).catch(err => {
             console.log(err);
@@ -133,7 +132,6 @@ const AddMatch = () => {
       await axios.post<createMatchDTO>(addMatchURL, match,{
             withCredentials: true
         }).then((response) =>{
-            console.log(response);
         }).catch((e) => {
             console.log(e);
         });

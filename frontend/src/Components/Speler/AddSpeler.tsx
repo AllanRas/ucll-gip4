@@ -46,13 +46,11 @@ const AddSpeler = () => {
 
         // POST add speler
         const PostSpeler = async () => {
-            console.log(speler)
             await axios.post<CreateSpeler>(postSpelerURL, speler, {
                 headers: {
                     'Content-Type': 'application/json'
                 },withCredentials : true
             }).then((response) => {
-                console.log(response.data);
                 navigate("/Spelers");
             }).catch(err => {
                 console.log(err);
@@ -76,7 +74,6 @@ const AddSpeler = () => {
                     userDTO:{...prevSpeler.userDTO ,[event.target.name] : event.target.value}
                 })
             )
-            console.log(speler);
         }
 
         // de onChange functie voor AdresDTO

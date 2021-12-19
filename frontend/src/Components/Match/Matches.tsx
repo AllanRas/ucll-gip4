@@ -47,7 +47,6 @@ const Matches = () => {
         axios.get<Match[]>(getSpelersURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setMatches(response.data);
         }).catch((e) => {
             console.log(e);

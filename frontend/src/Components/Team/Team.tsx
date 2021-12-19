@@ -86,14 +86,12 @@ const Team = () => {
         axios.get<ITeam>(getTeamURL, {
             withCredentials : true
         }).then((response) =>{
-            console.log(response.data);
             setTeam(response.data);
         });
 
         axios.get<Match[]>(getMatchURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setMatches(response.data);
         }).catch((e) => {
             console.log(e);

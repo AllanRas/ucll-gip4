@@ -245,8 +245,6 @@ const AddSpelerToTeam = () => {
 
                     </tbody>
                 </Table>
-
-
             </Container>
         </>
     )

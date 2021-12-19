@@ -48,7 +48,6 @@ const SpelerMatchHist = () => {
         axios.get<Match[]>(getMatchURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setMatches(response.data);
         }).catch((e) => {
             console.log(e);

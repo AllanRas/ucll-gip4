@@ -64,7 +64,6 @@ const DelSpeler = () => {
         await axios.get<Speler>(getSpelerURL, {
             withCredentials: true
         }).then((response) =>{
-            console.log(response.data);
             setSpeler(response.data);
         })
     }
@@ -74,7 +73,6 @@ const DelSpeler = () => {
             withCredentials: true
         }).then((response) => {
             getSpelers();
-            console.log(response.data)
         })
     }
 
