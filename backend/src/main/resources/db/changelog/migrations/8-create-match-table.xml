@@ -21,7 +21,7 @@
             <column name="team_red_score" type="int">
                 <constraints nullable="true"/>
             </column>
-            <column name="datumtijd" type="date">
+            <column name="datumtijd" type="datetime">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -51,7 +51,7 @@ const AddSpeler = () => {
                     'Content-Type': 'application/json'
                 },withCredentials : true
             }).then((response) => {
-                navigate("/Spelers");
+                navigate(-1);
             }).catch(err => {
                 console.log(err);
             });

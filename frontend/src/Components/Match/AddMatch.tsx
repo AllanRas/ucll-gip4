@@ -132,6 +132,7 @@ const AddMatch = () => {
       await axios.post<createMatchDTO>(addMatchURL, match,{
             withCredentials: true
         }).then((response) =>{
+            navigate(-1);
         }).catch((e) => {
             console.log(e);
         });
@@ -195,6 +196,7 @@ const AddMatch = () => {
                     <Col>
                         {/* add teams */}
                         <h1>Teams toevoegen</h1>
+                        <h6>(bij het selecteren van een team reset de selectie van spelers voor beide teams.)</h6>
                         <Table striped bordered hover variant={'dark'}>
                             <thead>
                             <tr>

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Container, Table} from "react-bootstrap";
 import moment from "moment";
 
@@ -40,6 +40,8 @@ interface SpelerDTO{
 }
 
 const Matches = () => {
+
+    let navigate = useNavigate();
     const [matches, setMatches] = React.useState<Match[]>([]);
 
     // get spelers from api
@@ -82,8 +84,8 @@ const Matches = () => {
                         matches.map(match => (
                             <tr key={match.id}>
                                 <td>{match.id}</td>
-                                <td>{match.teamBlue.naam}</td>
-                                <td>{match.teamRed.naam}</td>
+                                <td onClick={() => navigate("/Teams/" + match.teamBlue.id)}>{match.teamBlue.naam}</td>
+                                <td onClick={() => navigate("/Teams/" + match.teamRed.id)}>{match.teamRed.naam}</td>
                                 <td>{
                                     match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---":
                                     match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam :  match.teamRed.naam

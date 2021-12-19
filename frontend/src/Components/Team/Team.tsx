@@ -124,7 +124,7 @@ const Team = () => {
                     <Button onClick={() => navigate("/Teams/ "+ team.id + "/EditTeamnaam")}>
                         Team naam aanpassen
                     </Button>
-                    <Button onClick={() => navigate("/Teams")}>
+                    <Button onClick={() => navigate(-1)}>
                         Terug
                     </Button>
                 </div>

@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class Match {
     @Column(name = "TEAM_RED_SCORE")
     private int scoreRedTeam;
 
+    @DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
     @Column(name = "DATUMTIJD")
     private Date datumtijd;
 

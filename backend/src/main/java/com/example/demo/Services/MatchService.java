@@ -17,9 +17,12 @@ import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerMatchDTO;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -57,6 +60,7 @@ public class MatchService {
         match.setTeamRed(teamRepository.getById(matchDTO.getTeamRedId()));
         match.setDatumtijd(matchDTO.getDatumtijd());
 
+        System.out.println(match.getDatumtijd());
         Match newmatch = matchRepository.save(match);
 
         for (SpelerMatchDTO spelerMatchDTO: spelers) {
