@@ -3,7 +3,9 @@ package com.example.demo.Services;
 import com.example.demo.Converter.SpelerConverter;
 import com.example.demo.config.UserPrincipal;
 import com.example.demo.dao.SpelerRepository;
+import com.example.demo.dao.SpelerTeamRepository;
 import com.example.demo.domain.Speler;
+import com.example.demo.domain.SpelerTeam;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
 import com.example.demo.dto.SpelerSimpleDTO;
@@ -17,14 +19,16 @@ import java.util.Optional;
 @Service
 public class SpelerService {
     private final SpelerRepository spelerRepository;
+    private final SpelerTeamRepository spelerTeamRepository;
 
     private final SpelerConverter spelerConverter;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    public SpelerService(SpelerRepository spelerRepository, SpelerConverter spelerConverter){
+    public SpelerService(SpelerRepository spelerRepository, SpelerTeamRepository spelerTeamRepository, SpelerConverter spelerConverter){
         this.spelerRepository = spelerRepository;
+        this.spelerTeamRepository = spelerTeamRepository;
         this.spelerConverter = spelerConverter;
     }
 
@@ -66,17 +70,20 @@ public class SpelerService {
     }
 
     public SpelerDTO inActiveSpeler(long id){
-        Optional<Speler> speler = spelerRepository.findById(id);
-        // speler is niet meer actief dus = verwijderd
+        Speler speler = spelerRepository.findById(id).orElseThrow();
+        List<SpelerTeam> spelerTeam = spelerTeamRepository.findBySpeler(speler).orElseThrow();
 
-        if(speler.orElseThrow().isActief()){
-            speler.orElseThrow().setActief(false);
+        // speler verwijderen van alle teams
+        spelerTeamRepository.deleteAll(spelerTeam);
+        // speler is niet meer actief dus = verwijderd
+        if(speler.isActief()){
+            speler.setActief(false);
         }else{
-            speler.orElseThrow().setActief(true);
+            speler.setActief(true);
         }
 
-        spelerRepository.save(speler.get());
-        return spelerConverter.spelerToDTO(speler.get());
+        spelerRepository.save(speler);
+        return spelerConverter.spelerToDTO(speler);
     }
 
     public SpelerDTO updateSpeler(long id, SpelerDTO spelerDTO){
