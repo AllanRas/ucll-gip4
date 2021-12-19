@@ -51,23 +51,11 @@ const Header = () => {
                                 Matches
                             </Nav.Link>
                         </Nav>
-                        <Nav >
-                            <Nav.Link as={Link} to={"/Login"}>Login</Nav.Link>
 
-                            <Nav.Link onClick={logout} >Logout</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-            <Navbar bg={"dark"} variant={"dark"}
-                    sticky={"top"} expand={"sm"} >
-                <Container>
-                    <Navbar.Brand as={Link} to={"/Login"} style={{marginLeft: "1rem"}}>
-                        Role : Speler
-                    </Navbar.Brand>
+                        <Navbar.Brand as={Link} to={"/Login"} style={{marginLeft: "1rem"}}>
+                            Role : Speler
+                        </Navbar.Brand>
 
-                    <Navbar.Toggle />
-                    <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to={"/SpelerGegevens"}>
                                 Speler gegevens
@@ -78,6 +66,12 @@ const Header = () => {
                             <Nav.Link as={Link} to={"/SpelerMatchHist"}>
                                 Matches
                             </Nav.Link>
+                        </Nav>
+
+                        <Nav >
+                            <Nav.Link as={Link} to={"/Login"}>Login</Nav.Link>
+
+                            <Nav.Link onClick={logout} >Logout</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
