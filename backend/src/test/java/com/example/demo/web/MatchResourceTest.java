@@ -204,6 +204,43 @@ public class MatchResourceTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void addMatchAsSpeler() throws Exception {
+        team1 = teamService.getTeamById(createTeam1.getId());
+        team2 = teamService.getTeamById(createTeam2.getId());
+
+        SpelerMatchDTO spelerMatchDTO1 = new SpelerMatchDTO.Builder()
+                .speler(josPatat.getId())
+                .teamId(team1.getId())
+                .build();
+
+        SpelerMatchDTO spelerMatchDTO2 = new SpelerMatchDTO.Builder()
+                .speler(bert.getId())
+                .teamId(team2.getId())
+                .build();
+
+        Set<SpelerMatchDTO> spelers = new HashSet<>();
+
+        spelers.add(spelerMatchDTO1);
+        spelers.add(spelerMatchDTO2);
+
+        match1 = new CreateMatchDTO.Builder()
+                .datumtijd(new SimpleDateFormat("yyyy-MM-dd").parse("2021-05-11"))
+                .teamBlue(team1.getId())
+                .teamRed(team2.getId())
+                .spelers(new HashSet<>(spelers))
+                .build();
+
+
+        //When
+        ResultActions perform = this.mockMvc.perform(MockMvcRequestBuilders.post("/matches")
+                .with(httpBasic("speler","speler"))
+                .content(toJson(match1))
+                .contentType(MediaType.APPLICATION_JSON));
+
+        perform.andExpect(status().isForbidden());
+    }
+
+    @Test
     void getAllMatches() throws Exception{
         // manager auth return 400 : Ok
         this.mockMvc.perform(MockMvcRequestBuilders.get("/matches")
