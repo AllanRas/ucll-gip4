@@ -19,17 +19,6 @@ interface SpelerMatchDTO {
     teamid: number
 }
 
-
-interface Speler {
-    id: number;
-    actief: boolean;
-    userSimpleDTO: {
-        id: number;
-        role: string;
-        username: string;
-    }
-}
-
 interface SimpleSpeler {
     id: number;
     actief: boolean;
@@ -155,8 +144,6 @@ const SpelerMatch = () => {
     return (
         <>
             <Container className="bg-dark text-white-50">
-                <h1>{match.id}</h1>
-
                 <Row>
                     <Col>
                         {/* selected blue team*/}
@@ -169,7 +156,6 @@ const SpelerMatch = () => {
                         <Table striped bordered hover variant={'dark'}>
                             <thead>
                             <tr>
-                                <th>id</th>
                                 <th>username</th>
                                 <th>reserve</th>
                             </tr>
@@ -180,7 +166,6 @@ const SpelerMatch = () => {
                                 allSpelers.map(speler => (
                                         match.teamBlue.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) && !match.spelers.some(sp => sp.spelerid === speler.id && (sp.teamid === match.teamBlue.id)) ?
                                             <tr key={speler.id}>
-                                                <td>{speler.id}</td>
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>
@@ -190,9 +175,6 @@ const SpelerMatch = () => {
                             }
                             </tbody>
                         </Table>
-
-
-
                     </Col>
                     <Col>
                         {/* selected red team*/}
@@ -206,7 +188,6 @@ const SpelerMatch = () => {
                         <Table striped bordered hover variant={'dark'}>
                             <thead>
                             <tr>
-                                <th>id</th>
                                 <th>username</th>
                                 <th>reserve</th>
                             </tr>
@@ -216,7 +197,6 @@ const SpelerMatch = () => {
                                 allSpelers.map(speler => (
                                         match.teamRed.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id) && match.spelers.some(sp => sp.spelerid === speler.id && sp.teamid === match.teamRed.id) ?
                                             <tr key={speler.id}>
-                                                <td>{speler.id}</td>
                                                 <td>{speler.userSimpleDTO.username}</td>
                                                 <td>{isReserve(match.teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                             </tr>

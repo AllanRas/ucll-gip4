@@ -97,18 +97,16 @@ const DelSpeler = () => {
                     <br/>
                     {speler.actief?
                         <Button variant={"danger"}  onClick={() => Delete()}>
-                            deactiveren
+                            Deactiveren
                         </Button>
                         :
                         <Button variant={"primary"} onClick={() => Delete()}>
                             Activeren
                         </Button>
                     }
-                    <div>
-                        <Button onClick={() => navigate("/Spelers/" + speler.id)}>
-                            Cancel
+                        <Button onClick={() => navigate(-1)}>
+                            Terug
                         </Button>
-                    </div>
                 </div>
             </Container>
         </>

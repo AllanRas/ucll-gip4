@@ -121,7 +121,6 @@ const SpelerTeam = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th>id</th>
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
@@ -130,7 +129,6 @@ const SpelerTeam = () => {
                     <tbody>
                     {spelers.map(speler => (team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && !spelerDTO.reserve) ?
                         <tr key={speler.id}>
-                            <td>{speler.id}</td>
                             <td>{speler.userDTO.username}</td>
                             <td>{speler.userDTO.voornaam}</td>
                             <td>{speler.userDTO.achternaam}</td>
@@ -141,7 +139,6 @@ const SpelerTeam = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th>id</th>
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
@@ -150,7 +147,6 @@ const SpelerTeam = () => {
                     <tbody>
                     {spelers.map(speler => (team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && spelerDTO.reserve) ?
                         <tr key={speler.id}>
-                            <td>{speler.id}</td>
                             <td>{speler.userDTO.username}</td>
                             <td>{speler.userDTO.voornaam}</td>
                             <td>{speler.userDTO.achternaam}</td>
@@ -162,7 +158,6 @@ const SpelerTeam = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th className="col-md-0">id</th>
                         <th className="col-md-3">Team Blue</th>
                         <th className="col-md-3">Team Red</th>
                         <th>won</th>
@@ -174,7 +169,6 @@ const SpelerTeam = () => {
                     <tbody>
                     {matches.map(match => (
                         <tr key={match.id}>
-                            <td>{match.id}</td>
                             <td>{match.teamBlue.naam}</td>
                             <td>{match.teamRed.naam}</td>
                             <td>{match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---": match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam : match.teamRed.naam}</td>

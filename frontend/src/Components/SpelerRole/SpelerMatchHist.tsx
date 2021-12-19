@@ -63,7 +63,6 @@ const SpelerMatchHist = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th className="col-md-0">id</th>
                         <th className="col-md-3">Team Blue</th>
                         <th className="col-md-3">Team Red</th>
                         <th>won</th>
@@ -76,7 +75,6 @@ const SpelerMatchHist = () => {
                     {
                         matches.map(match => (
                             <tr key={match.id}>
-                                <td>{match.id}</td>
                                 <td>{match.teamBlue.naam}</td>
                                 <td>{match.teamRed.naam}</td>
                                 <td>{

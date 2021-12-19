@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import React, {useEffect} from "react";
 import axios from "axios";
 import moment from 'moment';
-import {Button, Container} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 
 interface ISpeler {
     id: number;
@@ -81,19 +81,27 @@ const Speler = () => {
                         <h4>Straat: {speler.adresDTO.straat}</h4>
                         <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
                         <br/>
-                        <Button onClick={() => navigate("/Spelers")}>
-                            Terug
-                        </Button>
-                        <Button onClick={() => navigate("/EditSpeler/" + speler.id)}>
-                            Speler aanpassen
-                        </Button>
-                        <Button onClick={() => navigate("/DelSpeler/" + speler.id)}>
-                            {speler.actief?
-                                "Speler deactiveren"
-                                :
-                                "Speler activeren"
-                            }
-                        </Button>
+                        <Row>
+                            <Col className="col-md-3 text-center">
+                                <Button onClick={() => navigate("/EditSpeler/" + speler.id)}>
+                                    Gegevens wijzigen
+                                </Button>
+                            </Col>
+                            <Col className="col-md-3 text-center">
+                                <Button onClick={() => navigate("/DelSpeler/" + speler.id)}>
+                                    {speler.actief?
+                                        "Speler deactiveren"
+                                        :
+                                        "Speler activeren"
+                                    }
+                                </Button>
+                            </Col>
+                            <Col className="col-md-1 text-center">
+                                <Button onClick={() => navigate("/Spelers")}>
+                                    Terug
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
                 </Container>
             </>

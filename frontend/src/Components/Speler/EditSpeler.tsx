@@ -76,7 +76,7 @@ const EditSpeler = () => {
             },
             withCredentials: true
         }).then((response) => {
-            navigate("/Spelers/" + speler.id);
+            navigate(-1);
         }).catch(err => {
             console.log(err);
         });

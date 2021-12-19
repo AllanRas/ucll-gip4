@@ -1,11 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import {Container, Nav, Navbar} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
 
 
 const Header = () => {
+
+    let navigate = useNavigate();
     const loginURL = 'http://localhost:8080/api/login/user'
 
     const [user] = useState();
@@ -18,10 +20,9 @@ const Header = () => {
                 password: 'logout'
             },
             withCredentials: true
-
         }).then((response) => {
-
         }).catch(err => {
+            navigate("/Login");
             console.log("Logged out");
         })
     };

@@ -40,7 +40,6 @@ const SpelerTeams = () => {
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
-                        <th>id</th>
                         <th>naam</th>
                         <th>manager</th>
                         <th>actief</th>
@@ -51,7 +50,6 @@ const SpelerTeams = () => {
                     {
                         teams.map(team => (
                             <tr key={team.id}>
-                                <td>{team.id}</td>
                                 <td>{team.naam}</td>
                                 <td>{team.managerDTO.userDTO.username}</td>
                                 <td>{team.actief ? "Ja" : "Nee" }</td>
@@ -62,7 +60,6 @@ const SpelerTeams = () => {
                     </tbody>
                 </Table>
             </Container>
-
         </>
     )
 }
