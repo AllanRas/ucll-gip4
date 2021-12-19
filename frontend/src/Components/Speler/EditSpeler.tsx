@@ -124,7 +124,6 @@ const EditSpeler = () => {
                                       onChange={ChangeHandlerUserDTO}
                         />
                     </Form.Group>
-
                     <Row>
                         <Col>
                             <Form.Group className={"mb-3"}>
@@ -150,7 +149,6 @@ const EditSpeler = () => {
                             </Form.Group>
                         </Col>
                     </Row>
-
                     <Form.Group className={"mb-3"}>
                         <Form.Label>Email</Form.Label>
                         <Form.Control name="email"
@@ -160,7 +158,6 @@ const EditSpeler = () => {
                                       onChange={ChangeHandlerUserDTO}
                         />
                     </Form.Group>
-
                     <Row>
                         <Col>
                             <Form.Group className={"mb-3"}>
@@ -185,7 +182,6 @@ const EditSpeler = () => {
                             </Form.Group>
                         </Col>
                     </Row>
-
                     <Row>
                         <Col>
                             <Form.Group className={"mb-3"}>
@@ -209,7 +205,6 @@ const EditSpeler = () => {
                             </Form.Group>
                         </Col>
                     </Row>
-
                     <Form.Group className={"mb-3"}>
                         <Form.Label>Geboortedatum</Form.Label>
                         <Form.Control name="geboortedatum"
@@ -219,7 +214,6 @@ const EditSpeler = () => {
                                       onChange={ChangeHandlerSpeler}
                         />
                     </Form.Group>
-
                     <Row className="justify-content-center">
                         <Col lg="3">
                             <Button variant={"primary"}  onClick={() => PutSpeler()}>
@@ -227,7 +221,7 @@ const EditSpeler = () => {
                             </Button>
                         </Col>
                         <Col>
-                            <Button onClick={() => navigate("/Spelers/" + speler.id)}>
+                            <Button onClick={() => navigate(-1)}>
                                 Cancel
                             </Button>
                         </Col>

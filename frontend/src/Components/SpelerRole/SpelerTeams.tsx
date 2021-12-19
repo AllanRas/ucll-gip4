@@ -16,7 +16,7 @@ interface Team {
     actief: boolean,
 }
 
-const Teams = () => {
+const SpelerTeams = () => {
 
     const [teams, setTeams] = React.useState<Team[]>([]);
 
@@ -37,9 +37,6 @@ const Teams = () => {
             <Container className="bg-dark text-white-50">
                 <h1>Teams</h1>
                 <br/>
-                <Link to={"/AddTeam"}>Team toevoegen</Link>
-                <br/>
-                <br/>
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
@@ -58,7 +55,7 @@ const Teams = () => {
                                 <td>{team.naam}</td>
                                 <td>{team.managerDTO.userDTO.username}</td>
                                 <td>{team.actief ? "Ja" : "Nee" }</td>
-                                <td><Link to={"/Teams/" + team.id}>Details</Link></td>
+                                <td><Link to={"/SpelerTeams/" + team.id}>Details</Link></td>
                             </tr>
                         ))
                     }
@@ -70,4 +67,4 @@ const Teams = () => {
     )
 }
 
-export default Teams
+export default SpelerTeams

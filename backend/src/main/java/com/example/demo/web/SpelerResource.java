@@ -5,6 +5,7 @@ import com.example.demo.config.UserPrincipal;
 import com.example.demo.domain.User;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.SpelerSimpleDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -96,5 +97,12 @@ public class SpelerResource {
         SpelerDTO updateSpeler = spelerService.updateSpeler(id, spelerDTO);
 
         return new ResponseEntity<SpelerDTO>(updateSpeler, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
+    @GetMapping("/getAllSimple")
+    public List<SpelerSimpleDTO> getAllSpelersSimple(){
+        return spelerService.getAllSpelersSimple();
     }
 }

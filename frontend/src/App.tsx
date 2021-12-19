@@ -17,36 +17,52 @@ import Matches from "./Components/Match/Matches";
 import AddMatch from "./Components/Match/AddMatch";
 import Match from "./Components/Match/Match";
 import EditTeam from "./Components/Team/EditTeamnaam";
-import SpelerMatchHist from "./Components/Speler/SpelerMatchHist";
+import SpelerMatchHist from "./Components/SpelerRole/SpelerMatchHist";
+import SpelerRoleSpeler from "./Components/SpelerRole/SpelerRoleSpeler";
+import SpelerTeams from "./Components/SpelerRole/SpelerTeams";
+import SpelerTeam from "./Components/SpelerRole/SpelerTeam";
+import SpelerMatch from "./Components/SpelerRole/SpelerMatch";
 
 
 function App() {
-
     return (
         <Router>
             <div className="App">
-                <Header />
+                <Header/>
                 <Container className="main">
                     <Routes>
                         <>
+                            <Route path="/Login" element={<Login/>}/>
+
+                            {/*Speler Role navigation*/}
+                            <Route path="/SpelerMatchHist" element={<SpelerMatchHist/>}/>
+                            <Route path="/SpelerGegevens" element={<SpelerRoleSpeler/>} />
+                            <Route path="/SpelerTeams" element={<SpelerTeams/>}/>
+                            <Route path="/SpelerTeams/:id" element={<SpelerTeam/>}/>
+                            <Route path="/SpelerMatches/:id" element={<SpelerMatch/>}/>
+
+                            {/*Speler en Manager Role navigation*/}
+                            <Route path="/EditSpeler/:id" element={<EditSpeler/>}/>
+
+                            {/*Manager Role navigation */}
+                            {/*Spelers*/}
                             <Route path="/Spelers" element={<Spelers/>}/>
                             <Route path="/AddSpeler" element={<AddSpeler/>}/>
                             <Route path="/Spelers/:id" element={<Speler/>}/>
                             <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
-                            <Route path="/EditSpeler/:id" element={<EditSpeler/>}/>
-                            <Route path="/SpelerMatchHist" element={<SpelerMatchHist/>}/>
 
+
+                            {/*Teams*/}
                             <Route path="/Teams" element={<Teams/>}/>
                             <Route path="/AddTeam" element={<AddTeam/>}/>
                             <Route path="/Teams/:id" element={<Team/>}/>
                             <Route path="/Teams/:id/AddSpeler" element={<AddSpelerToTeam/>}/>
                             <Route path="/Teams/:id/EditTeamnaam" element={<EditTeam/>}/>
 
+                            {/*Matches*/}
                             <Route path="/Matches" element={<Matches/>}/>
                             <Route path="/AddMatch" element={<AddMatch/>}/>
-                            <Route path="/Matches/:id"  element={<Match/>}/>
-
-                            <Route path="/Login" element={<Login/>}/>
+                            <Route path="/Matches/:id" element={<Match/>}/>
                         </>
                     </Routes>
                 </Container>

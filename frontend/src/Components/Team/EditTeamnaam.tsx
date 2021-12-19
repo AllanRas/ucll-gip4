@@ -49,7 +49,6 @@ const EditTeam = () => {
                         </Col>
                         <Col>
                             <Button onClick={() => navigate(-1)}>Terug</Button>
-
                         </Col>
                     </Row>
                 </Form>

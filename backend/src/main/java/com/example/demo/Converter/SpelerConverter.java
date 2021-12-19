@@ -3,6 +3,7 @@ package com.example.demo.Converter;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.SpelerSimpleDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -67,6 +68,21 @@ public class SpelerConverter {
 
     public Set<SpelerDTO> spelerSetToDTO(Set<Speler> spelers){
         return spelers.stream().map(this::spelerToDTO).collect(Collectors.toSet());
+    }
+
+
+    //speler to DTO speler
+    public SpelerSimpleDTO spelerToSimpleDTO(Speler speler){
+        SpelerSimpleDTO spelerSimpleDTO = new SpelerSimpleDTO();
+
+        spelerSimpleDTO.setId(speler.getId());
+        spelerSimpleDTO.setUserSimpleDTO(userConverter.userToSimpleDTO(speler.getUser()));
+        spelerSimpleDTO.setActief(speler.isActief());
+        return  spelerSimpleDTO;
+    }
+
+    public List<SpelerSimpleDTO> spelerListToSimpleDTO(List<Speler> spelers){
+        return spelers.stream().map(this::spelerToSimpleDTO).collect(Collectors.toList());
     }
 
 }

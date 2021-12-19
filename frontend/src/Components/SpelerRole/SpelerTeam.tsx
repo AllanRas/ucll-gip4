@@ -59,7 +59,7 @@ interface Match {
     datumtijd: Date
 }
 
-const Team = () => {
+const SpelerTeam = () => {
     let params = useParams();
     let navigate = useNavigate();
 
@@ -75,12 +75,8 @@ const Team = () => {
         spelerDTO: []
     });
 
-
     const [matches, setMatches] = React.useState<Match[]>([]);
     const getMatchURL = "http://localhost:8080/api/matches/matchstats/" + params.id;
-
-
-
 
     useEffect(() => {
         axios.get<ITeam>(getTeamURL, {
@@ -99,7 +95,6 @@ const Team = () => {
         getSpelers();
     }, [getTeamURL]);
 
-
     const getSpelers = () => {
         axios.get<Speler[]>(getSpelersURL, {
             withCredentials: true
@@ -117,12 +112,6 @@ const Team = () => {
                     <h1>{team.naam}</h1>
                     <h2>Manager: {team.managerDTO.userDTO.username}</h2>
                     <br/>
-                    <Button onClick={() => navigate("/Teams/" + team.id + "/AddSpeler")}>
-                        Spelers
-                    </Button>
-                    <Button onClick={() => navigate("/Teams/ "+ team.id + "/EditTeamnaam")}>
-                        Team naam aanpassen
-                    </Button>
                     <Button onClick={() => navigate(-1)}>
                         Terug
                     </Button>
@@ -140,12 +129,12 @@ const Team = () => {
                     </thead>
                     <tbody>
                     {spelers.map(speler => (team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && !spelerDTO.reserve) ?
-                                    <tr key={speler.id}>
-                                        <td>{speler.id}</td>
-                                        <td>{speler.userDTO.username}</td>
-                                        <td>{speler.userDTO.voornaam}</td>
-                                        <td>{speler.userDTO.achternaam}</td>
-                                    </tr> : null))}
+                        <tr key={speler.id}>
+                            <td>{speler.id}</td>
+                            <td>{speler.userDTO.username}</td>
+                            <td>{speler.userDTO.voornaam}</td>
+                            <td>{speler.userDTO.achternaam}</td>
+                        </tr> : null))}
                     </tbody>
                 </Table>
                 <h2>Reserve spelers :</h2>
@@ -160,12 +149,12 @@ const Team = () => {
                     </thead>
                     <tbody>
                     {spelers.map(speler => (team.spelerDTO.some(spelerDTO => spelerDTO.spelerid === speler.id && spelerDTO.reserve) ?
-                                    <tr key={speler.id}>
-                                        <td>{speler.id}</td>
-                                        <td>{speler.userDTO.username}</td>
-                                        <td>{speler.userDTO.voornaam}</td>
-                                        <td>{speler.userDTO.achternaam}</td>
-                                    </tr> : null))}
+                        <tr key={speler.id}>
+                            <td>{speler.id}</td>
+                            <td>{speler.userDTO.username}</td>
+                            <td>{speler.userDTO.voornaam}</td>
+                            <td>{speler.userDTO.achternaam}</td>
+                        </tr> : null))}
                     </tbody>
                 </Table>
                 <h1>Matches</h1>
@@ -184,15 +173,15 @@ const Team = () => {
                     </thead>
                     <tbody>
                     {matches.map(match => (
-                            <tr key={match.id}>
-                                <td>{match.id}</td>
-                                <td>{match.teamBlue.naam}</td>
-                                <td>{match.teamRed.naam}</td>
-                                <td>{match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---": match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam : match.teamRed.naam}</td>
-                                <td>{match.scoreBlueTeam}-{match.scoreRedTeam}</td>
-                                <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
-                                <td><Link to={"/Matches/" + match.id}>Details & Score</Link></td>
-                            </tr>))}
+                        <tr key={match.id}>
+                            <td>{match.id}</td>
+                            <td>{match.teamBlue.naam}</td>
+                            <td>{match.teamRed.naam}</td>
+                            <td>{match.scoreRedTeam === 0 && match.scoreBlueTeam === 0 ? "---": match.scoreRedTeam < match.scoreBlueTeam ? match.teamBlue.naam : match.teamRed.naam}</td>
+                            <td>{match.scoreBlueTeam}-{match.scoreRedTeam}</td>
+                            <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
+                            <td><Link to={"/SpelerMatches/" + match.id}>Details & Score</Link></td>
+                        </tr>))}
                     </tbody>
                 </Table>
             </Container>
@@ -200,4 +189,4 @@ const Team = () => {
     )
 }
 
-export default Team
+export default SpelerTeam

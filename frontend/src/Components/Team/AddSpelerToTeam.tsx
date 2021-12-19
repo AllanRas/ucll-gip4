@@ -135,15 +135,11 @@ const AddSpelerToTeam = () => {
     return (
         <>
             <Container className="col-md-11 bg-dark text-white-50">
-
-
-
                 <h1>team : {team.naam}</h1>
                 <br/>
                 <Button onClick={() => navigate(-1)}>Terug</Button>
                 <h2>manager: {team.managerDTO.userDTO.username} </h2>
                 <h2>Spelers : </h2>
-
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
@@ -155,7 +151,6 @@ const AddSpelerToTeam = () => {
                         <th className="col-md-2"></th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         spelers.map(speler => (
@@ -168,16 +163,14 @@ const AddSpelerToTeam = () => {
                                         <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> degraderen </Button></td>
                                         <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
-                            : ""
+                            : null
                             )
                         )
                     }
 
                     </tbody>
                 </Table>
-
                 <h2>Reserve spelers :</h2>
-
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
@@ -189,7 +182,6 @@ const AddSpelerToTeam = () => {
                         <th className="col-md-2"></th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         spelers.map(speler => (
@@ -202,17 +194,13 @@ const AddSpelerToTeam = () => {
                                         <td><Button onClick={() => ReservePromoveren(speler.id, team.id)}> Promoveren </Button></td>
                                         <td><Button onClick={() => DeleteSpeler(speler.id, team.id)}> Verwijderen </Button></td>
                                     </tr>
-                                    : ""
+                                    : null
                             )
                         )
                     }
-
                     </tbody>
                 </Table>
-
-
                 <h2>Spelers Toevoegen</h2>
-
                 <Table striped bordered hover variant={'dark'}>
                     <thead>
                     <tr>
@@ -224,7 +212,6 @@ const AddSpelerToTeam = () => {
                         <th className="col-md-1"> reserve </th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         spelers.map(speler => (
@@ -238,11 +225,10 @@ const AddSpelerToTeam = () => {
                                     <td><Button className="btn-success" onClick={() => PostAddSpeler(speler.id, false)}> + </Button></td>
                                     <td><Button className="btn-warning" onClick={() => PostAddSpeler(speler.id, true)}> + </Button></td>
                                 </tr>
-                                : ""
+                                : null
                             )
                         )
                     }
-
                     </tbody>
                 </Table>
             </Container>

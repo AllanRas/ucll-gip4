@@ -75,13 +75,11 @@ const Speler = () => {
                         <h3>Geboortedatum: {moment(speler.geboortedatum).format('DD/MM/YYYY')}</h3>
                         <h3>Actief: {speler.actief ? "true": "false"} </h3>
                         <br/>
-
                         <h3>Adres </h3>
                         <h4>Gemeente: {speler.adresDTO.gemeente}</h4>
                         <h4>Postcode: {speler.adresDTO.postcode}</h4>
                         <h4>Straat: {speler.adresDTO.straat}</h4>
                         <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
-
                         <br/>
                         <Button onClick={() => navigate("/Spelers")}>
                             Terug

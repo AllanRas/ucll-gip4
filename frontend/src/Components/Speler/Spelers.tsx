@@ -61,10 +61,9 @@ const Spelers = () => {
                         <th>username</th>
                         <th>voornaam</th>
                         <th>achternaam</th>
-                        <th> </th>
+                        <th/>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         spelers.map(speler => (
@@ -75,17 +74,14 @@ const Spelers = () => {
                                 <td>{speler.userDTO.voornaam}</td>
                                 <td>{speler.userDTO.achternaam}</td>
                                 <td><Link to={"/Spelers/" + speler.id}>Details</Link></td>
-                            </tr>: ""
+                            </tr>: null
                         ))
                     }
                     </tbody>
                 </Table>
-
                 <br/>
                 <h1>inactive spelers</h1>
                 <Table striped bordered hover variant={'dark'}>
-
-
                     <thead>
                     <tr>
                         <th>id</th>
@@ -95,7 +91,6 @@ const Spelers = () => {
                         <th> </th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         spelers.map(speler => (
@@ -106,7 +101,7 @@ const Spelers = () => {
                                     <td>{speler.userDTO.voornaam}</td>
                                     <td>{speler.userDTO.achternaam}</td>
                                     <td><Link to={"/Spelers/" + speler.id}>Details</Link></td>
-                                </tr>: ""
+                                </tr>: null
                         ))
                     }
                     </tbody>

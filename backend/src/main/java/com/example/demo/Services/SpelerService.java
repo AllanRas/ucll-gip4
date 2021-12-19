@@ -6,6 +6,7 @@ import com.example.demo.dao.SpelerRepository;
 import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateSpelerDTO;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.SpelerSimpleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,10 @@ public class SpelerService {
 
     public List<SpelerDTO> getAllSpelers(){
         return spelerConverter.spelerListToDTO(spelerRepository.findAll());
+    }
+
+    public List<SpelerSimpleDTO> getAllSpelersSimple(){
+        return spelerConverter.spelerListToSimpleDTO(spelerRepository.findAll());
     }
 
     public SpelerDTO getById(long id){

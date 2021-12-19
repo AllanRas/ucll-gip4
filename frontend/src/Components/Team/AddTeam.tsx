@@ -51,9 +51,7 @@ const AddTeam = () => {
         <>
             <Container className="col-md-5 bg-dark text-white-50">
                 <h1>Team Toevoegen</h1>
-
                 <br/>
-
                 <Form>
                     <Form.Group className={"mb-3"}>
                         <Form.Label>Team naam</Form.Label>
@@ -64,7 +62,6 @@ const AddTeam = () => {
                                       onChange={ChangeHandlerTeam}
                         />
                     </Form.Group>
-
                     <Row className="justify-content-center">
                         <Col lg="3">
                             <Button variant={"primary"}  onClick={() => PostTeam()}>

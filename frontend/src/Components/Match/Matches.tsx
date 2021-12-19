@@ -75,7 +75,7 @@ const Matches = () => {
                         <th>won</th>
                         <th className="col-md-0">blue - red</th>
                         <th className="col-md-2">datum en tijd</th>
-                        <th className="col-md-2"> </th>
+                        <th className="col-md-2"/>
                     </tr>
                     </thead>
 

@@ -4,13 +4,17 @@ import com.example.demo.Services.MatchService;
 import com.example.demo.Services.SpelerService;
 import com.example.demo.Services.emailService.EmailSenderService;
 import com.example.demo.config.UserPrincipal;
+import com.example.demo.domain.Match;
+import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,11 +59,24 @@ public class MatchResource {
         return matchService.setResults(matchDTO);
     }
 
-    @PreAuthorize("hasRole('MANAGER')")
+    @PreAuthorize("hasAnyRole('MANAGER','SPELER')")
     @GetMapping(value = "/{id}")
-    public MatchDTO getMatchById(@PathVariable("id")long id){
+    public ResponseEntity<MatchDTO> getMatchById(@PathVariable("id")long id){
         // id = TeamId
-        return matchService.getById(id);
+        MatchDTO matchDTO = matchService.getById(id);
+
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean isSpelerRole = userPrincipal.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_SPELER"));
+        if(isSpelerRole){
+            SpelerDTO speler = spelerService.getByIdAndUser(userPrincipal);
+            List<MatchDTO> matchDTOList = matchService.getMatchesBySpelerId(speler.getId());
+            for (MatchDTO mdto: matchDTOList) {
+                if(mdto.getId() != matchDTO.getId()){
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+        return ResponseEntity.ok().body(matchDTO);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
@@ -93,6 +110,6 @@ public class MatchResource {
     public List<MatchDTO> eigenPreviousMatches(){
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SpelerDTO speler = spelerService.getByIdAndUser(userPrincipal);
-        return matchService.getBySpelerId(speler.getId());
+        return matchService.getMatchesBySpelerId(speler.getId());
     }
 }

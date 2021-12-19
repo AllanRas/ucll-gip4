@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from 'moment';
 import {Button, Container} from "react-bootstrap";
 
-interface Speler {
+interface ISpeler {
     id: number;
     actief: boolean;
     adresDTO: {
@@ -26,15 +26,14 @@ interface Speler {
 }
 
 
-const DelSpeler = () => {
+const SpelerRoleSpeler = () => {
     let params = useParams();
     let navigate = useNavigate();
 
-    const getSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/getOne";
+    // maakt niet uit welke id, bij spelerrole wordt UserPrincipal id gebruikt
+    const getSpelerURL = "http://localhost:8080/api/spelers/0/getOne";
 
-    const delSpelerURL = "http://localhost:8080/api/spelers/" + params.id + "/delete";
-
-    const [speler, setSpeler] = React.useState<Speler | any>(    {
+    const [speler, setSpeler] = React.useState<ISpeler | any>(    {
         id: 0,
         actief: false,
         adresDTO: {
@@ -57,28 +56,16 @@ const DelSpeler = () => {
 
     // get spelers from api
     useEffect(() => {
-        getSpelers();
-    }, []);
-
-    const getSpelers = async () => {
-        await axios.get<Speler>(getSpelerURL, {
-            withCredentials: true
+        axios.get<ISpeler[]>(getSpelerURL, {
+            withCredentials : true
         }).then((response) =>{
             setSpeler(response.data);
-        })
-    }
-
-    const Delete = async () => {
-        await axios.put<Speler>(delSpelerURL, {},{
-            withCredentials: true
-        }).then((response) => {
-            getSpelers();
-        })
-    }
+        });
+    }, [getSpelerURL]);
 
     return (
         <>
-            <Container className="col-5 bg-dark text-white-50">
+            <Container className="col-8 bg-dark text-white-50" >
                 <div>
                     <br/>
                     <h1>Speler: {speler.userDTO.username} </h1>
@@ -95,24 +82,13 @@ const DelSpeler = () => {
                     <h4>Straat: {speler.adresDTO.straat}</h4>
                     <h4>Huisnr.: {speler.adresDTO.huisnummer}</h4>
                     <br/>
-                    {speler.actief?
-                        <Button variant={"danger"}  onClick={() => Delete()}>
-                            deactiveren
-                        </Button>
-                        :
-                        <Button variant={"primary"} onClick={() => Delete()}>
-                            Activeren
-                        </Button>
-                    }
-                    <div>
-                        <Button onClick={() => navigate("/Spelers/" + speler.id)}>
-                            Cancel
-                        </Button>
-                    </div>
+                    <Button onClick={() => navigate("/EditSpeler/" + speler.id)}>
+                        gegevens wijzigen
+                    </Button>
                 </div>
             </Container>
         </>
     )
 }
 
-export default DelSpeler
+export default SpelerRoleSpeler

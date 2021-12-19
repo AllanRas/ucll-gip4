@@ -202,11 +202,10 @@ const AddMatch = () => {
                             <tr>
                                 <th>id</th>
                                 <th>Team naam</th>
-                                <th className="col-md-2"> </th>
+                                <th className="col-md-2"></th>
                                 <th className="col-md-2 "></th>
                             </tr>
                             </thead>
-
                             <tbody>
                             {
                                 allTeams.map(team => (
@@ -216,7 +215,7 @@ const AddMatch = () => {
                                             <td>{team.naam}</td>
                                             <td><Button onClick={(e) => resetTeamBlue(team)}>blue team</Button></td>
                                             <td><Button className="btn-danger" onClick={(e) => resetTeamRed(team)}>red team</Button></td>
-                                        </tr> : " "
+                                        </tr> : null
                                 ))
                             }
                             </tbody>
@@ -251,7 +250,7 @@ const AddMatch = () => {
                                                 <td>{isReserve(teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                                 <td><Button className="btn-success" onClick={() => addToSpelerMatch(speler.id, teamBlue.id)} >+</Button></td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }
@@ -289,7 +288,7 @@ const AddMatch = () => {
                                                 <td><Button className="btn-success" onClick={() => addToSpelerMatch(speler.id, teamRed.id)} >+</Button></td>
 
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }
@@ -323,7 +322,7 @@ const AddMatch = () => {
                                                 <td>{isReserve(teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                                 <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id)} >-</Button></td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }
@@ -355,7 +354,7 @@ const AddMatch = () => {
                                                 <td>{isReserve(teamBlue.spelerDTO.find(sp => sp.spelerid === speler.id))}</td>
                                                 <td><Button className="btn-danger" onClick={() => RemoveSpeler(speler.id)} >-</Button></td>
                                             </tr>
-                                            : ""
+                                            : null
                                     )
                                 )
                             }

@@ -69,10 +69,9 @@ const SpelerMatchHist = () => {
                         <th>won</th>
                         <th className="col-md-0">blue - red</th>
                         <th className="col-md-2">datum en tijd</th>
-                        <th className="col-md-2"> </th>
+                        <th className="col-md-2"></th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {
                         matches.map(match => (
@@ -87,7 +86,7 @@ const SpelerMatchHist = () => {
                                 </td>
                                 <td>{match.scoreBlueTeam} - {match.scoreRedTeam}</td>
                                 <td>{moment(match.datumtijd).format('DD-MM-YYYY hh:mm')}</td>
-                                <td><Link to={"/Matches/" + match.id}>Details</Link></td>
+                                <td><Link to={"/SpelerMatches/" + match.id}>Details</Link></td>
                             </tr>
                         ))
                     }

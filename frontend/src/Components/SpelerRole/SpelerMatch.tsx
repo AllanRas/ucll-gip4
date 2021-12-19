@@ -59,7 +59,7 @@ interface SpelerDTO{
     spelerid: number
 }
 
-const Match = () => {
+const SpelerMatch = () => {
 
     let navigate = useNavigate();
     let params = useParams();
@@ -211,7 +211,6 @@ const Match = () => {
                                 <th>reserve</th>
                             </tr>
                             </thead>
-
                             <tbody>
                             {
                                 allSpelers.map(speler => (
@@ -227,37 +226,18 @@ const Match = () => {
                             }
                             </tbody>
                         </Table>
-
-
                     </Col>
                 </Row>
-
                 <Row>
                     <Col>
-                        <Form.Group className={"mb-3"}>
-                            <Form.Label>Score Blue team</Form.Label>
-                            <Form.Control name="scoreBlueTeam"
-                                          type={"text"}
-                                          placeholder="Score"
-                                          value={match.scoreBlueTeam}
-                                          onChange={ChangeHandlerScore}
-                            />
-                        </Form.Group>
+                        <h3>Blue team Score : </h3>
+                        <h1>{match.scoreBlueTeam}</h1>
                     </Col>
                     <Col>
-                        <Form.Group className={"mb-3"}>
-                            <Form.Label>Score Red team</Form.Label>
-                            <Form.Control name="scoreRedTeam"
-                                          type={"text"}
-                                          placeholder="Score"
-                                          value={match.scoreRedTeam}
-                                          onChange={ChangeHandlerScore}
-                            />
-                        </Form.Group>
+                        <h3>Red team Score : </h3>
+                        <h1>{match.scoreRedTeam}</h1>
                     </Col>
                 </Row>
-
-                <Button onClick={addScore}>set Score</Button>
 
                 <Button onClick={() => navigate(-1)}>
                     Terug
@@ -267,4 +247,4 @@ const Match = () => {
     )
 }
 
-export default Match
+export default SpelerMatch

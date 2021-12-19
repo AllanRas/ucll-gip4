@@ -112,7 +112,7 @@ public class MatchService {
         return matchConverter.matchToMatchDTOList(matchRepository.findByTeamBlueOrTeamRed(team, team).orElseThrow()) ;
     }
 
-    public List<MatchDTO> getBySpelerId(long spelerId){
+    public List<MatchDTO> getMatchesBySpelerId(long spelerId){
         Speler speler = spelerRepository.findById(spelerId).orElseThrow();
         List<SpelerMatch> spelerMatches = spelerMatchRepository.findBySpeler(speler).orElseThrow();
         List<MatchDTO> matches = new ArrayList<>();

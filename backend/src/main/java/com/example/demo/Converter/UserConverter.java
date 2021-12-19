@@ -2,6 +2,7 @@ package com.example.demo.Converter;
 
 import com.example.demo.domain.User;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserSimpleDTO;
 import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,4 +38,13 @@ public class UserConverter {
         user.setEmail(userDTO.getEmail());
         return user;
     }
+
+    public UserSimpleDTO userToSimpleDTO(User user){
+        UserSimpleDTO userSimpleDTO = new UserSimpleDTO();
+        userSimpleDTO.setId(user.getId());
+        userSimpleDTO.setUsername(user.getUsername());
+        userSimpleDTO.setRole(user.getRole());
+        return userSimpleDTO;
+    }
+
 }
