@@ -22,6 +22,7 @@ import SpelerRoleSpeler from "./Components/SpelerRole/SpelerRoleSpeler";
 import SpelerTeams from "./Components/SpelerRole/SpelerTeams";
 import SpelerTeam from "./Components/SpelerRole/SpelerTeam";
 import SpelerMatch from "./Components/SpelerRole/SpelerMatch";
+import Home from "./Components/Home";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                     <Routes>
                         <>
                             <Route path="/Login" element={<Login/>}/>
+                            <Route path="/Home" element={<Home/>}/>
 
                             {/*Speler Role navigation*/}
                             <Route path="/SpelerMatchHist" element={<SpelerMatchHist/>}/>
@@ -50,7 +52,6 @@ function App() {
                             <Route path="/AddSpeler" element={<AddSpeler/>}/>
                             <Route path="/Spelers/:id" element={<Speler/>}/>
                             <Route path="/DelSpeler/:id" element={<DelSpeler/>}/>
-
 
                             {/*Teams*/}
                             <Route path="/Teams" element={<Teams/>}/>

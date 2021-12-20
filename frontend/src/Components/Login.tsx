@@ -38,7 +38,7 @@ const Login = () => {
 
             console.log("Logged in")
             console.log(response.data);
-            navigate("/Spelers")
+            navigate("/Home")
         }).catch(err => {
             console.log(err);
         });
