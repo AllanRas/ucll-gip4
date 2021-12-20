@@ -2,13 +2,13 @@ package com.example.demo.web;
 
 import com.example.demo.Services.MatchService;
 import com.example.demo.Services.SpelerService;
+import com.example.demo.Services.TeamService;
 import com.example.demo.Services.emailService.EmailSenderService;
 import com.example.demo.config.UserPrincipal;
-import com.example.demo.domain.Match;
-import com.example.demo.domain.Speler;
 import com.example.demo.dto.CreateMatchDTO;
 import com.example.demo.dto.MatchDTO;
 import com.example.demo.dto.SpelerDTO;
+import com.example.demo.dto.TeamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +26,7 @@ import java.util.List;
 public class MatchResource {
 
     private final MatchService matchService;
+    private final TeamService teamService;
 
     @Autowired
     private SpelerService spelerService;
@@ -33,8 +34,9 @@ public class MatchResource {
     @Autowired
     private EmailSenderService emailService;
 
-    public MatchResource(MatchService matchService) {
+    public MatchResource(MatchService matchService, TeamService teamService) {
         this.matchService = matchService;
+        this.teamService = teamService;
     }
 
     /*
@@ -70,8 +72,15 @@ public class MatchResource {
         if(isSpelerRole){
             SpelerDTO speler = spelerService.getByIdAndUser(userPrincipal);
             List<MatchDTO> matchDTOList = matchService.getMatchesBySpelerId(speler.getId());
+
+            List<TeamDTO> teamDTOList = teamService.getAllTeamsBySpeler(userPrincipal);
             for (MatchDTO mdto: matchDTOList) {
                 if(mdto.getId() == matchDTO.getId()){
+                    return ResponseEntity.ok().body(matchDTO);
+                }
+            }
+            for (TeamDTO tdto: teamDTOList) {
+                if(tdto.getId() == matchDTO.getTeamRed().getId() || tdto.getId() == matchDTO.getTeamBlue().getId()){
                     return ResponseEntity.ok().body(matchDTO);
                 }
             }
