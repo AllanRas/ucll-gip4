@@ -26,6 +26,4 @@ public class BasicAuthenticationResource {
         UserDetails user = userUserDetailService.Login(userLoginDTO);
         return user;
     }
-
-
 }
